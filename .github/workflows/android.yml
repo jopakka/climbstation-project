@@ -19,7 +19,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-  test:
+  unit_tests:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the code
@@ -28,6 +28,14 @@ jobs:
       run: chmod +x gradlew
     - name: Do tests
       run: ./gradlew test
+  
+  android_instrument_tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
     - name: Do android tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
