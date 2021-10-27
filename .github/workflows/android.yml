@@ -10,9 +10,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout the code
       uses: actions/checkout@v2
@@ -20,3 +18,11 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Do tests
+      run: ./gradlew test
