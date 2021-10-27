@@ -28,3 +28,5 @@ jobs:
       run: chmod +x gradlew
     - name: Do tests
       run: ./gradlew test
+    - name: Do android tests
+      run: ./gradlew androidTest
