@@ -20,5 +20,6 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("fi.climbstationsolutions.climbstation", appContext.packageName)
+        assertEquals("fi.climbstationsolutions", appContext.packageName)
     }
 }
