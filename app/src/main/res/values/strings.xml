@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ClimbStation</string>
+
+    <!--Bottom navigation strings-->
+    <string name="bottom_nav_climb">Climb</string>
+    <string name="bottom_nav_statistics">Statistics</string>
+    <string name="bottom_nav_settings">Settings</string>
+
 </resources>
