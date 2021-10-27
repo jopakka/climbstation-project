@@ -29,4 +29,10 @@ jobs:
     - name: Do tests
       run: ./gradlew test
     - name: Do android tests
-      run: ./gradlew testDebugUnitTest
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 24
+        target: default
+        arch: x86
+        profile: Nexus 6
+        script: ./gradlew connectedCheck --stacktrace
