@@ -13,41 +13,43 @@ object ClimbStationRepository {
      * @param userID Users ID
      * @param password Users password
      * @return [String] ClientKey
-     * @throws NullPointerException if there is no clientKey
+     * @throws NoSuchFieldException There is no clientKey
+     * @throws Exception Something else went wrong
      */
     suspend fun login(climbStationSerialNo: String, userID: String, password: String): String {
-        try {
+        return try {
             val req = LoginRequest(climbStationSerialNo, userID, password)
             val response = call.login(req)
-//            Log.d(TAG, "$response")
-            response.clientKey?.let {
-                return it
-            }
+            //            Log.d(TAG, "$response")
+
+            response.clientKey ?: throw NoSuchFieldException("No clientKey")
         } catch (e: Exception) {
             Log.e(TAG, "Login error: ${e.localizedMessage}")
+            throw e
         }
-        throw NullPointerException("No clientKey")
     }
 
     /**
      * Log client out of ClimbStation.
      *
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
-     * @param clientKey Clients eky
+     * @param clientKey Client specific key for verifying user
      * @return [Boolean] Did logout success
+     * @throws NoSuchFieldException There is no response
+     * @throws Exception Something else went wrong
      */
     suspend fun logout(climbStationSerialNo: String, clientKey: String): Boolean {
-        try {
+        return try {
             val req = LogoutRequest(climbStationSerialNo, clientKey)
             val response = call.logout(req)
-//            Log.d(TAG, "Logout: $response")
-            response.response?.let {
-                if(it == "OK") return true
-            }
+            //            Log.d(TAG, "Logout: $response")
+
+            response.response?.equals("OK")
+                ?: throw NoSuchFieldException("Response is not valid")
         } catch (e: Exception) {
             Log.e(TAG, "Logout error: ${e.localizedMessage}")
+            throw e
         }
-        return false
     }
 
     /**
@@ -56,20 +58,21 @@ object ClimbStationRepository {
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
      * @param clientKey Client specific key for verifying user
      * @return [InfoResponse] Info about unit
-     * @throws Exception Throws if response is not "OK" or something else went wrong
+     * @throws NoSuchFieldException There is no response
+     * @throws Exception Something else went wrong
      */
     suspend fun deviceInfo(climbStationSerialNo: String, clientKey: String): InfoResponse {
-        try {
+        return try {
             val req = InfoRequest(climbStationSerialNo, clientKey)
             val response = call.deviceInfo(req)
 //            Log.d(TAG, "DeviceInfo: $response")
-            response.response?.let {
-                if (it == "OK") return response
-            }
+
+            if (response.response?.equals("OK") == true) response
+            else throw NoSuchFieldException("Response is not valid")
         } catch (e: Exception) {
-            Log.e(TAG, "DeviceInfo error: ${e}")
+            Log.e(TAG, "DeviceInfo error: ${e.localizedMessage}")
+            throw e
         }
-        throw Exception("Response not ok")
     }
 
     /**
@@ -79,21 +82,27 @@ object ClimbStationRepository {
      * @param clientKey Client specific key for verifying user
      * @param operation "start" or "stop"
      * @return [Boolean] Did operation was successful
+     * @throws IllegalArgumentException Operation is not "start" or "stop"
+     * @throws NoSuchFieldException There is no response
+     * @throws Exception Something else went wrong
      */
-    suspend fun operation(climbStationSerialNo: String, clientKey: String, operation: String): Boolean {
-        try {
-            if(operation != "start" && operation != "stop")
+    suspend fun operation(
+        climbStationSerialNo: String,
+        clientKey: String,
+        operation: String
+    ): Boolean {
+        return try {
+            if (operation != "start" && operation != "stop")
                 throw IllegalArgumentException("Operation must be \"start\" or \"stop\"")
 
             val req = OperationRequest(climbStationSerialNo, clientKey, operation)
             val response = call.operation(req)
 //            Log.d(TAG, "$response")
-            response.response?.let {
-                if(it == "OK") return true
-            }
+
+            response.response?.equals("OK") ?: throw NoSuchFieldException("Response is not valid")
         } catch (e: Exception) {
             Log.e(TAG, "Operation error: ${e.localizedMessage}")
+            throw e
         }
-        return false
     }
 }
