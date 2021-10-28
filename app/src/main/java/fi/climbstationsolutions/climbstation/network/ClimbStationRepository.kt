@@ -43,12 +43,36 @@ object ClimbStationRepository {
             val response = call.deviceInfo(req)
 //            Log.d(TAG, "$response")
             response.response?.let {
-                if (it != "OK") throw NullPointerException()
-                return response
+                if (it == "OK") return response
             }
         } catch (e: Exception) {
             Log.e(TAG, "DeviceInfo error: ${e.localizedMessage}")
         }
         throw NullPointerException("Response not ok")
+    }
+
+    /**
+     * Starts or stops ClimbStation.
+     *
+     * @param climbStationSerialNo Serialnumber of ClimbStation unit
+     * @param clientKey Client specific key for verifying user
+     * @param operation "start" or "stop"
+     * @return [Boolean] Did operation was successful
+     */
+    suspend fun operation(climbStationSerialNo: String, clientKey: String, operation: String): Boolean {
+        try {
+            if(operation != "start" && operation != "stop")
+                throw IllegalArgumentException("Operation must be \"start\" or \"stop\"")
+
+            val req = OperationRequest(climbStationSerialNo, clientKey, operation)
+            val response = call.operation(req)
+            Log.d(TAG, "$response")
+            response.response?.let {
+                if(it == "OK") return true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Operation error: ${e.localizedMessage}")
+        }
+        return false
     }
 }

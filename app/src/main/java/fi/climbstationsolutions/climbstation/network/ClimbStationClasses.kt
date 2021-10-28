@@ -2,18 +2,22 @@ package fi.climbstationsolutions.climbstation.network
 
 import com.google.gson.annotations.SerializedName
 
-interface ClimbStationGeneric {
+interface ClimbStationBasics {
     val packetID: String
     val packetNumber: String
 }
 
-interface ClimbStationRequest : ClimbStationGeneric {
+interface ClimbStationRequest : ClimbStationBasics {
     val climbStationSerialNo: String
 }
 
-interface ClimbStationResponse : ClimbStationGeneric {
+interface ClimbStationResponse {
     val response: String?
 }
+
+data class ClimbStationGenericResponse(
+    @SerializedName("Response") override val response: String?
+) : ClimbStationResponse
 
 data class LoginRequest(
     @SerializedName("ClimbstationSerialNo") override val climbStationSerialNo: String,
@@ -24,8 +28,6 @@ data class LoginRequest(
 ) : ClimbStationRequest
 
 data class LoginResponse(
-    @SerializedName("PacketID") override val packetID: String,
-    @SerializedName("PacketNumber") override val packetNumber: String,
     @SerializedName("Response") override val response: String?,
     val clientKey: String?,
 ) : ClimbStationResponse
@@ -39,10 +41,16 @@ data class InfoRequest(
 ) : ClimbStationRequest
 
 data class InfoResponse(
-    @SerializedName("PacketID") override val packetID: String,
-    @SerializedName("PacketNumber") override val packetNumber: String,
     @SerializedName("Response") override val response: String?,
     @SerializedName("Length") val length: String?,
     @SerializedName("AngleNow") val angleNow: String?,
     @SerializedName("SpeedNow") val speedNow: String?,
 ) : ClimbStationResponse
+
+data class OperationRequest(
+    @SerializedName("ClimbstationSerialNo") override val climbStationSerialNo: String,
+    val clientKey: String,
+    @SerializedName("Operation") val operation: String,
+    @SerializedName("PacketID") override val packetID: String = "2c",
+    @SerializedName("PacketNumber") override val packetNumber: String = "1",
+) : ClimbStationRequest

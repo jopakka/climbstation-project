@@ -13,8 +13,11 @@ object ClimbStationAPI {
         @POST("login")
         suspend fun login(@Body req: LoginRequest): LoginResponse
 
-        @HTTP(method = "POST", path = "climbstationinfo", hasBody = true)
+        @POST("climbstationinfo")
         suspend fun deviceInfo(@Body req: InfoRequest): InfoResponse
+
+        @POST("Operation")
+        suspend fun operation(@Body req: OperationRequest): ClimbStationGenericResponse
     }
 
     private val retrofit = Retrofit.Builder()
