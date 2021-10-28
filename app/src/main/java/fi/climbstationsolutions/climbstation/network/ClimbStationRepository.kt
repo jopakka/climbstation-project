@@ -30,6 +30,27 @@ object ClimbStationRepository {
     }
 
     /**
+     * Log client out of ClimbStation.
+     *
+     * @param climbStationSerialNo Serialnumber of ClimbStation unit
+     * @param clientKey Clients eky
+     * @return [Boolean] Did logout success
+     */
+    suspend fun logout(climbStationSerialNo: String, clientKey: String): Boolean {
+        try {
+            val req = LogoutRequest(climbStationSerialNo, clientKey)
+            val response = call.logout(req)
+            Log.d(TAG, "Logout: $response")
+            response.response?.let {
+                if(it == "OK") return true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Logout error: ${e.localizedMessage}")
+        }
+        return false
+    }
+
+    /**
      * Gets info about ClimbStation.
      *
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
@@ -41,7 +62,7 @@ object ClimbStationRepository {
         try {
             val req = InfoRequest(climbStationSerialNo, clientKey)
             val response = call.deviceInfo(req)
-//            Log.d(TAG, "$response")
+            Log.d(TAG, "DeviceInfo: $response")
             response.response?.let {
                 if (it == "OK") return response
             }
@@ -66,7 +87,7 @@ object ClimbStationRepository {
 
             val req = OperationRequest(climbStationSerialNo, clientKey, operation)
             val response = call.operation(req)
-            Log.d(TAG, "$response")
+//            Log.d(TAG, "$response")
             response.response?.let {
                 if(it == "OK") return true
             }

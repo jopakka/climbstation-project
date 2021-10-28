@@ -32,6 +32,14 @@ data class LoginResponse(
     val clientKey: String?,
 ) : ClimbStationResponse
 
+data class LogoutRequest(
+    @SerializedName("ClimbstationSerialNo") override val climbStationSerialNo: String,
+    val clientKey: String,
+    @SerializedName("Logout") val logout: String = "request",
+    @SerializedName("PacketID") override val packetID: String = "2g",
+    @SerializedName("PacketNumber") override val packetNumber: String = "1",
+) : ClimbStationRequest
+
 data class InfoRequest(
     @SerializedName("ClimbstationSerialNo") override val climbStationSerialNo: String,
     val clientKey: String,
