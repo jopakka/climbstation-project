@@ -47,7 +47,7 @@ object ClimbStationRepository {
                 return response
             }
         } catch (e: Exception) {
-//            Log.e(TAG, "DeviceInfo error: ${e.localizedMessage}")
+            Log.e(TAG, "DeviceInfo error: ${e.localizedMessage}")
         }
         throw NullPointerException("Response not ok")
     }
