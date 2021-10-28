@@ -1,9 +1,6 @@
 package fi.climbstationsolutions.climbstation.network
 
 import android.util.Log
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 object ClimbStationRepository {
     private const val TAG = "Network"
@@ -46,7 +43,7 @@ object ClimbStationRepository {
             val response = call.deviceInfo(req)
 //            Log.d(TAG, "$response")
             response.response?.let {
-                if(it != "OK") throw NullPointerException()
+                if (it != "OK") throw NullPointerException()
                 return response
             }
         } catch (e: Exception) {
