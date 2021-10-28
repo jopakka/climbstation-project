@@ -21,6 +21,9 @@ object ClimbStationAPI {
 
         @POST("Operation")
         suspend fun operation(@Body req: OperationRequest): ClimbStationGenericResponse
+
+        @POST("setspeed")
+        suspend fun setSpeed(@Body req: SpeedRequest): ClimbStationGenericResponse
     }
 
     private val client = OkHttpClient.Builder()

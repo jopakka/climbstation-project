@@ -74,7 +74,7 @@ object ClimbStationRepository {
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
      * @param clientKey Client specific key for verifying user
      * @param operation "start" or "stop"
-     * @return [Boolean] Did operation was successful
+     * @return [Boolean] Was operation successful
      */
     suspend fun operation(
         climbStationSerialNo: String,
@@ -92,6 +92,27 @@ object ClimbStationRepository {
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "Operation error: ${e.localizedMessage}")
+            false
+        }
+    }
+
+    /**
+     * Set speed for ClimbStation.
+     *
+     * @param climbStationSerialNo Serialnumber of ClimbStation unit
+     * @param clientKey Client specific key for verifying user
+     * @param speed Wanted speed
+     * @return [Boolean] Was operation successful
+     */
+    suspend fun setSpeed(climbStationSerialNo: String, clientKey: String, speed: Int): Boolean {
+        return try {
+            val req = SpeedRequest(climbStationSerialNo, clientKey, speed.toString())
+            val response = call.setSpeed(req)
+//            Log.d(TAG, "$response")
+
+            response.response?.equals("OK") ?: false
+        } catch (e: Exception) {
+            Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
             false
         }
     }

@@ -62,3 +62,11 @@ data class OperationRequest(
     @SerializedName("PacketID") override val packetID: String = "2c",
     @SerializedName("PacketNumber") override val packetNumber: String = "1",
 ) : ClimbStationRequest
+
+data class SpeedRequest(
+    @SerializedName("ClimbstationSerialNo") override val climbStationSerialNo: String,
+    val clientKey: String,
+    @SerializedName("Speed") val speed: String,
+    @SerializedName("PacketID") override val packetID: String = "2b",
+    @SerializedName("PacketNumber") override val packetNumber: String = "1",
+) : ClimbStationRequest
