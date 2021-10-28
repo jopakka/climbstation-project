@@ -5,7 +5,18 @@
     <string name="bottom_nav_climb">Climb</string>
     <string name="bottom_nav_statistics">Statistics</string>
     <string name="bottom_nav_settings">Settings</string>
+
+    <!--statistics_session_history_item strings-->
+    <string name="stat_sess_history_item_date">Insert date here</string>
+    <string name="stat_sess_history_item_duration">Duration: </string>
+    <string name="stat_sess_history_item_difficulty">Difficulty: </string>
+    <string name="stat_sess_history_item_distance">Distance: </string>
+    <string name="stat_sess_history_item_speed">Avrg speed: </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Accessibility for fragment_statistics-->
+    <string name="content_description_history_delete">Delete history item</string>
 
 </resources>

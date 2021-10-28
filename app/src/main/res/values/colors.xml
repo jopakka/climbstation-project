@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="climbstation_red_navigation">#51BD0000</color>
     <color name="climbstation_nav_default">#B3B3B3</color>
+    <color name="saved_data">#4E5C91</color>
+    <color name="card_white">#FAFAFA</color>
+    <color name="climbstation_red_list_item">#51FF0000</color>
+    <color name="transparent">#00000000</color>
 </resources>
