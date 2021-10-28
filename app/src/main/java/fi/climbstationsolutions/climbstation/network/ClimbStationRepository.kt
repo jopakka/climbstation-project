@@ -101,7 +101,7 @@ object ClimbStationRepository {
      *
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
      * @param clientKey Client specific key for verifying user
-     * @param speed Wanted speed
+     * @param speed Wanted speed (mm per second)
      * @return [Boolean] Was operation successful
      */
     suspend fun setSpeed(climbStationSerialNo: String, clientKey: String, speed: Int): Boolean {
