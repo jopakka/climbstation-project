@@ -30,25 +30,70 @@ object ClimbStationRepository {
     }
 
     /**
+     * Log client out of ClimbStation.
+     *
+     * @param climbStationSerialNo Serialnumber of ClimbStation unit
+     * @param clientKey Clients eky
+     * @return [Boolean] Did logout success
+     */
+    suspend fun logout(climbStationSerialNo: String, clientKey: String): Boolean {
+        try {
+            val req = LogoutRequest(climbStationSerialNo, clientKey)
+            val response = call.logout(req)
+//            Log.d(TAG, "Logout: $response")
+            response.response?.let {
+                if(it == "OK") return true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Logout error: ${e.localizedMessage}")
+        }
+        return false
+    }
+
+    /**
      * Gets info about ClimbStation.
      *
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
      * @param clientKey Client specific key for verifying user
      * @return [InfoResponse] Info about unit
-     * @throws NullPointerException Throws if response is not "OK" or something else went wrong
+     * @throws Exception Throws if response is not "OK" or something else went wrong
      */
     suspend fun deviceInfo(climbStationSerialNo: String, clientKey: String): InfoResponse {
         try {
             val req = InfoRequest(climbStationSerialNo, clientKey)
             val response = call.deviceInfo(req)
-//            Log.d(TAG, "$response")
+//            Log.d(TAG, "DeviceInfo: $response")
             response.response?.let {
-                if (it != "OK") throw NullPointerException()
-                return response
+                if (it == "OK") return response
             }
         } catch (e: Exception) {
-            Log.e(TAG, "DeviceInfo error: ${e.localizedMessage}")
+            Log.e(TAG, "DeviceInfo error: ${e}")
         }
-        throw NullPointerException("Response not ok")
+        throw Exception("Response not ok")
+    }
+
+    /**
+     * Starts or stops ClimbStation.
+     *
+     * @param climbStationSerialNo Serialnumber of ClimbStation unit
+     * @param clientKey Client specific key for verifying user
+     * @param operation "start" or "stop"
+     * @return [Boolean] Did operation was successful
+     */
+    suspend fun operation(climbStationSerialNo: String, clientKey: String, operation: String): Boolean {
+        try {
+            if(operation != "start" && operation != "stop")
+                throw IllegalArgumentException("Operation must be \"start\" or \"stop\"")
+
+            val req = OperationRequest(climbStationSerialNo, clientKey, operation)
+            val response = call.operation(req)
+//            Log.d(TAG, "$response")
+            response.response?.let {
+                if(it == "OK") return true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Operation error: ${e.localizedMessage}")
+        }
+        return false
     }
 }

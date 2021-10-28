@@ -1,9 +1,9 @@
 package fi.climbstationsolutions.climbstation.network
 
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.HTTP
 import retrofit2.http.POST
 
 object ClimbStationAPI {
@@ -13,12 +13,23 @@ object ClimbStationAPI {
         @POST("login")
         suspend fun login(@Body req: LoginRequest): LoginResponse
 
-        @HTTP(method = "POST", path = "climbstationinfo", hasBody = true)
+        @POST("logout")
+        suspend fun logout(@Body req: LogoutRequest): ClimbStationGenericResponse
+
+        @POST("climbstationinfo")
         suspend fun deviceInfo(@Body req: InfoRequest): InfoResponse
+
+        @POST("Operation")
+        suspend fun operation(@Body req: OperationRequest): ClimbStationGenericResponse
     }
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(LoggerInterceptor())
+        .build()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
