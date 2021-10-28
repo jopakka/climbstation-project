@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.replace
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragment
+import fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment
+import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

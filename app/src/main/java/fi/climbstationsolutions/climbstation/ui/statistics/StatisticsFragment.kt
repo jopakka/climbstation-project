@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation
+package fi.climbstationsolutions.climbstation.ui.statistics
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.StatisticsAdapter
 
 class StatisticsFragment : Fragment() {
