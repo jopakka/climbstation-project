@@ -67,6 +67,14 @@ data class SpeedRequest(
     @SerializedName("ClimbstationSerialNo") override val climbStationSerialNo: String,
     val clientKey: String,
     @SerializedName("Speed") val speed: String,
-    @SerializedName("PacketID") override val packetID: String = "2b",
+    @SerializedName("PacketID") override val packetID: String = "2d",
+    @SerializedName("PacketNumber") override val packetNumber: String = "1",
+) : ClimbStationRequest
+
+data class AngleRequest(
+    @SerializedName("ClimbstationSerialNo") override val climbStationSerialNo: String,
+    val clientKey: String,
+    @SerializedName("Angle") val angle: String,
+    @SerializedName("PacketID") override val packetID: String = "2e",
     @SerializedName("PacketNumber") override val packetNumber: String = "1",
 ) : ClimbStationRequest

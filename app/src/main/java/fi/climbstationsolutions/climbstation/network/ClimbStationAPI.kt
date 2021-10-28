@@ -24,6 +24,9 @@ object ClimbStationAPI {
 
         @POST("setspeed")
         suspend fun setSpeed(@Body req: SpeedRequest): ClimbStationGenericResponse
+
+        @POST("setangle")
+        suspend fun setAngle(@Body req: AngleRequest): ClimbStationGenericResponse
     }
 
     private val client = OkHttpClient.Builder()

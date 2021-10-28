@@ -116,4 +116,25 @@ object ClimbStationRepository {
             false
         }
     }
+
+    /**
+     * Set angle for ClimbStation.
+     *
+     * @param climbStationSerialNo Serialnumber of ClimbStation unit
+     * @param clientKey Client specific key for verifying user
+     * @param angle Wanted angle (in degrees, -45 to +45)
+     * @return [Boolean] Was operation successful
+     */
+    suspend fun setAngle(climbStationSerialNo: String, clientKey: String, angle: Int): Boolean {
+        return try {
+            val req = AngleRequest(climbStationSerialNo, clientKey, angle.toString())
+            val response = call.setAngle(req)
+//            Log.d(TAG, "$response")
+
+            response.response?.equals("OK") ?: false
+        } catch (e: Exception) {
+            Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
+            false
+        }
+    }
 }
