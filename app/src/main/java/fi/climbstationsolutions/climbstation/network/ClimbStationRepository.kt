@@ -40,7 +40,7 @@ object ClimbStationRepository {
         try {
             val req = LogoutRequest(climbStationSerialNo, clientKey)
             val response = call.logout(req)
-            Log.d(TAG, "Logout: $response")
+//            Log.d(TAG, "Logout: $response")
             response.response?.let {
                 if(it == "OK") return true
             }
@@ -56,20 +56,20 @@ object ClimbStationRepository {
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
      * @param clientKey Client specific key for verifying user
      * @return [InfoResponse] Info about unit
-     * @throws NullPointerException Throws if response is not "OK" or something else went wrong
+     * @throws Exception Throws if response is not "OK" or something else went wrong
      */
     suspend fun deviceInfo(climbStationSerialNo: String, clientKey: String): InfoResponse {
         try {
             val req = InfoRequest(climbStationSerialNo, clientKey)
             val response = call.deviceInfo(req)
-            Log.d(TAG, "DeviceInfo: $response")
+//            Log.d(TAG, "DeviceInfo: $response")
             response.response?.let {
                 if (it == "OK") return response
             }
         } catch (e: Exception) {
-            Log.e(TAG, "DeviceInfo error: ${e.localizedMessage}")
+            Log.e(TAG, "DeviceInfo error: ${e}")
         }
-        throw NullPointerException("Response not ok")
+        throw Exception("Response not ok")
     }
 
     /**

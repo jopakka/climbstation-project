@@ -1,7 +1,6 @@
 package fi.climbstationsolutions.climbstation.network
 
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
@@ -24,9 +23,9 @@ object ClimbStationAPI {
         suspend fun operation(@Body req: OperationRequest): ClimbStationGenericResponse
     }
 
-    private val interceptor = HttpLoggingInterceptor().also { it.level = HttpLoggingInterceptor.Level.HEADERS }
-
-    private val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(LoggerInterceptor())
+        .build()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
