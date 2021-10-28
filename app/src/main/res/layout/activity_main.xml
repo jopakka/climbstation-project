@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="fi.climbstationsolutions.climbstation.ClimbFragment"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -13,6 +20,6 @@
         app:menu="@menu/bottom_navigation_menu"
         app:itemIconTint="@drawable/bottom_nav_tab_color"
         app:itemTextColor="@drawable/bottom_nav_tab_color"
-        android:background="@color/climbstation_red"
+        android:background="@color/climbstation_red_navigation"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
