@@ -1,10 +1,11 @@
-package fi.climbstationsolutions.climbstation
+package fi.climbstationsolutions.climbstation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.replace
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragment
 import fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment
 import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
