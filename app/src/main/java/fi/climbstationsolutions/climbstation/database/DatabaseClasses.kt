@@ -4,13 +4,13 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import java.sql.Date
+import java.util.*
 
 @Entity
 data class Session(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
-    val createdAt: Long
+    val createdAt: Date
 )
 
 @Entity
