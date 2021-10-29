@@ -13,17 +13,19 @@ object ClimbStationRepository {
      * @param userID Users ID
      * @param password Users password
      * @return [String] ClientKey or null
+     * @throws NullPointerException No clientKey
+     * @throws Exception Something else went wrong
      */
-    suspend fun login(climbStationSerialNo: String, userID: String, password: String): String? {
+    suspend fun login(climbStationSerialNo: String, userID: String, password: String): String {
         return try {
             val req = LoginRequest(climbStationSerialNo, userID, password)
             val response = call.login(req)
-            //            Log.d(TAG, "$response")
+//            Log.d(TAG, "$response")
 
-            response.clientKey
+            response.clientKey ?: throw NullPointerException("No clientKey")
         } catch (e: Exception) {
             Log.e(TAG, "Login error: ${e.localizedMessage}")
-            null
+            throw e
         }
     }
 
@@ -33,17 +35,18 @@ object ClimbStationRepository {
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
      * @param clientKey Client specific key for verifying user
      * @return [Boolean] Did logout success
+     * @throws Exception Something else went wrong
      */
     suspend fun logout(climbStationSerialNo: String, clientKey: String): Boolean {
         return try {
             val req = LogoutRequest(climbStationSerialNo, clientKey)
             val response = call.logout(req)
-            //            Log.d(TAG, "Logout: $response")
+//            Log.d(TAG, "Logout: $response")
 
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "Logout error: ${e.localizedMessage}")
-            false
+            throw e
         }
     }
 
@@ -53,18 +56,20 @@ object ClimbStationRepository {
      * @param climbStationSerialNo Serialnumber of ClimbStation unit
      * @param clientKey Client specific key for verifying user
      * @return [InfoResponse] Info about unit
+     * @throws NullPointerException Response in not ok
+     * @throws Exception Something else went wrong
      */
-    suspend fun deviceInfo(climbStationSerialNo: String, clientKey: String): InfoResponse? {
+    suspend fun deviceInfo(climbStationSerialNo: String, clientKey: String): InfoResponse {
         return try {
             val req = InfoRequest(climbStationSerialNo, clientKey)
             val response = call.deviceInfo(req)
 //            Log.d(TAG, "DeviceInfo: $response")
 
             if (response.response?.equals("OK") == true) response
-            else null
+            else throw NullPointerException("Response not ok")
         } catch (e: Exception) {
             Log.e(TAG, "DeviceInfo error: ${e.localizedMessage}")
-            null
+            throw e
         }
     }
 
@@ -75,6 +80,8 @@ object ClimbStationRepository {
      * @param clientKey Client specific key for verifying user
      * @param operation "start" or "stop"
      * @return [Boolean] Was operation successful
+     * @throws IllegalArgumentException Throws if [operation] is not "start" or "stop"
+     * @throws Exception Something else went wrong
      */
     suspend fun operation(
         climbStationSerialNo: String,
@@ -92,7 +99,7 @@ object ClimbStationRepository {
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "Operation error: ${e.localizedMessage}")
-            false
+            throw e
         }
     }
 
@@ -103,6 +110,7 @@ object ClimbStationRepository {
      * @param clientKey Client specific key for verifying user
      * @param speed Wanted speed (mm per second)
      * @return [Boolean] Was operation successful
+     * @throws Exception Something else went wrong
      */
     suspend fun setSpeed(climbStationSerialNo: String, clientKey: String, speed: Int): Boolean {
         return try {
@@ -113,7 +121,7 @@ object ClimbStationRepository {
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
-            false
+            throw e
         }
     }
 
@@ -124,6 +132,7 @@ object ClimbStationRepository {
      * @param clientKey Client specific key for verifying user
      * @param angle Wanted angle (in degrees, -45 to +45)
      * @return [Boolean] Was operation successful
+     * @throws Exception Something else went wrong
      */
     suspend fun setAngle(climbStationSerialNo: String, clientKey: String, angle: Int): Boolean {
         return try {
@@ -134,7 +143,7 @@ object ClimbStationRepository {
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
-            false
+            throw e
         }
     }
 }

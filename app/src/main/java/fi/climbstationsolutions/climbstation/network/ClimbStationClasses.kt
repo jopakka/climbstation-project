@@ -50,9 +50,9 @@ data class InfoRequest(
 
 data class InfoResponse(
     @SerializedName("Response") override val response: String?,
-    @SerializedName("Length") val length: String?,
-    @SerializedName("AngleNow") val angleNow: String?,
-    @SerializedName("SpeedNow") val speedNow: String?,
+    @SerializedName("Length") val length: String,
+    @SerializedName("AngleNow") val angleNow: String,
+    @SerializedName("SpeedNow") val speedNow: String,
 ) : ClimbStationResponse
 
 data class OperationRequest(
