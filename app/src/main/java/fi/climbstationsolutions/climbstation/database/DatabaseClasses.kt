@@ -1,9 +1,7 @@
 package fi.climbstationsolutions.climbstation.database
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.Relation
+import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import java.util.*
 
 @Entity
@@ -13,7 +11,14 @@ data class Session(
     val createdAt: Date
 )
 
-@Entity
+@Entity(foreignKeys = [
+    ForeignKey(
+        entity = Session::class,
+        parentColumns = ["id"],
+        childColumns = ["sessionId"],
+        onDelete = CASCADE
+    )
+])
 data class Data(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val sessionId: Long,
