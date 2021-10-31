@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 object ClimbStationAPI {
-    private const val BASE_URL = "http://192.168.1.13:8800/"
+    private const val BASE_URL = "http://192.168.1.11:8800/"
 
     interface Service {
         @POST("login")
