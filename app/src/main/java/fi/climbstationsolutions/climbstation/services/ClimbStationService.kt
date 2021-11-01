@@ -14,6 +14,7 @@ import fi.climbstationsolutions.climbstation.database.SessionWithDataDao
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
 import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity
 import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.ACTION_STOP
+import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.CLIMB_STATION_SERIAL_EXTRA
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -49,13 +50,15 @@ class ClimbStationService : Service() {
         SERVICE_RUNNING = false
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action != null && intent.action.equals(ACTION_STOP, true)) {
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        if (intent.action != null && intent.action.equals(ACTION_STOP, true)) {
             stopService()
         } else {
-            createNotification()
-            initService()
-            beginSession(climbStationSerialNo)
+            intent.extras?.let {
+                createNotification()
+                initService(it.getString(CLIMB_STATION_SERIAL_EXTRA, ""))
+                beginSession(climbStationSerialNo)
+            }
         }
 
         return START_STICKY
@@ -65,9 +68,9 @@ class ClimbStationService : Service() {
         return null
     }
 
-    private fun initService() {
+    private fun initService(serialNo: String) {
         SERVICE_RUNNING = true
-        climbStationSerialNo = "20110001"
+        climbStationSerialNo = serialNo
         sessionDao = AppDatabase.get(this).sessionDao()
     }
 
