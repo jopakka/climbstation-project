@@ -1,6 +1,6 @@
 package fi.climbstationsolutions.climbstation.ui
 
-import android.content.Intent
+import android.content.*
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -30,17 +30,18 @@ class ClimbActionActivity : AppCompatActivity() {
         if (!ClimbStationService.SERVICE_RUNNING) return
         Log.d(TAG, "Stop climbing")
 
-        val stopIntent = Intent(this, ClimbStationService::class.java).also {
+        Intent(this, ClimbStationService::class.java).also {
             it.action = ACTION_STOP
+            startForegroundService(it)
         }
-        startService(stopIntent)
     }
 
     private fun startClimbing() {
         if (ClimbStationService.SERVICE_RUNNING) return
         Log.d(TAG, "Start climbing")
 
-        val startIntent = Intent(this, ClimbStationService::class.java)
-        startForegroundService(startIntent)
+        Intent(this, ClimbStationService::class.java).also {
+            startForegroundService(it)
+        }
     }
 }

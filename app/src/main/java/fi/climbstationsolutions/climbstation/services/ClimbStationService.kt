@@ -2,6 +2,7 @@ package fi.climbstationsolutions.climbstation.services
 
 import android.app.*
 import android.content.Intent
+import android.os.Binder
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -29,9 +30,10 @@ class ClimbStationService : Service() {
         var SERVICE_RUNNING = false
     }
 
-    private var nm: NotificationManager? = null
-    private var serviceJob = Job()
+    private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
+
+    private var nm: NotificationManager? = null
 
     private lateinit var climbStationSerialNo: String
     private lateinit var clientKey: String
@@ -49,7 +51,7 @@ class ClimbStationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action != null && intent.action.equals(ACTION_STOP, true)) {
-            stopCurrentService()
+            stopService()
         } else {
             createNotification()
             initService()
@@ -69,7 +71,7 @@ class ClimbStationService : Service() {
         sessionDao = AppDatabase.get(this).sessionDao()
     }
 
-    private fun stopCurrentService() {
+    private fun stopService() {
         SERVICE_RUNNING = false
         stopClimbStationAndLogout()
         stopForeground(true)
@@ -95,7 +97,7 @@ class ClimbStationService : Service() {
         val notificationChannel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
             NOTIFICATION_CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_MIN
+            NotificationManager.IMPORTANCE_DEFAULT
         ).also {
             it.enableLights(false)
             it.lockscreenVisibility = Notification.VISIBILITY_SECRET
@@ -105,10 +107,9 @@ class ClimbStationService : Service() {
 
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle("Climbing in progress")
-            .setContentText("You are climbing now")
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
-            .setSmallIcon(R.drawable.cslogo_wh_red)
+            .setSmallIcon(R.drawable.app_logo)
             .build()
 
         startForeground(123, notification)
@@ -136,7 +137,7 @@ class ClimbStationService : Service() {
                 sessionID?.let {
                     sessionDao.deleteSession(it)
                 }
-                stopCurrentService()
+                stopService()
             }
         }
     }
@@ -168,7 +169,7 @@ class ClimbStationService : Service() {
             }
         } catch (e: Exception) {
             Log.e(TAG, "GetInfo error: ${e.localizedMessage}")
-            stopCurrentService()
+            stopService()
         }
     }
 
