@@ -19,4 +19,7 @@
     <!--Accessibility for fragment_statistics-->
     <string name="content_description_history_delete">Delete history item</string>
 
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+
 </resources>
