@@ -86,9 +86,38 @@ class AdjustFragment : Fragment() {
                             }
                             horizontalNumberPickerViewModel.numbers.size - 1 -> {
                                 horizontalNumberPickerViewModel.setSelectedNumber(
+                                    horizontalNumberPickerViewModel.numbers[position - 5]
+                                )
+                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            horizontalNumberPickerViewModel.numbers.size - 2 -> {
+                                horizontalNumberPickerViewModel.setSelectedNumber(
+                                    horizontalNumberPickerViewModel.numbers[position - 4]
+                                )
+                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            horizontalNumberPickerViewModel.numbers.size - 3 -> {
+                                horizontalNumberPickerViewModel.setSelectedNumber(
+                                    horizontalNumberPickerViewModel.numbers[position - 3]
+                                )
+                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            horizontalNumberPickerViewModel.numbers.size - 4 -> {
+                                horizontalNumberPickerViewModel.setSelectedNumber(
+                                    horizontalNumberPickerViewModel.numbers[position - 2]
+                                )
+                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            horizontalNumberPickerViewModel.numbers.size - 5 -> {
+                                horizontalNumberPickerViewModel.setSelectedNumber(
                                     horizontalNumberPickerViewModel.numbers[position - 1]
                                 )
-                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             else -> {
                                 horizontalNumberPickerViewModel.setSelectedNumber(

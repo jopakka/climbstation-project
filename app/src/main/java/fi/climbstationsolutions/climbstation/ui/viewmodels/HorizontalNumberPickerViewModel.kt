@@ -24,7 +24,7 @@ class HorizontalNumberPickerViewModel: ViewModel() {
     val numbers: List<Int>
         get() {
             val numbersMutableList = mutableListOf(0)
-                for(i in 1..myAmount + 1) {
+                for(i in 1..myAmount + 5) {
                 numbersMutableList.add(i)
             }
             return numbersMutableList

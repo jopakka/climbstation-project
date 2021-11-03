@@ -33,7 +33,7 @@ class HorizontalPickerAdapter(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position in 1 until (itemCount - 1)) {
+        if (position in 1 until (itemCount - 5)) {
             val number = items[position].toString()
             holder.numberLabel.text = number
             if (position == myPosition) {
