@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,11 +26,14 @@ class AdjustFragment : Fragment() {
     private lateinit var stringLayoutManager: LinearLayoutManager
     private lateinit var numberList: RecyclerView
     private lateinit var stringList: RecyclerView
+    private lateinit var seekBar: SeekBar
+    private lateinit var speedText: TextView
 
     private var stringsListWidth: Int? = null
     private var numbersListWidth: Int? = null
     private var horizontalNumberPickerAdapter: HorizontalNumberPickerAdapter? = null
     private var horizontalStringPickerAdapter: HorizontalStringPickerAdapter? = null
+    private var speed = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -271,6 +277,10 @@ class AdjustFragment : Fragment() {
     }
 
     private fun initializeVariables(view: View) {
+        seekBar = view.findViewById(R.id.speed_seekbar)
+        speedText = view.findViewById(R.id.speed_value)
+        speedText.text = (getString(R.string.adjust_fragment_speed, speed) + " m / min")
+
         numberList = view.findViewById(R.id.number_list)
         stringList = view.findViewById(R.id.string_list)
 
@@ -300,5 +310,23 @@ class AdjustFragment : Fragment() {
         numberList.layoutManager = numberLayoutManager
         stringList.adapter = horizontalStringPickerAdapter
         stringList.layoutManager = stringLayoutManager
+
+        seekBar.setOnSeekBarChangeListener(object: OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                speed = p1
+                speedText.text = (getString(R.string.adjust_fragment_speed, speed) + " m / min")
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+
+            }
+
+        })
+
+
     }
 }
