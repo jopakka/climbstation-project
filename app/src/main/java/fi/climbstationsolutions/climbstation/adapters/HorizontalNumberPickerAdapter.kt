@@ -11,8 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
-import java.util.*
-
 
 class HorizontalPickerAdapter(
     private val items: List<Int>,
@@ -35,7 +33,7 @@ class HorizontalPickerAdapter(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position in 0 until (itemCount)) {
+        if (position in 1 until (itemCount - 1)) {
             val number = items[position].toString()
             holder.numberLabel.text = number
             if (position == myPosition) {
@@ -51,7 +49,8 @@ class HorizontalPickerAdapter(
             holder.itemView.setOnClickListener {
                 numberClickCallback?.invoke(items[position])
             }
-        } else {
+        }
+        else {
             holder.numberLabel.text = ""
             holder.numberLabel.contentDescription = ""
             holder.itemView.setOnClickListener {}

@@ -4,9 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HorizontalPickerViewModel: ViewModel() {
+class HorizontalNumberPickerViewModel: ViewModel() {
+    private var myAmount: Int = 30
     private val _selectedNumber = MutableLiveData<Int>()
     val selectedNumber: LiveData<Int> = _selectedNumber
+
+    fun setNumberAmount(value: Int) {
+        myAmount = value
+    }
+
+    fun getNumberAmount(): Int {
+        return myAmount
+    }
 
     fun setSelectedNumber(num: Int) {
         _selectedNumber.value = num
@@ -14,6 +23,10 @@ class HorizontalPickerViewModel: ViewModel() {
 
     val numbers: List<Int>
         get() {
-            return mutableListOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)
+            val numbersMutableList = mutableListOf(0)
+                for(i in 1..myAmount + 1) {
+                numbersMutableList.add(i)
+            }
+            return numbersMutableList
         }
 }
