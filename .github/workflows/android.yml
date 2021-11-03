@@ -33,7 +33,7 @@ jobs:
       if: ${{ always() }}
       with:
         name: ui-test-report
-        path: app/build/outputs/reports/androidTests
+        path: ./build/
 
   unit_tests:
     name: Run unit tests
