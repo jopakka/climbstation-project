@@ -29,12 +29,34 @@ jobs:
           ~/.gradle/wrapper
         key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
+    - uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: ui-test-report
+        path: ./**/build/reports/build-tests/
 
-  test:
-    name: Run tests
-    continue-on-error: true
-    strategy:
-      fail-fast: false
+  unit_tests:
+    name: Run unit tests
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v2
+      
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Do tests
+      run: ./gradlew test
+      
+    - uses: actions/upload-artifact@v2
+      if: ${{ always() }}
+      with:
+        name: ui-test-report
+        path: ./**/build/reports/unit-tests/
+
+  instrumentation_tests:
+    name: Run instrumentation tests
     runs-on: macos-latest
     needs: build
 
@@ -68,16 +90,17 @@ jobs:
           arch: x86
           profile: Nexus 6
           script: ./gradlew connectedCheck --stacktrace
-          
+
       - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
         with:
           name: ui-test-report
-          path: ./**/build/reports/ui-tests/
+          path: ./**/build/reports/instrumentation-tests/
 
           
   apk:
     name: Generate APK
-    needs: [build, test]
+    needs: [build, unit_tests, instrumentation_tests]
     runs-on: ubuntu-latest
 
     steps:
