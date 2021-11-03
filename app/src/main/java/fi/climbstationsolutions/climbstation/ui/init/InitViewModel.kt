@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class InitViewModel : ViewModel() {
@@ -30,6 +31,7 @@ class InitViewModel : ViewModel() {
             setLoading(false)
             return
         }
+        // END OF TESTING CODE
 
         viewModelScope.launch {
             serial = if(isLoginOk(serialNo)) serialNo else null
