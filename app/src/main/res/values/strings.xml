@@ -9,6 +9,7 @@
     <!--fragment_adjust strings-->
     <string name="adjust_fragment_title">ADJUST</string>
     <string name="adjust_fragment_length">Length / m:</string>
+    <string name="adjust_fragment_speed">Speed: %d</string>
     <string name="adjust_fragment_mode">Mode:</string>
     <string name="adjust_fragment_start">Start</string>
 
