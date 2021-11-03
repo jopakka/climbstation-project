@@ -6,6 +6,12 @@
     <string name="bottom_nav_statistics">Statistics</string>
     <string name="bottom_nav_settings">Settings</string>
 
+    <!--fragment_adjust strings-->
+    <string name="adjust_fragment_title">ADJUST</string>
+    <string name="adjust_fragment_length">Length / m:</string>
+    <string name="adjust_fragment_mode">Mode:</string>
+    <string name="adjust_fragment_start">Start</string>
+
     <!--statistics_session_history_item strings-->
     <string name="stat_sess_history_item_date">Insert date here</string>
     <string name="stat_sess_history_item_duration">Duration: </string>
@@ -18,5 +24,8 @@
 
     <!--Accessibility for fragment_statistics-->
     <string name="content_description_history_delete">Delete history item</string>
+
+    <!--Accessibility for fragment_adjust-->
+    <string name="content_description_fragment_adjust_start_btn">Start climbing session</string>
 
 </resources>

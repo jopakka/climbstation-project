@@ -14,4 +14,5 @@
     <color name="climbstation_red_list_item">#51FF0000</color>
     <color name="transparent">#00000000</color>
     <color name="horizontal_picker_nonfocus_color">#C8C8C8</color>
+    <color name="climbstation_red_btn">#B22222</color>
 </resources>

@@ -6,24 +6,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.HorizontalPickerAdapter
+import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdapter
+import fi.climbstationsolutions.climbstation.adapters.HorizontalStringPickerAdapter
 import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalNumberPickerViewModel
+import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalStringPickerViewModel
 
 class AdjustFragment : Fragment() {
     private lateinit var horizontalNumberPickerViewModel: HorizontalNumberPickerViewModel
-    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var horizontalStringPickerViewModel: HorizontalStringPickerViewModel
+    private lateinit var numberLayoutManager: LinearLayoutManager
+    private lateinit var stringLayoutManager: LinearLayoutManager
     private lateinit var numberList: RecyclerView
-    private lateinit var decrementNumber: AppCompatButton
-    private lateinit var incrementNumber: AppCompatButton
+    private lateinit var stringList: RecyclerView
+
+    private var stringsListWidth: Int? = null
     private var numbersListWidth: Int? = null
-    private var myAdapter: HorizontalPickerAdapter? = null
+    private var horizontalNumberPickerAdapter: HorizontalNumberPickerAdapter? = null
+    private var horizontalStringPickerAdapter: HorizontalStringPickerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +38,13 @@ class AdjustFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        layoutManager.isSmoothScrollbarEnabled = true
+        numberLayoutManager = LinearLayoutManager(context)
+        numberLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        numberLayoutManager.isSmoothScrollbarEnabled = true
+
+        stringLayoutManager = LinearLayoutManager(context)
+        stringLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        stringLayoutManager.isSmoothScrollbarEnabled = true
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_adjust, container, false)
@@ -45,24 +53,9 @@ class AdjustFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        numbersListWidth =
-            context?.resources?.getDimensionPixelSize(R.dimen.number_list_layout_width)
-
-        numberList = view.findViewById(R.id.number_list)
-        decrementNumber = view.findViewById(R.id.decrement_number)
-        incrementNumber = view.findViewById(R.id.increment_number)
-
-        horizontalNumberPickerViewModel =
-            ViewModelProviders.of(this).get(HorizontalNumberPickerViewModel::class.java)
-
-        myAdapter =
-            HorizontalPickerAdapter(horizontalNumberPickerViewModel.numbers, context) { number ->
-                horizontalNumberPickerViewModel.setSelectedNumber(number)
-            }
-        numberList.adapter = myAdapter
-        numberList.layoutManager = layoutManager
-
+        initializeVariables(view)
         initializeSelectedNumber()
+        initializeSelectedString()
 
         Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
 
@@ -73,7 +66,7 @@ class AdjustFragment : Fragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
                     val offset = (numberList.width / numbersListWidth!! - 1) / 2
-                    val position = layoutManager.findFirstCompletelyVisibleItemPosition() + offset
+                    val position = numberLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
                     if (position in horizontalNumberPickerViewModel.numbers.indices &&
                         horizontalNumberPickerViewModel.numbers[position] != horizontalNumberPickerViewModel.selectedNumber.value
                     ) {
@@ -88,43 +81,109 @@ class AdjustFragment : Fragment() {
                                 horizontalNumberPickerViewModel.setSelectedNumber(
                                     horizontalNumberPickerViewModel.numbers[position - 5]
                                 )
-                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+                                Log.d(
+                                    "SF1",
+                                    "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}"
+                                )
 //                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             horizontalNumberPickerViewModel.numbers.size - 2 -> {
                                 horizontalNumberPickerViewModel.setSelectedNumber(
                                     horizontalNumberPickerViewModel.numbers[position - 4]
                                 )
-                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+                                Log.d(
+                                    "SF1",
+                                    "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}"
+                                )
 //                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             horizontalNumberPickerViewModel.numbers.size - 3 -> {
                                 horizontalNumberPickerViewModel.setSelectedNumber(
                                     horizontalNumberPickerViewModel.numbers[position - 3]
                                 )
-                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+                                Log.d(
+                                    "SF1",
+                                    "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}"
+                                )
 //                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             horizontalNumberPickerViewModel.numbers.size - 4 -> {
                                 horizontalNumberPickerViewModel.setSelectedNumber(
                                     horizontalNumberPickerViewModel.numbers[position - 2]
                                 )
-                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+                                Log.d(
+                                    "SF1",
+                                    "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}"
+                                )
 //                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             horizontalNumberPickerViewModel.numbers.size - 5 -> {
                                 horizontalNumberPickerViewModel.setSelectedNumber(
                                     horizontalNumberPickerViewModel.numbers[position - 1]
                                 )
-                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
+                                Log.d(
+                                    "SF1",
+                                    "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}"
+                                )
 //                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             else -> {
                                 horizontalNumberPickerViewModel.setSelectedNumber(
                                     horizontalNumberPickerViewModel.numbers[position]
                                 )
-                                Log.d("SF1", "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}")
-                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position - 1], position)
+                                Log.d(
+                                    "SF1",
+                                    "selected number: ${horizontalNumberPickerViewModel.selectedNumber.value}"
+                                )
+                                scrollToNumber(
+                                    horizontalNumberPickerViewModel.numbers[position],
+                                    position
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        stringList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val offset = (stringList.width / stringsListWidth!! - 1) / 2
+                    val position = stringLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
+                    if (position in horizontalStringPickerViewModel.strings.indices &&
+                        horizontalStringPickerViewModel.strings[position] != horizontalStringPickerViewModel.selectedString.value
+                    ) {
+                        when (position) {
+                            0 -> {
+                                horizontalStringPickerViewModel.setSelectedString(
+                                    horizontalStringPickerViewModel.strings[0]
+                                )
+                                scrollToString(horizontalStringPickerViewModel.strings[0])
+                            }
+                            horizontalStringPickerViewModel.strings.size - 1 -> {
+                                horizontalStringPickerViewModel.setSelectedString(
+                                    horizontalStringPickerViewModel.strings[position - 1]
+                                )
+                                Log.d(
+                                    "SF2",
+                                    "selected string: ${horizontalStringPickerViewModel.selectedString.value}"
+                                )
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            else -> {
+                                horizontalStringPickerViewModel.setSelectedString(
+                                    horizontalStringPickerViewModel.strings[position]
+                                )
+                                Log.d(
+                                    "SF2",
+                                    "selected string: ${horizontalStringPickerViewModel.selectedString.value}"
+                                )
+                                scrollToString(
+                                    horizontalStringPickerViewModel.strings[position],
+                                    position
+                                )
                             }
                         }
                     }
@@ -142,15 +201,24 @@ class AdjustFragment : Fragment() {
         }
     }
 
+    private fun initializeSelectedString() {
+        if (horizontalStringPickerViewModel.selectedString.value == null) {
+            // currently manually set. Eventually will be set to the predetermined mode
+            val currentString = horizontalStringPickerViewModel.strings[1]
+            horizontalStringPickerViewModel.setSelectedString(currentString)
+            scrollToString(currentString, horizontalStringPickerViewModel.strings.indexOf(currentString))
+        }
+    }
+
     private fun scrollToNumber(number: Int, position: Int = 0) {
         var width = numberList.width
         if (width > 0) {
-            layoutManager.scrollToPosition(
+            numberLayoutManager.scrollToPosition(
                 horizontalNumberPickerViewModel.numbers.indexOf(
                     number
                 )
             )
-            myAdapter?.setTextSize(30F, position)
+            horizontalNumberPickerAdapter?.setTextSize(30F, position)
 
         } else {
             // waits for layout to finish loading, then scrolls
@@ -160,15 +228,77 @@ class AdjustFragment : Fragment() {
                     numberList.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     width = numberList.width
                     numbersListWidth?.let { numberWidth ->
-                        layoutManager.scrollToPositionWithOffset(
+                        numberLayoutManager.scrollToPositionWithOffset(
                             horizontalNumberPickerViewModel.numbers.indexOf(
                                 number
                             ), width / 2 - numberWidth / 2
                         )
                     }
-                    myAdapter?.setTextSize(30F, position + 1)
+                    horizontalNumberPickerAdapter?.setTextSize(30F, position + 1)
                 }
             })
         }
+    }
+
+    private fun scrollToString(string: String, position: Int = 0) {
+        var width = stringList.width
+        if (width > 0) {
+            stringLayoutManager.scrollToPosition(
+                horizontalStringPickerViewModel.strings.indexOf(
+                    string
+                )
+            )
+            horizontalStringPickerAdapter?.setTextSize(20F, position)
+
+        } else {
+            // waits for layout to finish loading, then scrolls
+            val vto = stringList.viewTreeObserver
+            vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    stringList.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    width = stringList.width
+                    stringsListWidth?.let { stringWidth ->
+                        stringLayoutManager.scrollToPositionWithOffset(
+                            horizontalStringPickerViewModel.strings.indexOf(
+                                string
+                            ), width / 2 - stringWidth / 2
+                        )
+                    }
+                    horizontalStringPickerAdapter?.setTextSize(20F, position + 1)
+                }
+            })
+        }
+    }
+
+    private fun initializeVariables(view: View) {
+        numberList = view.findViewById(R.id.number_list)
+        stringList = view.findViewById(R.id.string_list)
+
+        numbersListWidth =
+            context?.resources?.getDimensionPixelSize(R.dimen.number_list_layout_width)
+        stringsListWidth =
+            context?.resources?.getDimensionPixelSize(R.dimen.string_list_layout_width)
+
+        horizontalNumberPickerViewModel =
+            ViewModelProviders.of(this).get(HorizontalNumberPickerViewModel::class.java)
+        horizontalStringPickerViewModel =
+            ViewModelProviders.of(this).get(HorizontalStringPickerViewModel::class.java)
+
+        horizontalNumberPickerAdapter =
+            HorizontalNumberPickerAdapter(
+                horizontalNumberPickerViewModel.numbers,
+                context
+            ) { number ->
+                horizontalNumberPickerViewModel.setSelectedNumber(number)
+            }
+        horizontalStringPickerAdapter = HorizontalStringPickerAdapter(
+            horizontalStringPickerViewModel.strings,
+            context
+        ) { string -> horizontalStringPickerViewModel.setSelectedString(string) }
+
+        numberList.adapter = horizontalNumberPickerAdapter
+        numberList.layoutManager = numberLayoutManager
+        stringList.adapter = horizontalStringPickerAdapter
+        stringList.layoutManager = stringLayoutManager
     }
 }

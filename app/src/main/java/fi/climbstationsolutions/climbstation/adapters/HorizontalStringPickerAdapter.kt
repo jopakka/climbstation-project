@@ -12,17 +12,17 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 
-class HorizontalNumberPickerAdapter(
-    private val items: List<Int>,
+class HorizontalStringPickerAdapter(
+    private val items: List<String>,
     private val context: Context?,
-    private val numberClickCallback: ((Int) -> Unit)?
-) : RecyclerView.Adapter<HorizontalNumberPickerAdapter.ViewHolder>() {
+    private val stringClickCallback: ((String) -> Unit)?
+) : RecyclerView.Adapter<HorizontalStringPickerAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val numberLabel: TextView = view.findViewById(R.id.number_list_text)
+        val stringLabel: TextView = view.findViewById(R.id.string_list_text)
     }
 
-    private var textSize = 24F
+    private var textSize = 16F
     private var myPosition = 0
 
     override fun getItemCount(): Int {
@@ -31,32 +31,32 @@ class HorizontalNumberPickerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(context).inflate(R.layout.numbers_list, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.strings_list, parent, false)
         )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position in 1 until (itemCount - 5)) {
-            val number = items[position].toString()
-            holder.numberLabel.text = number
+        if (position in 1 until (itemCount - 1)) {
+            val number = items[position]
+            holder.stringLabel.text = number
             if (position == myPosition) {
-                holder.numberLabel.textSize = textSize
-                holder.numberLabel.setTextColor(ContextCompat.getColor(context!!, R.color.white))
-                holder.numberLabel.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+                holder.stringLabel.textSize = textSize
+                holder.stringLabel.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                holder.stringLabel.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             } else {
-                holder.numberLabel.textSize = 20F
-                holder.numberLabel.setTextColor(ContextCompat.getColor(context!!, R.color.horizontal_picker_nonfocus_color))
-                holder.numberLabel.paintFlags = 0
+                holder.stringLabel.textSize = 16F
+                holder.stringLabel.setTextColor(ContextCompat.getColor(context!!, R.color.horizontal_picker_nonfocus_color))
+                holder.stringLabel.paintFlags = 0
             }
-            holder.numberLabel.contentDescription = number
+            holder.stringLabel.contentDescription = number
             holder.itemView.setOnClickListener {
-                numberClickCallback?.invoke(items[position])
+                stringClickCallback?.invoke(items[position])
             }
         }
         else {
-            holder.numberLabel.text = ""
-            holder.numberLabel.contentDescription = ""
+            holder.stringLabel.text = ""
+            holder.stringLabel.contentDescription = ""
             holder.itemView.setOnClickListener {}
         }
     }
