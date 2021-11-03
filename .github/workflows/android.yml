@@ -58,7 +58,7 @@ jobs:
         run: ./gradlew test --stacktrace
 
       - name: Instrumentation Tests
-        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+        uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 26
           target: default
