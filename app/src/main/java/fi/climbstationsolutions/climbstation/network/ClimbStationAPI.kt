@@ -7,6 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 object ClimbStationAPI {
+    // TODO("Change to 'http://192.168.3.1:8800/' when publishing app")
     private const val BASE_URL = "http://192.168.1.11:8800/"
 
     interface Service {

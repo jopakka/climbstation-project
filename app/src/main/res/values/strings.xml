@@ -22,4 +22,11 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 
+    <string name="enter_serial_no">Enter ClimbStation serial number</string>
+    <string name="example_no">e.g. 20110001</string>
+    <string name="continue_txt">Continue</string>
+    <string name="next_txt">Next</string>
+
+    <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
+
 </resources>
