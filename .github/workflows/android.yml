@@ -29,12 +29,6 @@ jobs:
           ~/.gradle/wrapper
         key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}-${{ hashFiles('**/buildSrc/**/*.kt') }}
 
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
-      with:
-        files: test-results/**/*.xml
-
   unit_tests:
     name: Run unit tests
     needs: build
@@ -49,11 +43,11 @@ jobs:
     - name: Do tests
       run: ./gradlew test
       
-    - uses: actions/upload-artifact@v2
-      if: ${{ always() }}
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
       with:
-        name: ui-test-report
-        path: app/build/reports/unit-tests/
+        files: test-results/**/*.xml
 
   instrumentation_tests:
     name: Run instrumentation tests
