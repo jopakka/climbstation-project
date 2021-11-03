@@ -33,7 +33,7 @@ jobs:
       if: ${{ always() }}
       with:
         name: ui-test-report
-        path: ./**/build/reports/build-tests/
+        path: app/build/reports/build-tests/
 
   unit_tests:
     name: Run unit tests
@@ -53,7 +53,7 @@ jobs:
       if: ${{ always() }}
       with:
         name: ui-test-report
-        path: ./**/build/reports/unit-tests/
+        path: app/build/reports/unit-tests/
 
   instrumentation_tests:
     name: Run instrumentation tests
@@ -92,7 +92,7 @@ jobs:
         if: ${{ always() }}
         with:
           name: ui-test-report
-          path: ./**/build/reports/instrumentation-tests/
+          path: app/build/reports/instrumentation-tests/
 
           
   apk:
