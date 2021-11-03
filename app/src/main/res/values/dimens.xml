@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="number_list_layout_width">100dp</dimen>
+    <dimen name="number_list_layout_width">50dp</dimen>
 </resources>

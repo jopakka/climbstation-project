@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class HorizontalNumberPickerViewModel: ViewModel() {
-    private var myAmount: Int = 30
+    private var myAmount: Int = 100
     private val _selectedNumber = MutableLiveData<Int>()
     val selectedNumber: LiveData<Int> = _selectedNumber
 

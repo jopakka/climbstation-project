@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -115,18 +116,17 @@ class AdjustFragment : Fragment() {
     private fun scrollToNumber(number: Int, position: Int = 0) {
         var width = numberList.width
         if (width > 0) {
-            val numberWidth = 150
-            layoutManager.scrollToPositionWithOffset(
+            layoutManager.scrollToPosition(
                 horizontalNumberPickerViewModel.numbers.indexOf(
                     number
-                ), width / 2 - numberWidth / 2
+                )
             )
-            myAdapter?.setTextSize(40F, position)
+            myAdapter?.setTextSize(30F, position)
 
         } else {
             // waits for layout to finish loading, then scrolls
             val vto = numberList.viewTreeObserver
-            vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     numberList.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     width = numberList.width
@@ -137,7 +137,7 @@ class AdjustFragment : Fragment() {
                             ), width / 2 - numberWidth / 2
                         )
                     }
-                    myAdapter?.setTextSize(40F, position + 1)
+                    myAdapter?.setTextSize(30F, position + 1)
                 }
             })
         }

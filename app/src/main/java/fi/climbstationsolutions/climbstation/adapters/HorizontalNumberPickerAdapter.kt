@@ -41,7 +41,7 @@ class HorizontalPickerAdapter(
                 holder.numberLabel.setTextColor(ContextCompat.getColor(context!!, R.color.white))
                 holder.numberLabel.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             } else {
-                holder.numberLabel.textSize = 24F
+                holder.numberLabel.textSize = 20F
                 holder.numberLabel.setTextColor(ContextCompat.getColor(context!!, R.color.horizontal_picker_nonfocus_color))
                 holder.numberLabel.paintFlags = 0
             }
