@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">192.168.3.1</domain><!--ClimbStation IP-address-->
-        <domain includeSubdomains="true">192.168.1.13</domain><!--Test machine IP-address-->
+        <!--ClimbStation IP-address-->
+        <domain includeSubdomains="true">192.168.3.1</domain>
     </domain-config>
 </network-security-config>
