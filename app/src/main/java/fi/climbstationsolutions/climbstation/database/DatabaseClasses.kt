@@ -11,14 +11,16 @@ data class Session(
     val createdAt: Date
 )
 
-@Entity(foreignKeys = [
-    ForeignKey(
-        entity = Session::class,
-        parentColumns = ["id"],
-        childColumns = ["sessionId"],
-        onDelete = CASCADE
-    )
-])
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = Session::class,
+            parentColumns = ["id"],
+            childColumns = ["sessionId"],
+            onDelete = CASCADE
+        )
+    ]
+)
 data class Data(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val sessionId: Long,
@@ -30,4 +32,10 @@ data class Data(
 data class SessionWithData(
     @Embedded val session: Session,
     @Relation(parentColumn = "id", entityColumn = "sessionId") val data: List<Data>
+)
+
+@Entity
+data class BodyWeight(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val weight: Float = 70.00f
 )

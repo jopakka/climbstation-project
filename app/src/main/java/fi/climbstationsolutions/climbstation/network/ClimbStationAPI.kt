@@ -3,41 +3,26 @@ package fi.climbstationsolutions.climbstation.network
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.POST
 
-object ClimbStationAPI {
-    private const val BASE_URL = "http://192.168.1.11:8800/"
+abstract class ClimbStationAPI {
+    companion object {
+        @Volatile
+        private var mInstance: Service? = null
 
-    interface Service {
-        @POST("login")
-        suspend fun login(@Body req: LoginRequest): LoginResponse
+        fun get(baseUrl: String): Service {
+            return mInstance ?: synchronized(this) {
+                val client = OkHttpClient.Builder()
+                    .addInterceptor(LoggerInterceptor())
+                    .build()
 
-        @POST("logout")
-        suspend fun logout(@Body req: LogoutRequest): ClimbStationGenericResponse
+                val retrofit = Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
 
-        @POST("climbstationinfo")
-        suspend fun deviceInfo(@Body req: InfoRequest): InfoResponse
-
-        @POST("Operation")
-        suspend fun operation(@Body req: OperationRequest): ClimbStationGenericResponse
-
-        @POST("setspeed")
-        suspend fun setSpeed(@Body req: SpeedRequest): ClimbStationGenericResponse
-
-        @POST("setangle")
-        suspend fun setAngle(@Body req: AngleRequest): ClimbStationGenericResponse
+                retrofit.create(Service::class.java)
+            }
+        }
     }
-
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(LoggerInterceptor())
-        .build()
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(client)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    val service: Service = retrofit.create(Service::class.java)
 }
