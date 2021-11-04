@@ -1,43 +1,38 @@
 package fi.climbstationsolutions.climbstation.ui.climb
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.fragment.app.replace
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment
+import fi.climbstationsolutions.climbstation.databinding.FragmentClimbBinding
 
-class ClimbFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
+    private lateinit var binding: FragmentClimbBinding
+
+    private val viewModel: ClimbViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_climb, container, false)
-    }
+    ): View {
+        binding = FragmentClimbBinding.inflate(layoutInflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
-        val toAdjustBtn = view.findViewById<Button>(R.id.btnAdjust)
-        toAdjustBtn.setOnClickListener {
-            navigateToAdjust()
+        binding.difficultyRv.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment)
         }
+
+        return binding.root
     }
 
-    private fun navigateToAdjust() {
-        val sfm = requireActivity().supportFragmentManager
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = sfm.beginTransaction()
-        transaction.replace<AdjustFragment>(R.id.fragmentContainer)
-        transaction.commit()
+    override fun onCellClickListener(profile: DifficultyProfile) {
+        viewModel.postValue(profile)
     }
 }
