@@ -1,0 +1,462 @@
+[
+  {
+    "level": 1,
+    "name": "Beginner",
+    "steps": [
+      {
+        "distance": 1,
+        "angle": 15
+      },
+      {
+        "distance": 1,
+        "angle": 15
+      },
+      {
+        "distance": 1,
+        "angle": 15
+      },
+      {
+        "distance": 1,
+        "angle": 12
+      },
+      {
+        "distance": 1,
+        "angle": 10
+      },
+      {
+        "distance": 1,
+        "angle": 10
+      },
+      {
+        "distance": 1,
+        "angle": 10
+      },
+      {
+        "distance": 1,
+        "angle": 12
+      },
+      {
+        "distance": 1,
+        "angle": 5
+      },
+      {
+        "distance": 1,
+        "angle": 15
+      }
+    ]
+  },
+  {
+    "level": 2,
+    "name": "Warm up",
+    "steps": [
+      {
+        "distance": 1,
+        "angle": 15
+      },
+      {
+        "distance": 1,
+        "angle": 5
+      },
+      {
+        "distance": 2,
+        "angle": 10
+      },
+      {
+        "distance": 2,
+        "angle": 5
+      },
+      {
+        "distance": 1,
+        "angle": 12
+      },
+      {
+        "distance": 2,
+        "angle": 10
+      },
+      {
+        "distance": 2,
+        "angle": 15
+      },
+      {
+        "distance": 1,
+        "angle": 0
+      },
+      {
+        "distance": 2,
+        "angle": 5
+      },
+      {
+        "distance": 1,
+        "angle": 15
+      }
+    ]
+  },
+  {
+    "level": 3,
+    "name": "Easy",
+    "steps": [
+      {
+        "distance": 1,
+        "angle": 15
+      },
+      {
+        "distance": 1,
+        "angle": 0
+      },
+      {
+        "distance": 2,
+        "angle": 5
+      },
+      {
+        "distance": 1,
+        "angle": 0
+      },
+      {
+        "distance": 2,
+        "angle": 5
+      },
+      {
+        "distance": 2,
+        "angle": 12
+      },
+      {
+        "distance": 2,
+        "angle": -3
+      },
+      {
+        "distance": 2,
+        "angle": 3
+      },
+      {
+        "distance": 1,
+        "angle": 10
+      },
+      {
+        "distance": 2,
+        "angle": 12
+      }
+    ]
+  },
+  {
+    "level": 4,
+    "name": "Endurance",
+    "steps": [
+      {
+        "distance": 2,
+        "angle": 10
+      },
+      {
+        "distance": 1,
+        "angle": -4
+      },
+      {
+        "distance": 3,
+        "angle": 0
+      },
+      {
+        "distance": 2,
+        "angle": 3
+      },
+      {
+        "distance": 3,
+        "angle": -5
+      },
+      {
+        "distance": 3,
+        "angle": -5
+      },
+      {
+        "distance": 1,
+        "angle": 5
+      },
+      {
+        "distance": 2,
+        "angle": -10
+      },
+      {
+        "distance": 1,
+        "angle": 2
+      },
+      {
+        "distance": 2,
+        "angle": 10
+      }
+    ]
+  },
+  {
+    "level": 5,
+    "name": "Strength",
+    "steps": [
+      {
+        "distance": 2,
+        "angle": 10
+      },
+      {
+        "distance": 2,
+        "angle": -6
+      },
+      {
+        "distance": 3,
+        "angle": -2
+      },
+      {
+        "distance": 2,
+        "angle": 5
+      },
+      {
+        "distance": 3,
+        "angle": -8
+      },
+      {
+        "distance": 3,
+        "angle": 0
+      },
+      {
+        "distance": 2,
+        "angle": -10
+      },
+      {
+        "distance": 2,
+        "angle": 8
+      },
+      {
+        "distance": 3,
+        "angle": -15
+      },
+      {
+        "distance": 3,
+        "angle": 5
+      }
+    ]
+  },
+  {
+    "level": 6,
+    "name": "Power",
+    "steps": [
+      {
+        "distance": 2,
+        "angle": 5
+      },
+      {
+        "distance": 3,
+        "angle": -10
+      },
+      {
+        "distance": 4,
+        "angle": -5
+      },
+      {
+        "distance": 1,
+        "angle": 8
+      },
+      {
+        "distance": 4,
+        "angle": -15
+      },
+      {
+        "distance": 2,
+        "angle": 7
+      },
+      {
+        "distance": 3,
+        "angle": -15
+      },
+      {
+        "distance": 2,
+        "angle": 4
+      },
+      {
+        "distance": 3,
+        "angle": -18
+      },
+      {
+        "distance": 3,
+        "angle": -5
+      }
+    ]
+  },
+  {
+    "level": 7,
+    "name": "Athlete",
+    "steps": [
+      {
+        "distance": 3,
+        "angle": 5
+      },
+      {
+        "distance": 2,
+        "angle": -15
+      },
+      {
+        "distance": 3,
+        "angle": -10
+      },
+      {
+        "distance": 1,
+        "angle": 5
+      },
+      {
+        "distance": 5,
+        "angle": -12
+      },
+      {
+        "distance": 3,
+        "angle": -20
+      },
+      {
+        "distance": 2,
+        "angle": 3
+      },
+      {
+        "distance": 2,
+        "angle": -25
+      },
+      {
+        "distance": 3,
+        "angle": -5
+      },
+      {
+        "distance": 3,
+        "angle": -10
+      }
+    ]
+  },
+  {
+    "level": 8,
+    "name": "Pro Athlete",
+    "steps": [
+      {
+        "distance": 4,
+        "angle": 5
+      },
+      {
+        "distance": 3,
+        "angle": -22
+      },
+      {
+        "distance": 4,
+        "angle": 7
+      },
+      {
+        "distance": 5,
+        "angle": -30
+      },
+      {
+        "distance": 4,
+        "angle": 5
+      },
+      {
+        "distance": 3,
+        "angle": -33
+      },
+      {
+        "distance": 3,
+        "angle": 8
+      },
+      {
+        "distance": 5,
+        "angle": -22
+      },
+      {
+        "distance": 2,
+        "angle": 0
+      },
+      {
+        "distance": 2,
+        "angle": -25
+      }
+    ]
+  },
+  {
+    "level": 9,
+    "name": "Superhuman",
+    "steps": [
+      {
+        "distance": 4,
+        "angle": 0
+      },
+      {
+        "distance": 3,
+        "angle": -40
+      },
+      {
+        "distance": 5,
+        "angle": 5
+      },
+      {
+        "distance": 4,
+        "angle": -35
+      },
+      {
+        "distance": 5,
+        "angle": 8
+      },
+      {
+        "distance": 5,
+        "angle": -42
+      },
+      {
+        "distance": 4,
+        "angle": -15
+      },
+      {
+        "distance": 4,
+        "angle": 3
+      },
+      {
+        "distance": 4,
+        "angle": -35
+      },
+      {
+        "distance": 2,
+        "angle": -40
+      }
+    ]
+  },
+  {
+    "level": 10,
+    "name": "Conqueror",
+    "data": [
+      {
+        "distance": 4,
+        "angle": -5
+      },
+      {
+        "distance": 3,
+        "angle": -45
+      },
+      {
+        "distance": 4,
+        "angle": 8
+      },
+      {
+        "distance": 5,
+        "angle": -40
+      },
+      {
+        "distance": 4,
+        "angle": 5
+      },
+      {
+        "distance": 4,
+        "angle": -43
+      },
+      {
+        "distance": 5,
+        "angle": -20
+      },
+      {
+        "distance": 3,
+        "angle": -10
+      },
+      {
+        "distance": 6,
+        "angle": -38
+      },
+      {
+        "distance": 2,
+        "angle": 10
+      }
+    ]
+  }
+]
