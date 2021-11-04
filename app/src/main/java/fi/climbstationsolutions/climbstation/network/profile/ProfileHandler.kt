@@ -11,6 +11,10 @@ import java.io.InputStreamReader
 import java.io.StringWriter
 
 object ProfileHandler {
+    /**
+     * Opens a raw file and reads it content to string.
+     * Then returns [List] of [Profile]
+     */
     fun readProfiles(context: Context, @RawRes resId: Int): List<Profile> {
         val raw = context.resources.openRawResource(resId)
         val writer = StringWriter()
