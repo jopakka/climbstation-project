@@ -4,42 +4,52 @@
     "name": "Beginner",
     "steps": [
       {
+        "step": 1,
         "distance": 1,
         "angle": 15
       },
       {
+        "step": 2,
         "distance": 1,
         "angle": 15
       },
       {
+        "step": 3,
         "distance": 1,
         "angle": 15
       },
       {
+        "step": 4,
         "distance": 1,
         "angle": 12
       },
       {
+        "step": 5,
         "distance": 1,
         "angle": 10
       },
       {
+        "step": 6,
         "distance": 1,
         "angle": 10
       },
       {
+        "step": 7,
         "distance": 1,
         "angle": 10
       },
       {
+        "step": 7,
         "distance": 1,
         "angle": 12
       },
       {
+        "step": 9,
         "distance": 1,
         "angle": 5
       },
       {
+        "step": 10,
         "distance": 1,
         "angle": 15
       }
@@ -50,42 +60,52 @@
     "name": "Warm up",
     "steps": [
       {
+        "step": 1,
         "distance": 1,
         "angle": 15
       },
       {
+        "step": 2,
         "distance": 1,
         "angle": 5
       },
       {
+        "step": 3,
         "distance": 2,
         "angle": 10
       },
       {
+        "step": 4,
         "distance": 2,
         "angle": 5
       },
       {
+        "step": 5,
         "distance": 1,
         "angle": 12
       },
       {
+        "step": 6,
         "distance": 2,
         "angle": 10
       },
       {
+        "step": 7,
         "distance": 2,
         "angle": 15
       },
       {
+        "step": 8,
         "distance": 1,
         "angle": 0
       },
       {
+        "step": 9,
         "distance": 2,
         "angle": 5
       },
       {
+        "step": 10,
         "distance": 1,
         "angle": 15
       }
@@ -96,42 +116,52 @@
     "name": "Easy",
     "steps": [
       {
+        "step": 1,
         "distance": 1,
         "angle": 15
       },
       {
+        "step": 2,
         "distance": 1,
         "angle": 0
       },
       {
+        "step": 3,
         "distance": 2,
         "angle": 5
       },
       {
+        "step": 4,
         "distance": 1,
         "angle": 0
       },
       {
+        "step": 5,
         "distance": 2,
         "angle": 5
       },
       {
+        "step": 6,
         "distance": 2,
         "angle": 12
       },
       {
+        "step": 7,
         "distance": 2,
         "angle": -3
       },
       {
+        "step": 8,
         "distance": 2,
         "angle": 3
       },
       {
+        "step": 9,
         "distance": 1,
         "angle": 10
       },
       {
+        "step": 10,
         "distance": 2,
         "angle": 12
       }
@@ -142,42 +172,52 @@
     "name": "Endurance",
     "steps": [
       {
+        "step": 1,
         "distance": 2,
         "angle": 10
       },
       {
+        "step": 2,
         "distance": 1,
         "angle": -4
       },
       {
+        "step": 3,
         "distance": 3,
         "angle": 0
       },
       {
+        "step": 4,
         "distance": 2,
         "angle": 3
       },
       {
+        "step": 5,
         "distance": 3,
         "angle": -5
       },
       {
+        "step": 6,
         "distance": 3,
         "angle": -5
       },
       {
+        "step": 7,
         "distance": 1,
         "angle": 5
       },
       {
+        "step": 8,
         "distance": 2,
         "angle": -10
       },
       {
+        "step": 9,
         "distance": 1,
         "angle": 2
       },
       {
+        "step": 10,
         "distance": 2,
         "angle": 10
       }
@@ -188,42 +228,52 @@
     "name": "Strength",
     "steps": [
       {
+        "step": 1,
         "distance": 2,
         "angle": 10
       },
       {
+        "step": 2,
         "distance": 2,
         "angle": -6
       },
       {
+        "step": 3,
         "distance": 3,
         "angle": -2
       },
       {
+        "step": 4,
         "distance": 2,
         "angle": 5
       },
       {
+        "step": 5,
         "distance": 3,
         "angle": -8
       },
       {
+        "step": 6,
         "distance": 3,
         "angle": 0
       },
       {
+        "step": 7,
         "distance": 2,
         "angle": -10
       },
       {
+        "step": 8,
         "distance": 2,
         "angle": 8
       },
       {
+        "step": 9,
         "distance": 3,
         "angle": -15
       },
       {
+        "step": 10,
         "distance": 3,
         "angle": 5
       }
@@ -234,42 +284,52 @@
     "name": "Power",
     "steps": [
       {
+        "step": 1,
         "distance": 2,
         "angle": 5
       },
       {
+        "step": 2,
         "distance": 3,
         "angle": -10
       },
       {
+        "step": 3,
         "distance": 4,
         "angle": -5
       },
       {
+        "step": 4,
         "distance": 1,
         "angle": 8
       },
       {
+        "step": 5,
         "distance": 4,
         "angle": -15
       },
       {
+        "step": 6,
         "distance": 2,
         "angle": 7
       },
       {
+        "step": 7,
         "distance": 3,
         "angle": -15
       },
       {
+        "step": 8,
         "distance": 2,
         "angle": 4
       },
       {
+        "step": 9,
         "distance": 3,
         "angle": -18
       },
       {
+        "step": 10,
         "distance": 3,
         "angle": -5
       }
@@ -280,42 +340,52 @@
     "name": "Athlete",
     "steps": [
       {
+        "step": 1,
         "distance": 3,
         "angle": 5
       },
       {
+        "step": 2,
         "distance": 2,
         "angle": -15
       },
       {
+        "step": 3,
         "distance": 3,
         "angle": -10
       },
       {
+        "step": 4,
         "distance": 1,
         "angle": 5
       },
       {
+        "step": 5,
         "distance": 5,
         "angle": -12
       },
       {
+        "step": 6,
         "distance": 3,
         "angle": -20
       },
       {
+        "step": 7,
         "distance": 2,
         "angle": 3
       },
       {
+        "step": 8,
         "distance": 2,
         "angle": -25
       },
       {
+        "step": 9,
         "distance": 3,
         "angle": -5
       },
       {
+        "step": 10,
         "distance": 3,
         "angle": -10
       }
@@ -326,42 +396,52 @@
     "name": "Pro Athlete",
     "steps": [
       {
+        "step": 1,
         "distance": 4,
         "angle": 5
       },
       {
+        "step": 2,
         "distance": 3,
         "angle": -22
       },
       {
+        "step": 3,
         "distance": 4,
         "angle": 7
       },
       {
+        "step": 4,
         "distance": 5,
         "angle": -30
       },
       {
+        "step": 5,
         "distance": 4,
         "angle": 5
       },
       {
+        "step": 6,
         "distance": 3,
         "angle": -33
       },
       {
+        "step": 7,
         "distance": 3,
         "angle": 8
       },
       {
+        "step": 8,
         "distance": 5,
         "angle": -22
       },
       {
+        "step": 9,
         "distance": 2,
         "angle": 0
       },
       {
+        "step": 10,
         "distance": 2,
         "angle": -25
       }
@@ -372,42 +452,52 @@
     "name": "Superhuman",
     "steps": [
       {
+        "step": 1,
         "distance": 4,
         "angle": 0
       },
       {
+        "step": 2,
         "distance": 3,
         "angle": -40
       },
       {
+        "step": 3,
         "distance": 5,
         "angle": 5
       },
       {
+        "step": 4,
         "distance": 4,
         "angle": -35
       },
       {
+        "step": 5,
         "distance": 5,
         "angle": 8
       },
       {
+        "step": 6,
         "distance": 5,
         "angle": -42
       },
       {
+        "step": 7,
         "distance": 4,
         "angle": -15
       },
       {
+        "step": 8,
         "distance": 4,
         "angle": 3
       },
       {
+        "step": 9,
         "distance": 4,
         "angle": -35
       },
       {
+        "step": 10,
         "distance": 2,
         "angle": -40
       }
@@ -418,42 +508,52 @@
     "name": "Conqueror",
     "steps": [
       {
+        "step": 1,
         "distance": 4,
         "angle": -5
       },
       {
+        "step": 2,
         "distance": 3,
         "angle": -45
       },
       {
+        "step": 3,
         "distance": 4,
         "angle": 8
       },
       {
+        "step": 4,
         "distance": 5,
         "angle": -40
       },
       {
+        "step": 5,
         "distance": 4,
         "angle": 5
       },
       {
+        "step": 6,
         "distance": 4,
         "angle": -43
       },
       {
+        "step": 7,
         "distance": 5,
         "angle": -20
       },
       {
+        "step": 8,
         "distance": 3,
         "angle": -10
       },
       {
+        "step": 9,
         "distance": 6,
         "angle": -38
       },
       {
+        "step": 10,
         "distance": 2,
         "angle": 10
       }
