@@ -279,7 +279,7 @@ class AdjustFragment : Fragment() {
     private fun initializeVariables(view: View) {
         seekBar = view.findViewById(R.id.speed_seekbar)
         speedText = view.findViewById(R.id.speed_value)
-        speedText.text = (getString(R.string.adjust_fragment_speed, speed) + " m / min")
+        speedText.text = (getString(R.string.fragment_adjust_speed, speed) + " m / min")
 
         numberList = view.findViewById(R.id.number_list)
         stringList = view.findViewById(R.id.string_list)
@@ -314,7 +314,7 @@ class AdjustFragment : Fragment() {
         seekBar.setOnSeekBarChangeListener(object: OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 speed = p1
-                speedText.text = (getString(R.string.adjust_fragment_speed, speed) + " m / min")
+                speedText.text = (getString(R.string.fragment_adjust_speed, speed) + " m / min")
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {

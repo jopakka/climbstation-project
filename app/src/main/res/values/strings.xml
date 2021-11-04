@@ -7,11 +7,11 @@
     <string name="bottom_nav_settings">Settings</string>
 
     <!--fragment_adjust strings-->
-    <string name="adjust_fragment_title">ADJUST</string>
-    <string name="adjust_fragment_length">Length / m:</string>
-    <string name="adjust_fragment_speed">Speed: %d</string>
-    <string name="adjust_fragment_mode">Mode:</string>
-    <string name="adjust_fragment_start">Start</string>
+    <string name="fragment_adjust_title">ADJUST</string>
+    <string name="fragment_adjust_length">Length / m:</string>
+    <string name="fragment_adjust_speed">Speed: %d</string>
+    <string name="fragment_adjust_mode">Mode:</string>
+    <string name="fragment_adjust_start">Start</string>
 
     <!--statistics_session_history_item strings-->
     <string name="stat_sess_history_item_date">Insert date here</string>
@@ -19,6 +19,15 @@
     <string name="stat_sess_history_item_difficulty">Difficulty: </string>
     <string name="stat_sess_history_item_distance">Distance: </string>
     <string name="stat_sess_history_item_speed">Avrg speed: </string>
+
+    <!--fragment_settings strings-->
+    <string name="fragment_settings_title">SETTINGS</string>
+    <string name="fragment_settings_weight">Weight: %.1f kg</string>
+    <string name="fragment_settings_btn_edit">Edit</string>
+
+    <!--weight_prompt strings-->
+    <string name="weight_prompt_title">Enter your weight</string>
+    <string name="weight_prompt_kg">kg</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -28,6 +37,11 @@
 
     <!--Accessibility for fragment_adjust-->
     <string name="content_description_fragment_adjust_start_btn">Start climbing session</string>
+
+    <!--Accessibility for weight_prompt-->
+    <string name="content_description_weight_title">Enter your weight in kilograms</string>
+    <string name="content_description_weight_input">Enter weight here</string>
+    <string name="content_description_weight_kg">Kilograms</string>
 
     <string name="start">Start</string>
     <string name="stop">Stop</string>

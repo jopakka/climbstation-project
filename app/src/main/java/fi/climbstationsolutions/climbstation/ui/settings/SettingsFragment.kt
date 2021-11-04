@@ -1,33 +1,56 @@
 package fi.climbstationsolutions.climbstation.ui.settings
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatButton
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.EditText
+import android.widget.TextView
+import com.google.android.material.button.MaterialButton
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdapter
-import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalNumberPickerViewModel
+import fi.climbstationsolutions.climbstation.database.AppDatabase
+import fi.climbstationsolutions.climbstation.database.BodyWeight
+import fi.climbstationsolutions.climbstation.database.SettingsDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
-    private lateinit var horizontalNumberPickerViewModel: HorizontalNumberPickerViewModel
-    private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var numberList: RecyclerView
-    private lateinit var decrementNumber: AppCompatButton
-    private lateinit var incrementNumber: AppCompatButton
-    private var numbersListWidth: Int? = null
-    private var myAdapterNumber: HorizontalNumberPickerAdapter? = null
+    private val parentJob = Job()
+    private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
+    private val mainScope = CoroutineScope(Dispatchers.Main + parentJob)
+    private var userBodyWeightDefault: Float = 70.00F
+
+    private lateinit var settingsDao: SettingsDao
+
+    private lateinit var settingsBodyWeight: TextView
+    private lateinit var editWeightBtn: MaterialButton
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ioScope.launch {
+            settingsDao = AppDatabase.get(requireContext()).settingsDao()
+            val userWeight = settingsDao.getBodyWeightById(1)
+            // not sure why the IDE is warning about this, it is sometimes true
+            if (userWeight == null) {
+                settingsDao.insertUserBodyWeight(BodyWeight(1, userBodyWeightDefault))
+            } else {
+                Log.d(
+                    "settings_fragment_oncreate",
+                    "user weight already exists: ${settingsDao.getBodyWeightById(1)}"
+                )
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        layoutManager.isSmoothScrollbarEnabled = true
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false)
@@ -35,5 +58,78 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initializeValues(view)
+    }
+
+    private fun initializeValues(view: View) {
+        settingsBodyWeight = view.findViewById(R.id.settings_body_weight)
+        editWeightBtn = view.findViewById(R.id.settings_btn_edit_body_weight)
+
+        ioScope.launch {
+            val userWeight = settingsDao.getBodyWeightById(1)
+            Log.d("settings_fragment_initvalues", "userWeight: $userWeight")
+            if (userWeight == null) {
+                mainScope.launch {
+                    settingsBodyWeight.text =
+                        getString(R.string.fragment_settings_weight, userBodyWeightDefault)
+                }
+            } else {
+                mainScope.launch {
+                    settingsBodyWeight.text =
+                        getString(R.string.fragment_settings_weight, userWeight.weight)
+                }
+            }
+        }
+
+        editWeightBtn.setOnClickListener {
+            editWeightPopup()
+        }
+    }
+
+    private fun editWeightPopup() {
+        // This dialog popup asks the user for their weight in kilograms. It is used in calorie counting
+        val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+        // sets a custom dialog interface for the popup
+        val li = LayoutInflater.from(activity?.applicationContext)
+        val promptsView = li.inflate(R.layout.weight_prompt, null)
+        builder.setView(promptsView)
+        // InputField to set user's weight
+        val userInput = promptsView.findViewById<EditText>(R.id.editTextDialogUserInput)
+        builder.setCancelable(true)
+
+        // when user clicks "save"
+        builder.setPositiveButton("SAVE") { _, _ ->
+            val userInputFloatOrNull = userInput.text.toString().toFloatOrNull()
+            if (userInput.text.isNotEmpty() && userInputFloatOrNull != null) {
+                val userWeightKg = userInput.text.toString().toFloat()
+                ioScope.launch {
+                    settingsDao.updateUserBodyWeight(userWeightKg)
+                    val newUserBodyWeight = settingsDao.getBodyWeightById(1).weight
+                    mainScope.launch {
+                        settingsBodyWeight.text =
+                            getString(R.string.fragment_settings_weight, newUserBodyWeight)
+                    }
+                }
+            } else {
+                Log.d(
+                    "settings_fragment_weight_popup",
+                    "user weight is in incorrect format or is empty"
+                )
+
+            }
+        }
+
+        // when user clicks "cancel"
+        builder.setNegativeButton("Cancel") { _, _ ->
+            Log.d(
+                "settings_fragment_weight_popup",
+                "prompt canceled"
+            )
+        }
+
+        // Puts the popup to the screen
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 }
