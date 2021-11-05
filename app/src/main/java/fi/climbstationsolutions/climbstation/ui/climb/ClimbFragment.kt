@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbBinding
+import fi.climbstationsolutions.climbstation.network.profile.Profile
+import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 
 class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
     private lateinit var binding: FragmentClimbBinding
@@ -26,13 +28,13 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
 
         binding.difficultyRv.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment)
+            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context)
         }
 
         return binding.root
     }
 
-    override fun onCellClickListener(profile: DifficultyProfile) {
+    override fun onCellClickListener(profile: Profile) {
         viewModel.postValue(profile)
     }
 }
