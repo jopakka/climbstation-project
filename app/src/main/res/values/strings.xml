@@ -7,7 +7,7 @@
     <string name="bottom_nav_settings">Settings</string>
 
     <!--fragment_climb_finished strings-->
-    <string name="fragment_climb_finished_result_title">Congratulations!</string>
+    <string name="fragment_climb_finished_result_title">%s</string>
     <string name="fragment_climb_finished_result_detail">You climbed %.1f m of your %.1f m goal</string>
     <string name="fragment_climb_finished_difficulty_start">Start difficulty: %s</string>
     <string name="fragment_climb_finished_difficulty_end">End difficulty: %s</string>
@@ -19,7 +19,7 @@
     <string name="fragment_climb_finished_calories_title">CALORIES</string>
     <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
     <string name="fragment_climb_finished_speed_title">SPEED</string>
-    <string name="fragment_climb_finished_speed_value">%d m / min</string>
+    <string name="fragment_climb_finished_speed_value">%.1f m / min</string>
     <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
 
     <!--fragment_adjust strings-->
