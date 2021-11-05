@@ -12,9 +12,11 @@ import fi.climbstationsolutions.climbstation.database.Data
 import fi.climbstationsolutions.climbstation.database.Session
 import fi.climbstationsolutions.climbstation.database.SessionWithDataDao
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
+import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity
 import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.ACTION_STOP
 import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.CLIMB_STATION_SERIAL_EXTRA
+import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.PROFILE_EXTRA
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -29,26 +31,21 @@ class ClimbStationService : Service() {
         private const val NOTIFICATION_CHANNEL_GROUP_NAME = "Climbing group"
 
         var SERVICE_RUNNING = false
+            private set
+        var CLIMBING_ACTIVE = false
+            private set
     }
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
 
     private var nm: NotificationManager? = null
+    private val binder = LocalBinder()
 
     private lateinit var climbStationSerialNo: String
     private lateinit var clientKey: String
     private lateinit var sessionDao: SessionWithDataDao
-
-    override fun onCreate() {
-        super.onCreate()
-        SERVICE_RUNNING = true
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        SERVICE_RUNNING = false
-    }
+    private lateinit var profile: Profile
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         if (intent.action != null && intent.action.equals(ACTION_STOP, true)) {
@@ -56,21 +53,25 @@ class ClimbStationService : Service() {
         } else {
             intent.extras?.let {
                 createNotification()
-                initService(it.getString(CLIMB_STATION_SERIAL_EXTRA, ""))
-                beginSession(climbStationSerialNo)
+                initService(
+                    it.getString(CLIMB_STATION_SERIAL_EXTRA, ""),
+                    it.getParcelable(PROFILE_EXTRA) ?: Profile(0, "", emptyList())
+                )
+                beginSession()
             }
         }
 
         return START_STICKY
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
+    override fun onBind(intent: Intent?): IBinder {
+        return binder
     }
 
-    private fun initService(serialNo: String) {
+    private fun initService(serialNo: String, prof: Profile) {
         SERVICE_RUNNING = true
         climbStationSerialNo = serialNo
+        profile = prof
         sessionDao = AppDatabase.get(this).sessionDao()
     }
 
@@ -118,13 +119,13 @@ class ClimbStationService : Service() {
         startForeground(123, notification)
     }
 
-    private fun beginSession(serialNo: String, sessionName: String = "Climbing") {
+    private fun beginSession(sessionName: String = "Climb") {
         var sessionID: Long? = null
 
         serviceScope.launch {
             try {
                 // Get clientKey from ClimbStation
-                clientKey = ClimbStationRepository.login(serialNo, "user", "climbstation")
+                clientKey = ClimbStationRepository.login(climbStationSerialNo, "user", "climbstation")
                 // Save session to database
                 val calendar = Calendar.getInstance()
                 sessionID = sessionDao.insertSession(Session(0, sessionName, calendar.time))
@@ -166,12 +167,16 @@ class ClimbStationService : Service() {
 
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
+            Log.d(TAG, "Profile: $profile")
             while (SERVICE_RUNNING) {
+                CLIMBING_ACTIVE = true
                 getInfo(sessionID)
                 delay(GET_INFO_DELAY)
             }
+            CLIMBING_ACTIVE = false
         } catch (e: Exception) {
             Log.e(TAG, "GetInfo error: ${e.localizedMessage}")
+            CLIMBING_ACTIVE = false
             stopService()
         }
     }
@@ -192,6 +197,8 @@ class ClimbStationService : Service() {
             )
         )
         Log.d(TAG, "dataID: $dID")
+
+        // TODO("Adjust climbing profiles here")
     }
 
     private fun logoutFromClimbStation() {
@@ -203,5 +210,9 @@ class ClimbStationService : Service() {
                 Log.e(TAG, "Logout error: ${e.localizedMessage}")
             }
         }
+    }
+
+    inner class LocalBinder : Binder() {
+        fun getService() = this@ClimbStationService
     }
 }
