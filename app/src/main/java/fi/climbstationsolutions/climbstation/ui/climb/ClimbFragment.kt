@@ -1,5 +1,7 @@
 package fi.climbstationsolutions.climbstation.ui.climb
 
+import android.content.Context
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,15 +28,52 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
+        val preferencePos = getPref()
+
         binding.difficultyRv.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context)
+            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context, preferencePos)
         }
 
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        savePref()
+    }
+
     override fun onCellClickListener(profile: Profile) {
         viewModel.postValue(profile)
+    }
+
+    private fun savePref() {
+        val preferences =
+            activity?.getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE) ?: return
+        val editor = preferences.edit()
+
+        viewModel.profile.value?.let {
+            editor.putString("PROFILE_LEVEL", it.level.toString())
+        }
+        editor.apply()
+    }
+
+    private fun getPref(): Int? {
+        val preferences = activity?.getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE) ?: return null
+        val level: String? = preferences.getString("PROFILE_LEVEL", null)
+
+        val profiles = ProfileHandler.readProfiles(context ?: return null, R.raw.profiles)
+        var prefPosition = 0
+        if (level == null) {
+            viewModel.postValue(profiles.first())
+        } else {
+            for (profile in profiles) {
+                if (profile.level == level.toInt()) {
+                    viewModel.postValue(profile)
+                    prefPosition = profiles.indexOf(profile)
+                }
+            }
+        }
+        return prefPosition
     }
 }

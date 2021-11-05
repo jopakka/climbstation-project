@@ -12,12 +12,12 @@ import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 
 class DifficultyRecyclerviewAdapter(
     private val cellClickListener: CellClicklistener,
-    private val context: Context
+    private val context: Context,
+    sharedPrefPos: Int?
 ) : RecyclerView.Adapter<DifficultyRecyclerviewAdapter.ViewHolder>() {
 
-
-    var selectedItemPos = -1
-    var lastItemSelectedPos = -1
+    private var selectedItemPos = sharedPrefPos ?: -1
+    private var lastItemSelectedPos = sharedPrefPos ?: -1
 
     class ViewHolder(private val binding: SingleDifficultyItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -38,14 +38,9 @@ class DifficultyRecyclerviewAdapter(
         fun selectedBg() {
             binding.singleDfItem.setBackgroundResource(R.drawable.layout_background)
         }
+
         fun defaultBg() {
             binding.singleDfItem.setBackgroundResource(R.color.transparent)
-        }
-        fun test(pos: Int) {
-            var ykkone = pos
-            var kakkone: Int? = null
-
-
         }
     }
 
@@ -73,7 +68,7 @@ class DifficultyRecyclerviewAdapter(
 
     private fun singleSelection(pos: Int) {
         selectedItemPos = pos
-        lastItemSelectedPos = if(lastItemSelectedPos == -1)
+        lastItemSelectedPos = if (lastItemSelectedPos == -1)
             selectedItemPos
         else {
             notifyItemChanged(lastItemSelectedPos)
