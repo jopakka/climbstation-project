@@ -10,9 +10,18 @@ import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 
 
-class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClicklistener, private val context: Context) : RecyclerView.Adapter<DifficultyRecyclerviewAdapter.ViewHolder>() {
+class DifficultyRecyclerviewAdapter(
+    private val cellClickListener: CellClicklistener,
+    private val context: Context
+) : RecyclerView.Adapter<DifficultyRecyclerviewAdapter.ViewHolder>() {
+
+
+    var selectedItemPos = -1
+    var lastItemSelectedPos = -1
+
     class ViewHolder(private val binding: SingleDifficultyItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -29,7 +38,17 @@ class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClicklist
         fun selectedBg() {
             binding.singleDfItem.setBackgroundResource(R.drawable.layout_background)
         }
+        fun defaultBg() {
+            binding.singleDfItem.setBackgroundResource(R.color.transparent)
+        }
+        fun test(pos: Int) {
+            var ykkone = pos
+            var kakkone: Int? = null
+
+
+        }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
@@ -37,12 +56,29 @@ class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClicklist
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = ProfileHandler.readProfiles(context, R.raw.profiles)[position]
         holder.bind(item)
+
+        if (selectedItemPos == position) {
+            holder.selectedBg()
+        } else {
+            holder.defaultBg()
+        }
+
         holder.itemView.setOnClickListener {
             cellClickListener.onCellClickListener(item)
-            holder.selectedBg()
+            singleSelection(position)
         }
     }
 
     override fun getItemCount(): Int = ProfileHandler.readProfiles(context, R.raw.profiles).size
 
+    private fun singleSelection(pos: Int) {
+        selectedItemPos = pos
+        lastItemSelectedPos = if(lastItemSelectedPos == -1)
+            selectedItemPos
+        else {
+            notifyItemChanged(lastItemSelectedPos)
+            selectedItemPos
+        }
+        notifyItemChanged(selectedItemPos)
+    }
 }
