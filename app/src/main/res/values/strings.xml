@@ -6,6 +6,22 @@
     <string name="bottom_nav_statistics">Statistics</string>
     <string name="bottom_nav_settings">Settings</string>
 
+    <!--fragment_climb_finished strings-->
+    <string name="fragment_climb_finished_result_title">Congratulations!</string>
+    <string name="fragment_climb_finished_result_detail">You climbed %.1f m of your %.1f m goal</string>
+    <string name="fragment_climb_finished_difficulty_start">Start difficulty: %s</string>
+    <string name="fragment_climb_finished_difficulty_end">End difficulty: %s</string>
+    <string name="fragment_climb_finished_mode">Mode: %s</string>
+    <string name="fragment_climb_finished_time_title">TIME</string>
+    <string name="fragment_climb_finished_time_value">%s</string>
+    <string name="fragment_climb_finished_length_title">LENGTH</string>
+    <string name="fragment_climb_finished_length_value">%.1f m</string>
+    <string name="fragment_climb_finished_calories_title">CALORIES</string>
+    <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
+    <string name="fragment_climb_finished_speed_title">SPEED</string>
+    <string name="fragment_climb_finished_speed_value">%d m / min</string>
+    <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
+
     <!--fragment_adjust strings-->
     <string name="fragment_adjust_title">ADJUST</string>
     <string name="fragment_adjust_length">Length / m:</string>
@@ -31,6 +47,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Accessibility for fragment_climb_finished-->
+    <string name="content_description_fragment_climb_finished_graph">Graph displaying climbing angles</string>
+    <string name="content_description_fragment_climb_finished_btn_to_statistics">View earlier results</string>
 
     <!--Accessibility for fragment_statistics-->
     <string name="content_description_history_delete">Delete history item</string>

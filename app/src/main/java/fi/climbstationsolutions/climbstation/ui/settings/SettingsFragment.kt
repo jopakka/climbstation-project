@@ -9,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.replace
 import com.google.android.material.button.MaterialButton
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.BodyWeight
 import fi.climbstationsolutions.climbstation.database.SettingsDao
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragment
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,6 +32,7 @@ class SettingsFragment : Fragment() {
 
     private lateinit var settingsBodyWeight: TextView
     private lateinit var editWeightBtn: MaterialButton
+    private lateinit var toClimbFinishedBtn: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +69,7 @@ class SettingsFragment : Fragment() {
     private fun initializeValues(view: View) {
         settingsBodyWeight = view.findViewById(R.id.settings_body_weight)
         editWeightBtn = view.findViewById(R.id.settings_btn_edit_body_weight)
+        toClimbFinishedBtn = view.findViewById(R.id.toClimbFinished)
 
         ioScope.launch {
             val userWeight = settingsDao.getBodyWeightById(1)
@@ -84,6 +89,10 @@ class SettingsFragment : Fragment() {
 
         editWeightBtn.setOnClickListener {
             editWeightPopup()
+        }
+
+        toClimbFinishedBtn.setOnClickListener {
+            navigateToClimbFinished()
         }
     }
 
@@ -131,5 +140,13 @@ class SettingsFragment : Fragment() {
         // Puts the popup to the screen
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    private fun navigateToClimbFinished() {
+        val sfm = requireActivity().supportFragmentManager
+        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
+        val transaction = sfm.beginTransaction()
+        transaction.replace<ClimbFinishedFragment>(R.id.fragmentContainer)
+        transaction.commit()
     }
 }
