@@ -76,4 +76,8 @@
 
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
+    <!--BindingAdapter-->
+    <string name="distance">%d meters</string>
+    <string name="angle">%d degree</string>
+    <string name="speed">%d m/min</string>
 </resources>

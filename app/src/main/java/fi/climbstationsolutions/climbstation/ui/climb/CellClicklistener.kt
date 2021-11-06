@@ -1,5 +1,7 @@
 package fi.climbstationsolutions.climbstation.ui.climb
 
+import fi.climbstationsolutions.climbstation.network.profile.Profile
+
 interface CellClicklistener {
-    fun onCellClickListener(profile: DifficultyProfile)
+    fun onCellClickListener(profile: Profile)
 }

@@ -264,7 +264,7 @@
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.profile.climbDif}"
+                        android:text="@{viewModel.profile.name}"
                         android:textColor="#FFFFFF"
                         android:textSize="26sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -310,7 +310,7 @@
                             android:id="@+id/textView4"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@{`` + viewModel.profile.climbDistance}"
+                            app:stepsToDistance="@{viewModel.profile.steps}"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -347,7 +347,7 @@
                             android:id="@+id/textView6"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@{`` + viewModel.profile.climbSpeed}"
+                            app:stepsToSpeed="@{viewModel.profile.steps}"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -361,7 +361,7 @@
                         android:id="@+id/constraintLayout6"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toTopOf="@+id/materialButton2"
+                        app:layout_constraintBottom_toTopOf="@+id/adjustBtn"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
@@ -384,7 +384,7 @@
                             android:id="@+id/textView8"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@{`` + viewModel.profile.climbAngle}"
+                            app:stepsToAngle="@{viewModel.profile.steps}"
                             android:textAlignment="center"
                             android:textColor="#FFFFFF"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -395,19 +395,19 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/materialButton2"
+                        android:id="@+id/adjustBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="8dp"
                         android:text="Adjust"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/materialButton"
+                        app:layout_constraintEnd_toStartOf="@+id/startBtn"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/materialButton"
+                        android:id="@+id/startBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="4dp"
@@ -416,8 +416,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/materialButton2"
-                        app:layout_constraintTop_toTopOf="@+id/materialButton2" />
+                        app:layout_constraintStart_toEndOf="@+id/adjustBtn"
+                        app:layout_constraintTop_toTopOf="@+id/adjustBtn" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
