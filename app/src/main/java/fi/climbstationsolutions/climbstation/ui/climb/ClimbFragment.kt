@@ -1,15 +1,23 @@
 package fi.climbstationsolutions.climbstation.ui.climb
 
+import android.Manifest
 import android.content.Context
-import android.location.Location
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.adapters.DifficultyRecyclerviewAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbBinding
 import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
@@ -32,8 +40,12 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
 
         binding.difficultyRv.apply {
             layoutManager = LinearLayoutManager(context)
+            adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
             adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context, preferencePos)
         }
+
+        binding.startBtn.setOnClickListener(clickListener)
+        binding.adjustBtn.setOnClickListener(clickListener)
 
         return binding.root
     }
@@ -75,5 +87,17 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
             }
         }
         return prefPosition
+    }
+
+    private val clickListener = View.OnClickListener {
+        when (it) {
+            binding.adjustBtn -> {
+                val action = ClimbFragmentDirections.actionClimbToAdjustFragment()
+                this.findNavController().navigate(action)
+            }
+            binding.startBtn -> {
+                Log.d("STARTBTN", "Works")
+            }
+        }
     }
 }

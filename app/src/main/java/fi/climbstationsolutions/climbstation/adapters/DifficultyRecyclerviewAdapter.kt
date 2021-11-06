@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb
+package fi.climbstationsolutions.climbstation.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.SingleDifficultyItemBinding
 import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
+import fi.climbstationsolutions.climbstation.ui.climb.CellClicklistener
 
 
 class DifficultyRecyclerviewAdapter(
