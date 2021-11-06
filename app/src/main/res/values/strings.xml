@@ -7,7 +7,7 @@
     <string name="bottom_nav_settings">Settings</string>
 
     <!--fragment_climb_finished strings-->
-    <string name="fragment_climb_finished_result_title">Congratulations!</string>
+    <string name="fragment_climb_finished_result_title">%s</string>
     <string name="fragment_climb_finished_result_detail">You climbed %.1f m of your %.1f m goal</string>
     <string name="fragment_climb_finished_difficulty_start">Start difficulty: %s</string>
     <string name="fragment_climb_finished_difficulty_end">End difficulty: %s</string>
@@ -19,7 +19,7 @@
     <string name="fragment_climb_finished_calories_title">CALORIES</string>
     <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
     <string name="fragment_climb_finished_speed_title">SPEED</string>
-    <string name="fragment_climb_finished_speed_value">%d m / min</string>
+    <string name="fragment_climb_finished_speed_value">%.1f m / min</string>
     <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
 
     <!--fragment_adjust strings-->
@@ -30,9 +30,9 @@
     <string name="fragment_adjust_start">Start</string>
 
     <!--statistics_session_history_item strings-->
-    <string name="stat_sess_history_item_date">Insert date here</string>
-    <string name="stat_sess_history_item_duration">Duration: </string>
-    <string name="stat_sess_history_item_difficulty">Difficulty: </string>
+    <string name="stat_sess_history_item_date">5.11.2021</string>
+    <string name="stat_sess_history_item_duration">00:14:57</string>
+    <string name="stat_sess_history_item_name">Mount Everest </string>
     <string name="stat_sess_history_item_distance">Distance: </string>
     <string name="stat_sess_history_item_speed">Avrg speed: </string>
 
@@ -47,6 +47,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Accessibility for ClimbStation sprites-->
+    <string name="content_description_climbstation_logo_image">ClimbStation logo</string>
 
     <!--Accessibility for fragment_climb_finished-->
     <string name="content_description_fragment_climb_finished_graph">Graph displaying climbing angles</string>
