@@ -40,7 +40,6 @@ class ClimbStationService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
 
     private var nm: NotificationManager? = null
-    private val binder = LocalBinder()
 
     private lateinit var climbStationSerialNo: String
     private lateinit var clientKey: String
@@ -64,8 +63,8 @@ class ClimbStationService : Service() {
         return START_STICKY
     }
 
-    override fun onBind(intent: Intent?): IBinder {
-        return binder
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 
     private fun initService(serialNo: String, prof: Profile) {
@@ -210,9 +209,5 @@ class ClimbStationService : Service() {
                 Log.e(TAG, "Logout error: ${e.localizedMessage}")
             }
         }
-    }
-
-    inner class LocalBinder : Binder() {
-        fun getService() = this@ClimbStationService
     }
 }
