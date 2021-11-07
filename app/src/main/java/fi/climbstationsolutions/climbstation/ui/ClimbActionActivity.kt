@@ -8,11 +8,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
+import fi.climbstationsolutions.climbstation.services.ClimbStationService.Companion.BROADCAST_NAME
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,6 +25,8 @@ class ClimbActionActivity : AppCompatActivity() {
         const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
         const val PROFILE_EXTRA = "Profile"
     }
+
+    private lateinit var broadcastManager: LocalBroadcastManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +48,22 @@ class ClimbActionActivity : AppCompatActivity() {
                     startClimbing()
                 }
             }
+        }
+
+        broadcastManager = LocalBroadcastManager.getInstance(this).apply {
+            registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_NAME))
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver)
+    }
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val message = intent.getStringExtra("Status")
+            Log.d("BroadcastReceiver", "Message: $message")
         }
     }
 
