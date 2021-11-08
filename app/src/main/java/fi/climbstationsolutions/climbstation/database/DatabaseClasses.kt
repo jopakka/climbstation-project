@@ -8,7 +8,8 @@ import java.util.*
 data class Session(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
-    val createdAt: Date
+    val createdAt: Date,
+    val endedAt: Date? = null
 )
 
 @Entity(

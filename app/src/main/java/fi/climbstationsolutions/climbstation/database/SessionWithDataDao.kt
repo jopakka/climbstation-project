@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation.database
 
 import androidx.room.*
+import java.util.*
 
 @Dao
 interface SessionWithDataDao {
@@ -10,6 +11,9 @@ interface SessionWithDataDao {
 
     @Insert
     suspend fun insertSession(session: Session): Long
+
+    @Query("UPDATE session SET endedAt = :date WHERE id = :id")
+    suspend fun setEndedAtToSession(id: Long, date: Date)
 
     @Query("DELETE FROM Session WHERE id =:id")
     suspend fun deleteSession(id: Long)

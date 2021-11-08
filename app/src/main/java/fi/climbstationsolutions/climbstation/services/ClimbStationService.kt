@@ -70,14 +70,6 @@ class ClimbStationService : Service() {
     }
 
     /**
-     * Cancels [serviceJob] to avoid memory leak
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        serviceJob.cancel()
-    }
-
-    /**
      * Must have [Service] class abstract function override
      */
     override fun onBind(intent: Intent?): IBinder? {
@@ -180,6 +172,11 @@ class ClimbStationService : Service() {
                     getInfoFromClimbStation(sessionID ?: throw Exception("No sessionID"))
                 else
                     throw Exception("ClimbStation not started")
+
+                // Set endedAt time to session when it's finished
+                sessionID?.let {
+                    sessionDao.setEndedAtToSession(it, calendar.time)
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
                 sessionID?.let {
@@ -198,7 +195,6 @@ class ClimbStationService : Service() {
             try {
                 operateClimbStation("stop")
                 logoutFromClimbStation()
-                // TODO("Set end time for session")
             } catch (e: Exception) {
                 Log.e(TAG, "StopClimbStationAndLogout error: ${e.localizedMessage}")
             }
