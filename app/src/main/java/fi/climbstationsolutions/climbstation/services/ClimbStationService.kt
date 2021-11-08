@@ -198,6 +198,7 @@ class ClimbStationService : Service() {
             try {
                 operateClimbStation("stop")
                 logoutFromClimbStation()
+                // TODO("Set end time for session")
             } catch (e: Exception) {
                 Log.e(TAG, "StopClimbStationAndLogout error: ${e.localizedMessage}")
             }
