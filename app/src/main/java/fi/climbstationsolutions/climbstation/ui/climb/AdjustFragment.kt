@@ -16,10 +16,14 @@ import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdapter
 import fi.climbstationsolutions.climbstation.adapters.HorizontalStringPickerAdapter
+import fi.climbstationsolutions.climbstation.databinding.FragmentAdjustBinding
 import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalNumberPickerViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalStringPickerViewModel
 
-class AdjustFragment : Fragment() {
+class
+AdjustFragment : Fragment(R.layout.fragment_adjust) {
+    private lateinit var binding: FragmentAdjustBinding
+
     private lateinit var horizontalNumberPickerViewModel: HorizontalNumberPickerViewModel
     private lateinit var horizontalStringPickerViewModel: HorizontalStringPickerViewModel
     private lateinit var numberLayoutManager: LinearLayoutManager
@@ -35,15 +39,12 @@ class AdjustFragment : Fragment() {
     private var horizontalStringPickerAdapter: HorizontalStringPickerAdapter? = null
     private var speed = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        binding = FragmentAdjustBinding.inflate(layoutInflater)
+
         numberLayoutManager = LinearLayoutManager(context)
         numberLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         numberLayoutManager.isSmoothScrollbarEnabled = true
@@ -52,8 +53,7 @@ class AdjustFragment : Fragment() {
         stringLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         stringLayoutManager.isSmoothScrollbarEnabled = true
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_adjust, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

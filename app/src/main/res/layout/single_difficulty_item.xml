@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="difficultyItem"
-            type="fi.climbstationsolutions.climbstation.ui.climb.DifficultyProfile" />
+            name="profileItem"
+            type="fi.climbstationsolutions.climbstation.network.profile.Profile" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
             android:id="@+id/dif_rv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{difficultyItem.climbDif}"
+            android:text="@{profileItem.name}"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
-                    android:text="@{`` + difficultyItem.climbDistance}"
+                    app:stepsToDistance="@{profileItem.steps}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +98,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
-                    android:text="@{`` + difficultyItem.climbSpeed}"
+                    app:stepsToSpeed="@{profileItem.steps}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
-                    android:text="@{`` + difficultyItem.climbAngle}"
+                    app:stepsToAngle="@{profileItem.steps}"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
