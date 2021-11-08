@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import androidx.annotation.IntRange
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fi.climbstationsolutions.climbstation.R
@@ -42,6 +43,7 @@ class ClimbStationService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
 
     private var nm: NotificationManager? = null
+    private var currentStep = 0
 
     private lateinit var climbStationSerialNo: String
     private lateinit var clientKey: String
@@ -220,6 +222,9 @@ class ClimbStationService : Service() {
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
             Log.d(TAG, "Profile: $profile")
+
+            setAngle(profile.steps[0].angle)
+
             while (SERVICE_RUNNING) {
                 CLIMBING_ACTIVE = true
                 getInfo(sessionID)
@@ -254,7 +259,47 @@ class ClimbStationService : Service() {
         )
         Log.d(TAG, "dataID: $dID")
 
-        // TODO("Adjust climbing profiles here")
+        adjustToProfile(info.length.toInt())
+    }
+
+    private suspend fun adjustToProfile(distance: Int) {
+        var step = profile.steps[currentStep]
+        val stepsSoFar = profile.steps.filterIndexed { index, _ -> index < currentStep }
+        val distanceSoFar = stepsSoFar.sumOf { it.distance }
+
+        if(distanceSoFar + step.distance >= distance) {
+            currentStep += 1
+
+            if(currentStep > profile.steps.size) {
+                // TODO("What should it do after program")
+                // Now it just set wall to 0 angle and stops service
+                setAngle(0)
+                setSpeed(0)
+                stopService()
+                return
+            }
+
+            step = profile.steps[currentStep]
+            setAngle(step.angle)
+        }
+    }
+
+    private suspend fun setAngle(angle: Int) {
+        try {
+            val response = ClimbStationRepository.setAngle(climbStationSerialNo, clientKey, angle)
+            Log.d(TAG, "SetAngle: $response")
+        } catch (e: Exception) {
+            Log.e(TAG, "SetAngle error: ${e.localizedMessage}")
+        }
+    }
+
+    private suspend fun setSpeed(speed: Int) {
+        try {
+            val response = ClimbStationRepository.setSpeed(climbStationSerialNo, clientKey, speed)
+            Log.d(TAG, "SetSpeed: $response")
+        } catch (e: Exception) {
+            Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
+        }
     }
 
     /**
