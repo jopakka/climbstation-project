@@ -108,9 +108,10 @@ class SerialFragment : Fragment() {
 //            Log.d(TAG, "Serial: ${viewModel.serial}")
             context?.let { con ->
                 PreferenceHelper.customPrefs(con, PREF_NAME)[SERIAL_NO_PREF_NAME] = viewModel.serial
-                val intent = Intent(con, MainActivity::class.java)
-                startActivity(intent)
+                val direction = SerialFragmentDirections.actionGlobalMainActivity()
+                findNavController().navigate(direction)
                 activity?.finish()
+
             }
         } else {
             editableStatus(true)
