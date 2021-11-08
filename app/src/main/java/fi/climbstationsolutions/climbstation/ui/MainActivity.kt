@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.replace
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
@@ -17,9 +20,11 @@ import fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment
 import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ClimbStation)
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         // Un-comment this if you want to connect to server
 //        startActivity(Intent(this, ClimbActionActivity::class.java))
@@ -34,30 +39,19 @@ class MainActivity : AppCompatActivity() {
             startActivity(initIntent)
             finish()
         } else {
-            setContentView(R.layout.activity_main)
+            setContentView(binding.root)
 
-            val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-            bottomNav.setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.climb -> {
-                        // Respond to navigation item 1 click
-                        navigateToClimb()
-                        true
-                    }
-                    R.id.statistics -> {
-                        // Respond to navigation item 2 click
-                        navigateToStatistics()
-                        true
-                    }
-                    R.id.settings -> {
-                        // Respond to navigation item 3 click
-                        navigateToSettings()
-                        true
-                    }
-                    else -> false
-                }
-            }
+            initNavigation()
         }
+    }
+
+    private fun initNavigation() {
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        val navController = navHost.navController
+
+        val navView = binding.bottomNavigation
+        navView.setupWithNavController(navController)
     }
 
     private fun navigateToClimb() {

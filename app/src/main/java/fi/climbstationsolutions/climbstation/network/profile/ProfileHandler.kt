@@ -1,11 +1,12 @@
 package fi.climbstationsolutions.climbstation.network.profile
 
 import android.content.Context
-import android.util.Log
-import androidx.annotation.IdRes
+import android.os.Parcelable
 import androidx.annotation.RawRes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.StringWriter
@@ -29,19 +30,21 @@ object ProfileHandler {
         }
 
         val jsonString: String = writer.toString()
-        val type = object : TypeToken<List<Profile>>(){}.type
+        val type = object : TypeToken<List<Profile>>() {}.type
         return Gson().fromJson(jsonString, type)
     }
 }
 
+@Parcelize
 data class Step(
     val step: Int,
     val distance: Int,
     val angle: Int
-)
+) : Parcelable
 
+@Parcelize
 data class Profile(
     val level: Int,
     val name: String,
-    val steps: List<Step>
-)
+    val steps: @RawValue List<Step>
+) : Parcelable

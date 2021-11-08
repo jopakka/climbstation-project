@@ -36,8 +36,8 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        settingsDao = AppDatabase.get(requireContext()).settingsDao()
         ioScope.launch {
-            settingsDao = AppDatabase.get(requireContext()).settingsDao()
             val userWeight = settingsDao.getBodyWeightById(1)
             // not sure why the IDE is warning about this, it is sometimes true
             if (userWeight == null) {
