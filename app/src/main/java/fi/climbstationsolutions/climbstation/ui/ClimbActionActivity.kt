@@ -15,6 +15,10 @@ import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.services.ClimbStationService.Companion.BROADCAST_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -79,9 +83,10 @@ class ClimbActionActivity : AppCompatActivity() {
     private fun startClimbing() {
         Log.d(TAG, "Start climbing")
 
+        val serial = PreferenceHelper.customPrefs(this, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
+
         Intent(this, ClimbStationService::class.java).also {
-            // TODO("Use SerialNo from sharedPrefs here")
-            it.putExtra(CLIMB_STATION_SERIAL_EXTRA, "20110001")
+            it.putExtra(CLIMB_STATION_SERIAL_EXTRA, serial)
             // TODO("Get right profile")
             it.putExtra(PROFILE_EXTRA, ProfileHandler.readProfiles(this, R.raw.profiles).first())
             startForegroundService(it)
