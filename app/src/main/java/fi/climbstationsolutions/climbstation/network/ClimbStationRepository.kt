@@ -1,9 +1,11 @@
 package fi.climbstationsolutions.climbstation.network
 
 import android.util.Log
+import androidx.annotation.IntRange
 
 object ClimbStationRepository {
     private const val TAG = "Network"
+    // TODO("Use URL from file")
     private val call = ClimbStationAPI.get("http://192.168.1.11:8800/")
 
     /**
@@ -112,7 +114,7 @@ object ClimbStationRepository {
      * @return [Boolean] Was operation successful
      * @throws Exception Something else went wrong
      */
-    suspend fun setSpeed(climbStationSerialNo: String, clientKey: String, speed: Int): Boolean {
+    suspend fun setSpeed(climbStationSerialNo: String, clientKey: String, @IntRange(from = 0) speed: Int): Boolean {
         return try {
             val req = SpeedRequest(climbStationSerialNo, clientKey, speed.toString())
             val response = call.setSpeed(req)
@@ -134,7 +136,7 @@ object ClimbStationRepository {
      * @return [Boolean] Was operation successful
      * @throws Exception Something else went wrong
      */
-    suspend fun setAngle(climbStationSerialNo: String, clientKey: String, angle: Int): Boolean {
+    suspend fun setAngle(climbStationSerialNo: String, clientKey: String, @IntRange(from = -45, to = 45) angle: Int): Boolean {
         return try {
             val req = AngleRequest(climbStationSerialNo, clientKey, angle.toString())
             val response = call.setAngle(req)
