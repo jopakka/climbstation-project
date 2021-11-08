@@ -1,17 +1,17 @@
 package fi.climbstationsolutions.climbstation.ui
 
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.services.ClimbStationService.Companion.BROADCAST_NAME
@@ -19,8 +19,6 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class ClimbActionActivity : AppCompatActivity() {
     companion object {
@@ -42,7 +40,7 @@ class ClimbActionActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnClimb).apply {
             setOnClickListener {
-                if(ClimbStationService.SERVICE_RUNNING) {
+                if (ClimbStationService.SERVICE_RUNNING) {
                     text = getString(R.string.start)
                     txtClimbing.text = ""
                     stopClimbing()

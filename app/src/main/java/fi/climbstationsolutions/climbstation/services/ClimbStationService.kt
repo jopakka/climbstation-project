@@ -2,10 +2,8 @@ package fi.climbstationsolutions.climbstation.services
 
 import android.app.*
 import android.content.Intent
-import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import androidx.annotation.IntRange
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fi.climbstationsolutions.climbstation.R
@@ -170,7 +168,8 @@ class ClimbStationService : Service() {
             try {
                 // Get clientKey from ClimbStation
                 // TODO("Maybe change userID and password to be in some file")
-                clientKey = ClimbStationRepository.login(climbStationSerialNo, "user", "climbstation")
+                clientKey =
+                    ClimbStationRepository.login(climbStationSerialNo, "user", "climbstation")
                 // Save session to database
                 val calendar = Calendar.getInstance()
                 sessionID = sessionDao.insertSession(Session(0, sessionName, calendar.time))
@@ -267,10 +266,10 @@ class ClimbStationService : Service() {
         val stepsSoFar = profile.steps.filterIndexed { index, _ -> index < currentStep }
         val distanceSoFar = stepsSoFar.sumOf { it.distance }
 
-        if(distanceSoFar + step.distance >= distance) {
+        if (distanceSoFar + step.distance >= distance) {
             currentStep += 1
 
-            if(currentStep > profile.steps.size) {
+            if (currentStep > profile.steps.size) {
                 // TODO("What should it do after program")
                 // Now it just set wall to 0 angle and stops service
                 setAngle(0)
