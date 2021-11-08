@@ -21,6 +21,10 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_ClimbStation)
         super.onCreate(savedInstanceState)
 
+        // Un-comment this if you want to connect to server
+//        startActivity(Intent(this, ClimbActionActivity::class.java))
+//        finish()
+
         /*
             If no serialNo found, then start InitActivity
             else continue with MainActivity

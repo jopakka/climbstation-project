@@ -10,9 +10,26 @@ import android.widget.TextView
 import androidx.fragment.app.replace
 import com.google.android.material.button.MaterialButton
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.AppDatabase
+import fi.climbstationsolutions.climbstation.database.SessionWithData
+import fi.climbstationsolutions.climbstation.database.SessionWithDataDao
+import fi.climbstationsolutions.climbstation.database.SettingsDao
 import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
+import fi.climbstationsolutions.climbstation.utils.CalorieCounter
+import kotlinx.coroutines.*
 
-class ClimbFinishedFragment : Fragment() {
+class ClimbFinishedFragment() : Fragment() {
+    private val parentJob = Job()
+    private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
+    private val mainScope = CoroutineScope(Dispatchers.Main + parentJob)
+
+    private lateinit var sessionWithDataDao: SessionWithDataDao
+    private lateinit var settingsDao: SettingsDao
+
+    private lateinit var sessionsList: List<SessionWithData>
+
+    private var args: Long? = null
+
     private lateinit var toStatisticsBtn: MaterialButton
     private lateinit var resultTitle: TextView
     private lateinit var resultDetail: TextView
@@ -26,7 +43,6 @@ class ClimbFinishedFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -40,7 +56,23 @@ class ClimbFinishedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initValues(view)
-        insertValuesToUI()
+
+        settingsDao = AppDatabase.get(requireContext()).settingsDao()
+
+        // gets session id of this session
+        // not sure if this crashes when called from climb fragment
+        args = arguments?.getLong("sessionId")
+        Log.d("CFF","args: ${arguments}")
+
+        // call this when climbing session ends
+        if (args == null) {
+            insertValuesToUI()
+        }
+
+        // call this when this fragment is used to display session from statistics
+        else {
+            insertValuesToUIFromDatabase(args!!)
+        }
     }
 
     private fun initValues(view: View) {
@@ -69,7 +101,8 @@ class ClimbFinishedFragment : Fragment() {
         // fetch title from database
         val title = "Congratulations!"
         if (title == "Congratulations!") {
-            val titleString = getString(R.string.fragment_climb_finished_result_title, "Congratulations!")
+            val titleString =
+                getString(R.string.fragment_climb_finished_result_title, "Congratulations!")
             resultTitle.text = titleString
         } else {
             // fetch date from database
@@ -81,17 +114,20 @@ class ClimbFinishedFragment : Fragment() {
         // fetch lengths from database
         val actualLength = 18.3f
         val goalLength = 20f
-        val titleDetailString = getString(R.string.fragment_climb_finished_result_detail, actualLength, goalLength)
+        val titleDetailString =
+            getString(R.string.fragment_climb_finished_result_detail, actualLength, goalLength)
         resultDetail.text = titleDetailString
 
         // fetch startDifficulty from database
         val startDifficulty = "Beginner"
-        val startDifficultyString = getString(R.string.fragment_climb_finished_difficulty_start, startDifficulty)
+        val startDifficultyString =
+            getString(R.string.fragment_climb_finished_difficulty_start, startDifficulty)
         resultStartDifficulty.text = startDifficultyString
 
         // fetch endDifficulty from database
         val endDifficulty = "Athlete"
-        val endDifficultyString = getString(R.string.fragment_climb_finished_difficulty_end, endDifficulty)
+        val endDifficultyString =
+            getString(R.string.fragment_climb_finished_difficulty_end, endDifficulty)
         resultEndDifficulty.text = endDifficultyString
 
         // fetch mode from database
@@ -101,7 +137,7 @@ class ClimbFinishedFragment : Fragment() {
 
         // fetch time from database
         val time = "00:14:22"
-        val timeString  = getString(R.string.fragment_climb_finished_time_value, time)
+        val timeString = getString(R.string.fragment_climb_finished_time_value, time)
         resultTime.text = timeString
 
         // fetch length from database
@@ -120,9 +156,71 @@ class ClimbFinishedFragment : Fragment() {
         resultSpeed.text = speedString
     }
 
+    private fun insertValuesToUIFromDatabase(args: Long) {
+        // fetch all necessary items from database
+        mainScope.launch {
+            val session = getSession(args)
+            val date = session.session.createdAt
+            val actualLength = session.data.last().totalDistance.toFloat()
+            val goalLength = 20f
+            val startDifficulty = "Beginner"
+            val endDifficulty = "Athlete"
+            val mode = "To next difficulty"
+            val duration = "00:05:17"
+            val userWeight = settingsDao.getBodyWeightById(1).weight
+            val calories = CalorieCounter().countCalories(actualLength, userWeight)
+
+            val speedsArray = mutableListOf<Int>()
+            for (item in session.data.indices) {
+                speedsArray.add(session.data[item].speed)
+            }
+
+            val averageSpeed = speedsArray.average().toFloat()
+
+            val titleString = getString(R.string.fragment_climb_finished_result_title, date)
+            resultTitle.text = titleString
+
+            val titleDetailString =
+                getString(R.string.fragment_climb_finished_result_detail, actualLength, goalLength)
+            resultDetail.text = titleDetailString
+
+            val startDifficultyString =
+                getString(R.string.fragment_climb_finished_difficulty_start, startDifficulty)
+            resultStartDifficulty.text = startDifficultyString
+
+            val endDifficultyString =
+                getString(R.string.fragment_climb_finished_difficulty_end, endDifficulty)
+            resultEndDifficulty.text = endDifficultyString
+
+            val modeString = getString(R.string.fragment_climb_finished_mode, mode)
+            resultMode.text = modeString
+
+            val timeString = getString(R.string.fragment_climb_finished_time_value, duration)
+            resultTime.text = timeString
+
+            val lengthString =
+                getString(R.string.fragment_climb_finished_length_value, actualLength)
+            resultLength.text = lengthString
+
+            val caloriesString =
+                getString(R.string.fragment_climb_finished_calories_value, calories)
+            resultCalories.text = caloriesString
+
+            val speedString = getString(R.string.fragment_climb_finished_speed_value, averageSpeed)
+            resultSpeed.text = speedString
+        }
+    }
+
+    private suspend fun getSession(args: Long) = withContext(Dispatchers.IO) {
+        sessionWithDataDao = AppDatabase.get(requireContext()).sessionDao()
+        val getSession = sessionWithDataDao.getSessionWithData(args)
+        Log.d("statistics_fragment", "${getSession}")
+        return@withContext getSession
+    }
+
     private fun navigateToStatistics() {
         val sfm = requireActivity().supportFragmentManager
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
+        Log.d("MainActivity.kt", "BottomNavigation tracker clicked")
         val transaction = sfm.beginTransaction()
         transaction.replace<StatisticsFragment>(R.id.fragmentContainer)
         transaction.commit()

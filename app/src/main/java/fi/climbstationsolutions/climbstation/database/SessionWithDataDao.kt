@@ -28,4 +28,9 @@ interface SessionWithDataDao {
     @Transaction
     @Query("SELECT * FROM Session WHERE id =:id")
     suspend fun getSessionWithData(id: Long): SessionWithData
+
+    // SessionWithData
+    @Transaction
+    @Query("SELECT * FROM Session")
+    suspend fun getAllSessionsWithData(): List<SessionWithData>
 }

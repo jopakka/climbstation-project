@@ -4,7 +4,8 @@ import android.util.Log
 
 object ClimbStationRepository {
     private const val TAG = "Network"
-    private val call = ClimbStationAPI.get("http://192.168.1.11:8800/")
+    //1.11 Joonas
+    private val call = ClimbStationAPI.get("http://192.168.100.15:8800/")
 
     /**
      * Gets clientKey from ClimbStation.
