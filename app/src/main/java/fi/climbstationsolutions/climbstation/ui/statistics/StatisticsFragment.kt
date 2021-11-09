@@ -1,11 +1,14 @@
 package fi.climbstationsolutions.climbstation.ui.statistics
 
+import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
@@ -22,6 +25,8 @@ class StatisticsFragment : Fragment() {
     private val mainScope = CoroutineScope(Dispatchers.Main + parentJob)
 
     private lateinit var dao: SessionWithDataDao
+
+    private lateinit var container: ConstraintLayout
 
     private lateinit var sessionsList: List<SessionWithData>
     private lateinit var adapterItemList: MutableList<StatisticsListItemData>
@@ -43,14 +48,12 @@ class StatisticsFragment : Fragment() {
 
         val myContext = this.context
 
-
         // Gets all session id's from database
-
         mainScope.launch {
-            Log.d("statistics_fragment","getting sessionsList")
+            Log.d("statistics_fragment", "getting sessionsList")
             sessionsList = getAllSessions()
             adapterItemList = mutableListOf()
-            Log.d("statistics_fragment","after ioScope, sessionsList: ${sessionsList}")
+            Log.d("statistics_fragment", "after ioScope, sessionsList: ${sessionsList}")
             val testArray = arrayOf(1, 2, 3, 4, 5, 6, 7)
             for (item in sessionsList.indices) {
                 val sessionId: Long = sessionsList[item].session.id
@@ -60,11 +63,12 @@ class StatisticsFragment : Fragment() {
                 adapterItemList.add(adapterItem)
             }
 
-            Log.d("statistics_fragment","adapterItemList: ${adapterItemList}")
+            Log.d("statistics_fragment", "adapterItemList: ${adapterItemList}")
 
             val recyclerView: RecyclerView = view.findViewById(R.id.sessionList)
             recyclerView.layoutManager = LinearLayoutManager(myContext)
-            recyclerView.adapter = context?.let { StatisticsAdapter(adapterItemList, it, requireActivity()) }
+            recyclerView.adapter =
+                context?.let { StatisticsAdapter(adapterItemList, it, this@StatisticsFragment) }
         }
     }
 

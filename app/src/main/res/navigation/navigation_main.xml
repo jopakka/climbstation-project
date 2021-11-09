@@ -17,15 +17,35 @@
         android:id="@+id/statistic"
         android:name="fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment"
         android:label="fragment_statistics"
-        tools:layout="@layout/fragment_statistics" />
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_statistic_to_climbFinishedFragment"
+            app:destination="@id/climbFinishedFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settings"
         android:name="fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settings_to_climbFinishedFragment"
+            app:destination="@id/climbFinishedFragment" />
+    </fragment>
     <fragment
         android:id="@+id/adjustFragment"
         android:name="fi.climbstationsolutions.climbstation.ui.climb.AdjustFragment"
         android:label="fragment_adjust"
         tools:layout="@layout/fragment_adjust" />
+    <fragment
+        android:id="@+id/climbFinishedFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragment"
+        android:label="fragment_climb_finished"
+        tools:layout="@layout/fragment_climb_finished" >
+        <argument
+            android:name="sessionId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_climbFinishedFragment_to_statistic"
+            app:destination="@id/statistic" />
+    </fragment>
 </navigation>

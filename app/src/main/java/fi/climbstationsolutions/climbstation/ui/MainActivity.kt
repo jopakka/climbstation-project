@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.fragment.app.replace
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME

@@ -10,12 +10,16 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.replace
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.BodyWeight
 import fi.climbstationsolutions.climbstation.database.SettingsDao
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragment
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
+import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
+import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragmentDirections
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -143,10 +147,5 @@ class SettingsFragment : Fragment() {
     }
 
     private fun navigateToClimbFinished() {
-        val sfm = requireActivity().supportFragmentManager
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = sfm.beginTransaction()
-        transaction.replace<ClimbFinishedFragment>(R.id.fragmentContainer)
-        transaction.commit()
     }
 }

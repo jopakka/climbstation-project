@@ -4,4 +4,5 @@
     <dimen name="string_list_layout_width">125dp</dimen>
     <dimen name="seek_bar_thickness">4dp</dimen>
     <dimen name="seek_bar_thumb_size">20dp</dimen>
+    <dimen name="statistics_bottom">76dp</dimen>
 </resources>
