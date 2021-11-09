@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ClimbStation)
         super.onCreate(savedInstanceState)
+        super.onPostResume()
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         // Un-comment this if you want to connect to server
