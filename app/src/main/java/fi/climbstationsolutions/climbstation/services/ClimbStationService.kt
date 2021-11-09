@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.Data
@@ -159,9 +160,11 @@ class ClimbStationService : Service() {
         serviceScope.launch {
             try {
                 // Get clientKey from ClimbStation
-                // TODO("Maybe change userID and password to be in some file")
-                clientKey =
-                    ClimbStationRepository.login(climbStationSerialNo, "user", "climbstation")
+                clientKey = ClimbStationRepository.login(
+                    climbStationSerialNo,
+                    BuildConfig.USERNAME,
+                    BuildConfig.PASSWORD
+                )
                 // Save session to database
                 val calendar = Calendar.getInstance()
                 sessionID = sessionDao.insertSession(Session(0, sessionName, calendar.time))

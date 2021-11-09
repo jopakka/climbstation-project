@@ -6,6 +6,9 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+def props = new Properties()
+file('src/main/assets/config.properties').withInputStream {props.load(it)  }
+
 android {
     compileSdk 30
 
@@ -23,6 +26,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        buildTypes.each {
+            it.buildConfigField 'String', 'CLIMBSTATION_URL', props.CLIMBSTATION_URL
+            it.buildConfigField 'String', 'USERNAME', props.USERNAME
+            it.buildConfigField 'String', 'PASSWORD', props.PASSWORD
         }
     }
     compileOptions {
