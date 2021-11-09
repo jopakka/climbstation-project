@@ -34,25 +34,6 @@ class SerialFragmentTests {
     }
 
     @Test
-    fun useCorrectTestSerialNumber() {
-        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-
-        val scenario = launchFragmentInContainer<SerialFragment>()
-        scenario.onFragment {
-            navController.setGraph(R.navigation.init_nav_graph)
-
-            Navigation.setViewNavController(it.requireView(), navController)
-        }
-
-        onView(withId(R.id.etSerialNo)).perform(
-            typeText("20110001"),
-            closeSoftKeyboard()
-        )
-        onView(withId(R.id.btnContinue)).perform(click())
-        assertEquals(navController.currentDestination?.id, R.id.mainActivity)
-    }
-
-    @Test
     fun useIncorrectTestSerialNumber() {
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
 
