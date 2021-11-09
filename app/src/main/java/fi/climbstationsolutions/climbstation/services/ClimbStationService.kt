@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.Data
@@ -67,14 +68,6 @@ class ClimbStationService : Service() {
         }
 
         return START_STICKY
-    }
-
-    /**
-     * Cancels [serviceJob] to avoid memory leak
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        serviceJob.cancel()
     }
 
     /**
@@ -167,9 +160,11 @@ class ClimbStationService : Service() {
         serviceScope.launch {
             try {
                 // Get clientKey from ClimbStation
-                // TODO("Maybe change userID and password to be in some file")
-                clientKey =
-                    ClimbStationRepository.login(climbStationSerialNo, "user", "climbstation")
+                clientKey = ClimbStationRepository.login(
+                    climbStationSerialNo,
+                    BuildConfig.USERNAME,
+                    BuildConfig.PASSWORD
+                )
                 // Save session to database
                 val calendar = Calendar.getInstance()
                 sessionID = sessionDao.insertSession(Session(0, sessionName, calendar.time))
@@ -180,6 +175,11 @@ class ClimbStationService : Service() {
                     getInfoFromClimbStation(sessionID ?: throw Exception("No sessionID"))
                 else
                     throw Exception("ClimbStation not started")
+
+                // Set endedAt time to session when it's finished
+                sessionID?.let {
+                    sessionDao.setEndedAtToSession(it, calendar.time)
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
                 sessionID?.let {
@@ -198,7 +198,6 @@ class ClimbStationService : Service() {
             try {
                 operateClimbStation("stop")
                 logoutFromClimbStation()
-                // TODO("Set end time for session")
             } catch (e: Exception) {
                 Log.e(TAG, "StopClimbStationAndLogout error: ${e.localizedMessage}")
             }
