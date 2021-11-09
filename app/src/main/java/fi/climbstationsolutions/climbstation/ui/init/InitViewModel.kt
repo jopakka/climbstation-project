@@ -26,14 +26,6 @@ class InitViewModel : ViewModel() {
     fun testSerialNo(serialNo: String) {
         setLoading(true)
 
-        // TODO("This is for testing purposes only")
-        if(serialNo == "20110001") {
-            serial = serialNo
-            setLoading(false)
-            return
-        }
-        // END OF TESTING CODE
-
         viewModelScope.launch {
             serial = if(isLoginOk(serialNo)) serialNo else null
             setLoading(false)
