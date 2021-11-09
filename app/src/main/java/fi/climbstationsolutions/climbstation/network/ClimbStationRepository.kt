@@ -2,11 +2,11 @@ package fi.climbstationsolutions.climbstation.network
 
 import android.util.Log
 import androidx.annotation.IntRange
+import fi.climbstationsolutions.climbstation.BuildConfig
 
 object ClimbStationRepository {
     private const val TAG = "Network"
-    // TODO("Use URL from file")
-    private val call = ClimbStationAPI.get("http://192.168.1.11:8800/")
+    private val call = ClimbStationAPI.get(BuildConfig.CLIMBSTATION_URL)
 
     /**
      * Gets clientKey from ClimbStation.
