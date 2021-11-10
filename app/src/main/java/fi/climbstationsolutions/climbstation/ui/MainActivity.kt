@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.ui
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,8 +8,10 @@ import android.util.Log
 import androidx.fragment.app.replace
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.AppDatabase
+import fi.climbstationsolutions.climbstation.database.BodyWeight
+import fi.climbstationsolutions.climbstation.database.SettingsDao
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
@@ -18,14 +21,34 @@ import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragment
 import fi.climbstationsolutions.climbstation.ui.init.InitActivity
 import fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment
 import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var settingsDao: SettingsDao
     private lateinit var binding: ActivityMainBinding
+
+    private val parentJob = Job()
+    private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
+    private val mainScope = CoroutineScope(Dispatchers.Main + parentJob)
+    private var userBodyWeightDefault: Float = 70.00F
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ClimbStation)
         super.onCreate(savedInstanceState)
         super.onPostResume()
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        settingsDao = AppDatabase.get(applicationContext).settingsDao()
+
+        ioScope.launch {
+            val userWeight = settingsDao.getBodyWeightById(1)
+            if (userWeight == null) {
+                settingsDao.insertUserBodyWeight(BodyWeight(1, userBodyWeightDefault))
+            }
+        }
 
         // Un-comment this if you want to connect to server
 //        startActivity(Intent(this, ClimbActionActivity::class.java))
