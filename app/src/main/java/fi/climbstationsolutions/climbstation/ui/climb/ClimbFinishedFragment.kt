@@ -108,8 +108,8 @@ class ClimbFinishedFragment : Fragment() {
             val endDifficulty = "Athlete"
             val mode = "To next difficulty"
             val duration = "00:05:17"
-            val userWeight = settingsDao.getBodyWeightById(1).weight
-            val calories = CalorieCounter().countCalories(actualLength, userWeight)
+            val userWeight = settingsDao.getBodyWeightById(1)?.weight
+            val calories = userWeight?.let { CalorieCounter().countCalories(actualLength, it) }
 
             val speedsArray = mutableListOf<Int>()
             for (item in session.data.indices) {
@@ -126,7 +126,7 @@ class ClimbFinishedFragment : Fragment() {
             viewModel.setSelectedMode(mode)
             viewModel.setDuration(duration)
             viewModel.setDistance(actualLength)
-            viewModel.setCalories(calories)
+            viewModel.setCalories(calories ?: 0f)
             viewModel.setAverageSpeed(averageSpeed)
         }
     }

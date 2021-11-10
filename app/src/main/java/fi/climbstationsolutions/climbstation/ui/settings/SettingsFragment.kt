@@ -8,25 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.TextView
-import androidx.fragment.app.replace
-import androidx.navigation.fragment.findNavController
-import com.google.android.material.button.MaterialButton
+import androidx.fragment.app.viewModels
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.AppDatabase
-import fi.climbstationsolutions.climbstation.database.BodyWeight
 import fi.climbstationsolutions.climbstation.database.SettingsDao
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragment
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
-import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
-import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragmentDirections
-
+import fi.climbstationsolutions.climbstation.databinding.FragmentSettingsBinding
+import fi.climbstationsolutions.climbstation.ui.viewmodels.SettingsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment() {
+    private lateinit var binding: FragmentSettingsBinding
+    private val viewModel: SettingsViewModel by viewModels()
+
     private val parentJob = Job()
     private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
     private val mainScope = CoroutineScope(Dispatchers.Main + parentJob)
@@ -34,70 +30,40 @@ class SettingsFragment : Fragment() {
 
     private lateinit var settingsDao: SettingsDao
 
-    private lateinit var settingsBodyWeight: TextView
-    private lateinit var editWeightBtn: MaterialButton
-    private lateinit var toClimbFinishedBtn: MaterialButton
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settingsDao = AppDatabase.get(requireContext()).settingsDao()
-        ioScope.launch {
-            val userWeight = settingsDao.getBodyWeightById(1)
-            // not sure why the IDE is warning about this, it is sometimes true
-            if (userWeight == null) {
-                settingsDao.insertUserBodyWeight(BodyWeight(1, userBodyWeightDefault))
-            } else {
-                Log.d(
-                    "settings_fragment_oncreate",
-                    "user weight already exists: ${settingsDao.getBodyWeightById(1)}"
-                )
-            }
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
+        binding = FragmentSettingsBinding.inflate(layoutInflater)
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initializeValues(view)
+        initializeValues()
     }
 
-    private fun initializeValues(view: View) {
-        settingsBodyWeight = view.findViewById(R.id.settings_body_weight)
-        editWeightBtn = view.findViewById(R.id.settings_btn_edit_body_weight)
-        toClimbFinishedBtn = view.findViewById(R.id.toClimbFinished)
-
+    private fun initializeValues() {
         ioScope.launch {
-            val userWeight = settingsDao.getBodyWeightById(1)
-            Log.d("settings_fragment_initvalues", "userWeight: $userWeight")
-            if (userWeight == null) {
-                mainScope.launch {
-                    settingsBodyWeight.text =
-                        getString(R.string.fragment_settings_weight, userBodyWeightDefault)
-                }
+            val user = settingsDao.getBodyWeightById(1)
+            if (user == null) {
+                viewModel.setUserWeight(userBodyWeightDefault)
             } else {
-                mainScope.launch {
-                    settingsBodyWeight.text =
-                        getString(R.string.fragment_settings_weight, userWeight.weight)
-                }
+                mainScope.launch { viewModel.setUserWeight(user.weight) }
             }
         }
-
-        editWeightBtn.setOnClickListener {
-            editWeightPopup()
-        }
-
-        toClimbFinishedBtn.setOnClickListener {
-            navigateToClimbFinished()
-        }
+        binding.settingsBtnEditBodyWeight.setOnClickListener(clickListener)
     }
 
     private fun editWeightPopup() {
@@ -118,10 +84,9 @@ class SettingsFragment : Fragment() {
                 val userWeightKg = userInput.text.toString().toFloat()
                 ioScope.launch {
                     settingsDao.updateUserBodyWeight(userWeightKg)
-                    val newUserBodyWeight = settingsDao.getBodyWeightById(1).weight
-                    mainScope.launch {
-                        settingsBodyWeight.text =
-                            getString(R.string.fragment_settings_weight, newUserBodyWeight)
+                    val newUserBodyWeight = settingsDao.getBodyWeightById(1)?.weight
+                    if (newUserBodyWeight != null) {
+                        mainScope.launch { viewModel.setUserWeight(newUserBodyWeight) }
                     }
                 }
             } else {
@@ -146,6 +111,11 @@ class SettingsFragment : Fragment() {
         dialog.show()
     }
 
-    private fun navigateToClimbFinished() {
+    private val clickListener = View.OnClickListener {
+        when (it) {
+            binding.settingsBtnEditBodyWeight -> {
+                editWeightPopup()
+            }
+        }
     }
 }

@@ -81,3 +81,8 @@ fun bindClimbFinishedCalories(view: TextView, calories: Float?) {
 fun bindClimbFinishedAverageSpeed(view: TextView, averageSpeed: Float?) {
     view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, averageSpeed)
 }
+
+@BindingAdapter("settingsUserWeightDisplay")
+fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
+    view.text = view.context.getString(R.string.fragment_settings_weight, userWeight)
+}

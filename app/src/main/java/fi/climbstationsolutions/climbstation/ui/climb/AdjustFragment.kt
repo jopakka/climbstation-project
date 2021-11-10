@@ -10,6 +10,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.TextView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdapter
 import fi.climbstationsolutions.climbstation.adapters.HorizontalStringPickerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentAdjustBinding
+import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalNumberPickerViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalStringPickerViewModel
 
@@ -26,6 +28,8 @@ AdjustFragment : Fragment(R.layout.fragment_adjust) {
 
     private lateinit var horizontalNumberPickerViewModel: HorizontalNumberPickerViewModel
     private lateinit var horizontalStringPickerViewModel: HorizontalStringPickerViewModel
+    private val viewModel: AdjustViewModel by viewModels()
+
     private lateinit var numberLayoutManager: LinearLayoutManager
     private lateinit var stringLayoutManager: LinearLayoutManager
     private lateinit var numberList: RecyclerView
