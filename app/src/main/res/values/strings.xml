@@ -25,7 +25,7 @@
     <!--fragment_adjust strings-->
     <string name="fragment_adjust_title">ADJUST</string>
     <string name="fragment_adjust_length">Length / m:</string>
-    <string name="fragment_adjust_speed">Speed: %d</string>
+    <string name="fragment_adjust_speed">Speed: %d m / min</string>
     <string name="fragment_adjust_mode">Mode:</string>
     <string name="fragment_adjust_start">Start</string>
 

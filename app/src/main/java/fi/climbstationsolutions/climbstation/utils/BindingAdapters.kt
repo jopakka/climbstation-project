@@ -82,7 +82,14 @@ fun bindClimbFinishedAverageSpeed(view: TextView, averageSpeed: Float?) {
     view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, averageSpeed)
 }
 
+// Settings fragment
 @BindingAdapter("settingsUserWeightDisplay")
 fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
     view.text = view.context.getString(R.string.fragment_settings_weight, userWeight)
+}
+
+// Adjust fragment
+@BindingAdapter("adjustSpeed")
+fun bindAdjustSpeed(view: TextView, speed: Int?) {
+    view.text = view.context.getString(R.string.fragment_adjust_speed, speed)
 }
