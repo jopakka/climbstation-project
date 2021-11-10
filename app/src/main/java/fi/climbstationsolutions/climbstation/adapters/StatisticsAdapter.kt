@@ -1,21 +1,18 @@
 package fi.climbstationsolutions.climbstation.adapters
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.replace
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragment
 import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment
+import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.statistics.StatisticsListItemData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,7 +20,7 @@ import kotlinx.coroutines.launch
 class StatisticsAdapter(
     private val dataSet: List<StatisticsListItemData>,
     private val context: Context,
-    private val activity: FragmentActivity
+    private val fragment: StatisticsFragment
 ) : RecyclerView.Adapter<StatisticsAdapter.ViewHolder>() {
     /**
      * Provide a reference to the type of views that you are using
@@ -48,8 +45,6 @@ class StatisticsAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
-
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         val sessionId = dataSet[position].sessionId
@@ -71,17 +66,8 @@ class StatisticsAdapter(
     override fun getItemCount() = dataSet.size
 
     private fun enterSessionDetailView(sessionId: Long) {
-        val sfm = activity.supportFragmentManager
-        Log.d("SA","sessionId: $sessionId")
-        val data = Bundle()
-        data.putLong("sessionId", sessionId)
-        val fragment = ClimbFinishedFragment()
-        fragment.arguments = data
-        Log.d("SA","fragment args: ${fragment.arguments}")
-
-        val transaction = sfm.beginTransaction()
-        transaction.replace(R.id.fragmentContainer, fragment)
-        transaction.commit()
+        val action = StatisticsFragmentDirections.actionStatisticToClimbFinishedFragment(sessionId)
+        fragment.findNavController().navigate(action)
     }
 
     private fun deleteSession() {
