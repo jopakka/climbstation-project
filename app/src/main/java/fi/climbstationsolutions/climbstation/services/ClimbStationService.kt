@@ -103,9 +103,9 @@ class ClimbStationService : Service() {
     /**
      * Creates new [Intent]. Then adds extras to it and send broadcast.
      */
-    private fun sendInfoToActivity() {
+    private fun sendIdFromBroadcast(name: String, id: Long) {
         val intent = Intent(BROADCAST_NAME)
-        intent.putExtra("Status", "Ok")
+        intent.putExtra(name, id)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -216,10 +216,11 @@ class ClimbStationService : Service() {
     }
 
     /**
-     * Loop of getting info from ClimbStation and [sendInfoToActivity]
+     * Loop of getting info from ClimbStation and [sendIdFromBroadcast]
      */
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
+            sendIdFromBroadcast("sessionID", sessionID)
             Log.d(TAG, "Profile: $profile")
 
             setAngle(profile.steps[0].angle)
@@ -227,7 +228,6 @@ class ClimbStationService : Service() {
             while (SERVICE_RUNNING) {
                 CLIMBING_ACTIVE = true
                 getInfo(sessionID)
-                sendInfoToActivity()
                 delay(GET_INFO_DELAY)
             }
             CLIMBING_ACTIVE = false
