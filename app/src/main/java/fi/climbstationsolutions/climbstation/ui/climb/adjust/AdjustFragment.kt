@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb
+package fi.climbstationsolutions.climbstation.ui.climb.adjust
 
 import android.os.Bundle
 import android.util.Log

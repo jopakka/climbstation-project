@@ -6,7 +6,7 @@ import androidx.annotation.IntRange
 object ClimbStationRepository {
     private const val TAG = "Network"
     // TODO("Use URL from file")
-    private val call = ClimbStationAPI.get("http://192.168.1.11:8800/")
+    private val call = ClimbStationAPI.get("http://192.168.86.228:8800/")
 
     /**
      * Gets clientKey from ClimbStation.

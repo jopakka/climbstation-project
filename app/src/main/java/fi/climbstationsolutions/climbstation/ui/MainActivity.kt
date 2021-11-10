@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         // Un-comment this if you want to connect to server
-//        startActivity(Intent(this, ClimbActionActivity::class.java))
-//        finish()
+    //    startActivity(Intent(this, ClimbActionActivity::class.java))
+  //      finish()
 
         /*
             If no serialNo found, then start InitActivity
