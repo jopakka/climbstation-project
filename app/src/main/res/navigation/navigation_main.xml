@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_climb_to_climbOnFragment"
             app:destination="@id/climbOnFragment" />
+        <action
+            android:id="@+id/action_climb_to_climbOnFragment2"
+            app:destination="@id/climbOnFragment" />
     </fragment>
     <fragment
         android:id="@+id/statistic"
@@ -45,7 +48,11 @@
         android:label="ClimbOnFragment" >
         <argument
             android:name="profile"
-            app:argType="fi.climbstationsolutions.climbstation.network.profile.Profile" />
+            app:argType="fi.climbstationsolutions.climbstation.network.profile.Profile"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_climbOnFragment_to_climbFinishedFragment"
+            app:destination="@id/climbFinishedFragment" />
     </fragment>
         tools:layout="@layout/fragment_adjust" />
     <fragment

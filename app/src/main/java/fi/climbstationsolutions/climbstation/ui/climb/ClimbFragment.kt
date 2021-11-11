@@ -16,6 +16,7 @@ import fi.climbstationsolutions.climbstation.adapters.DifficultyRecyclerviewAdap
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbBinding
 import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
+import fi.climbstationsolutions.climbstation.services.ClimbStationService
 
 class ClimbFragment : Fragment(), CellClicklistener {
     private lateinit var binding: FragmentClimbBinding
@@ -31,17 +32,18 @@ class ClimbFragment : Fragment(), CellClicklistener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        val preferencePos = getPref()
+        if (!isServiceRunning()) {
+            val preferencePos = getPref()
 
-        binding.difficultyRv.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context, preferencePos)
+            binding.difficultyRv.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+                adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context, preferencePos)
+            }
+
+            binding.startBtn.setOnClickListener(clickListener)
+            binding.adjustBtn.setOnClickListener(clickListener)
         }
-
-        binding.startBtn.setOnClickListener(clickListener)
-        binding.adjustBtn.setOnClickListener(clickListener)
-
         return binding.root
     }
 
@@ -52,6 +54,16 @@ class ClimbFragment : Fragment(), CellClicklistener {
 
     override fun onCellClickListener(profile: Profile) {
         viewModel.postValue(profile)
+    }
+
+    private fun isServiceRunning(): Boolean {
+        return if (ClimbStationService.SERVICE_RUNNING) {
+            val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(null)
+            this.findNavController().navigate(startAction)
+            true
+        } else {
+            false
+        }
     }
 
     private fun savePref() {

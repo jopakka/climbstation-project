@@ -4,15 +4,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
+import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
@@ -20,6 +27,8 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity
 import fi.climbstationsolutions.climbstation.utils.TimeService
+import java.sql.Time
+import java.util.*
 import kotlin.math.roundToInt
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
@@ -29,8 +38,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         ClimbOnViewModelFactory(requireContext())
     }
 
-    private lateinit var serviceIntent: Intent
-    private var time = 0.0
+    private lateinit var broadcastManager: LocalBroadcastManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,8 +49,11 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        serviceIntent = Intent(context, TimeService::class.java)
-        requireActivity().registerReceiver(updateTime, IntentFilter(TimeService.TIMER_UPDATED))
+        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
+            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_NAME))
+        }
+
+        viewModel.otherData.observe(viewLifecycleOwner, sessionObserver)
 
         binding.stopBtn.setOnClickListener {
             stopClimbing()
@@ -51,28 +62,27 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         return binding.root
     }
 
+    private val sessionObserver = Observer<SessionWithData> {
+        viewModel.otherData.removeObservers(viewLifecycleOwner)
+        viewModel.startTimer()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startClimbing()
+        if (!ClimbStationService.SERVICE_RUNNING)
+            startClimbing()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+    }
 
-    private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(p0: Context, p1: Intent) {
-            time = p1.getDoubleExtra(TimeService.TIME_EXTRA, 0.0)
-            binding.stopWatch.text = getTimeStringFromDouble(time)
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val message = intent.getLongExtra("sessionID", 0L)
+            Log.d("BroadcastReceiver", "Message: $message")
         }
-
-    }
-
-    private fun getTimeStringFromDouble(time: Double): String {
-        val resultInt = time.roundToInt()
-
-        val hours = resultInt % 86400 / 3600
-        val minutes = resultInt % 86400 % 3600 / 60
-        val seconds = resultInt % 86400 % 3600
-
-        return getString(R.string.stop_watch, hours, minutes, seconds)
     }
 
     private fun startClimbing() {
@@ -90,8 +100,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             activity.startForegroundService(it)
         }
 
-        serviceIntent.putExtra(TimeService.TIME_EXTRA, time)
-        activity.startService(serviceIntent)
     }
 
     private fun stopClimbing() {
@@ -103,6 +111,13 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             activity.startForegroundService(it)
         }
 
-        activity.stopService(serviceIntent)
+        val action = viewModel.sessionWithData.value?.session?.id?.let {
+            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(
+                it
+            )
+        }
+        if (action != null) {
+            this.findNavController().navigate(action)
+        }
     }
 }

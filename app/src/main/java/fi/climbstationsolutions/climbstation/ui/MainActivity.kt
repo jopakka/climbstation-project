@@ -78,27 +78,6 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    private fun navigateToClimb() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace<ClimbFragment>(R.id.fragmentContainer)
-        transaction.commit()
-    }
-
-    private fun navigateToStatistics() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace<StatisticsFragment>(R.id.fragmentContainer)
-        transaction.commit()
-    }
-
-    private fun navigateToSettings() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace<SettingsFragment>(R.id.fragmentContainer)
-        transaction.commit()
-    }
-
     /**
      * Checks does serialNo exists in shared preferences
      * @return [Boolean]

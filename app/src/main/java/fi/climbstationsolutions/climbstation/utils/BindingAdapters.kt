@@ -42,13 +42,12 @@ fun bindStepsToSpeed(view: TextView, steps: List<Step>?) {
 }
 
 @BindingAdapter("sessionTime")
-fun bindSessionTime(view: TextView, date: Date?) {
+fun bindSessionTime(view: TextView, time: Long) {
 
-    var time: String = "no time"
-    if (date != null) {
-        time = DateFormat.getTimeInstance().format(date)
-    }
-    view.text = time
+    val minutes = (time / 1000) / 60
+    val seconds = (time / 1000) % 60
+
+    view.text = "00:${minutes}:${seconds}"
 }
 
 @BindingAdapter("sessionLength")
