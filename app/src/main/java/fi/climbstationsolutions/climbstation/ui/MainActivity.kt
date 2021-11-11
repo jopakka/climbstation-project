@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ClimbStation)
         super.onCreate(savedInstanceState)
+        super.onPostResume()
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         settingsDao = AppDatabase.get(applicationContext).settingsDao()
