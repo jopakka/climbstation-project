@@ -110,6 +110,15 @@ class ClimbStationService : Service() {
     }
 
     /**
+     * Creates new [Intent]. Then adds extra to it and send broadcast.
+     */
+    private fun broadcastValue(name: String, value: Int) {
+        val intent = Intent(BROADCAST_NAME)
+        intent.putExtra(name, value)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    /**
      * Creates notification for service
      */
     private fun createNotification() {
@@ -246,17 +255,17 @@ class ClimbStationService : Service() {
         val info = ClimbStationRepository.deviceInfo(climbStationSerialNo, clientKey)
         Log.d(TAG, "Info: $info")
 
+        val speed = info.speedNow.toInt()
+        val angle = info.angleNow.toInt()
+        val length = info.length.toInt()
+
         // Save info to database
-        val dID = sessionDao.insertData(
-            Data(
-                0,
-                sessionID,
-                info.speedNow.toInt(),
-                info.angleNow.toInt(),
-                info.length.toInt()
-            )
-        )
+        val dID = sessionDao.insertData(Data(0, sessionID, speed, angle, length))
         Log.d(TAG, "dataID: $dID")
+
+        broadcastValue("speed", speed)
+        broadcastValue("angle", angle)
+        broadcastValue("length", length)
 
         adjustToProfile(info.length.toInt())
     }
