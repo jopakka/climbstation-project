@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">ClimbStation</string>
 
+    <!--Top app bar strings-->
+    <string name="top_app_bar_settings">Settings</string>
+
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
     <string name="bottom_nav_statistics">Statistics</string>
+    <string name="bottom_nav_profile">Profile</string>
     <string name="bottom_nav_settings">Settings</string>
 
     <!--fragment_climb_finished strings-->
@@ -47,6 +51,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Accessibility for top app bar-->
+    <string name="content_description_settings_icon">settings</string>
 
     <!--Accessibility for ClimbStation sprites-->
     <string name="content_description_climbstation_logo_image">ClimbStation logo</string>

@@ -102,7 +102,7 @@ class ClimbFinishedFragment : Fragment() {
         mainScope.launch {
             val session = getSession(sessionId)
             val date = session.session.createdAt
-            val actualLength = session.data.last().totalDistance.toFloat()
+            val actualLength = session.data.last().totalDistance.toFloat() / 1000
             val goalLength = 20f
             val startDifficulty = "Beginner"
             val endDifficulty = "Athlete"

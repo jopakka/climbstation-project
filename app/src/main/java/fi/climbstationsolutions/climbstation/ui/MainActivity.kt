@@ -5,8 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.replace
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -17,6 +22,7 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragment
 import fi.climbstationsolutions.climbstation.ui.init.InitActivity
 import fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment
@@ -29,6 +35,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private lateinit var settingsDao: SettingsDao
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     private val parentJob = Job()
     private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
@@ -57,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             If no serialNo found, then start InitActivity
             else continue with MainActivity
          */
-        if(!hasSerialNo()){
+        if (!hasSerialNo()) {
             val initIntent = Intent(this, InitActivity::class.java)
             startActivity(initIntent)
             finish()
@@ -66,33 +73,45 @@ class MainActivity : AppCompatActivity() {
 
             initNavigation()
         }
+
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.settings -> {
+                    // Handle favorite icon press
+                    Log.d("top_app_bar_navigation_item_click", "settings clicked")
+                    navController.navigate(R.id.settings)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun initNavigation() {
         val navHost =
             supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
-        val navController = navHost.navController
+        navController = navHost.navController
 
         val navView = binding.bottomNavigation
         navView.setupWithNavController(navController)
     }
 
     private fun navigateToClimb() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
+        Log.d("MainActivity.kt", "BottomNavigation tracker clicked")
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace<ClimbFragment>(R.id.fragmentContainer)
         transaction.commit()
     }
 
     private fun navigateToStatistics() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
+        Log.d("MainActivity.kt", "BottomNavigation tracker clicked")
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace<StatisticsFragment>(R.id.fragmentContainer)
         transaction.commit()
     }
 
     private fun navigateToSettings() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
+        Log.d("MainActivity.kt", "BottomNavigation tracker clicked")
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace<SettingsFragment>(R.id.fragmentContainer)
         transaction.commit()

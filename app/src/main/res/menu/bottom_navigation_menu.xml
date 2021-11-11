@@ -13,8 +13,8 @@
         android:title="@string/bottom_nav_statistics"/>
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/profile"
         android:enabled="true"
-        android:icon="@drawable/settings_menu_logo"
-        android:title="@string/bottom_nav_settings"/>
+        android:icon="@drawable/ic_person_24"
+        android:title="@string/bottom_nav_profile"/>
 </menu>
