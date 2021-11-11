@@ -2,6 +2,7 @@ package fi.climbstationsolutions.climbstation.services
 
 import android.app.*
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -101,20 +102,17 @@ class ClimbStationService : Service() {
     }
 
     /**
-     * Creates new [Intent]. Then adds extras to it and send broadcast.
+     * Broadcasts bundle named "info", which contains [Int]s "speed", "angle" and "length"
      */
-    private fun sendIdFromBroadcast(name: String, id: Long) {
+    private fun broadcastValues(speed: Int, angle: Int, length: Int) {
         val intent = Intent(BROADCAST_NAME)
-        intent.putExtra(name, id)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-    }
 
-    /**
-     * Creates new [Intent]. Then adds extra to it and send broadcast.
-     */
-    private fun broadcastValue(name: String, value: Int) {
-        val intent = Intent(BROADCAST_NAME)
-        intent.putExtra(name, value)
+        val bundle = Bundle()
+        bundle.putInt("speed", speed)
+        bundle.putInt("angle", angle)
+        bundle.putInt("length", length)
+
+        intent.putExtra("info", bundle)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -229,7 +227,6 @@ class ClimbStationService : Service() {
      */
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
-            sendIdFromBroadcast("sessionID", sessionID)
             Log.d(TAG, "Profile: $profile")
 
             setAngle(profile.steps[0].angle)
@@ -263,9 +260,7 @@ class ClimbStationService : Service() {
         val dID = sessionDao.insertData(Data(0, sessionID, speed, angle, length))
         Log.d(TAG, "dataID: $dID")
 
-        broadcastValue("speed", speed)
-        broadcastValue("angle", angle)
-        broadcastValue("length", length)
+        broadcastValues(speed, angle, length)
 
         adjustToProfile(info.length.toInt())
     }
