@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import java.util.*
 
@@ -32,6 +33,10 @@ interface SessionWithDataDao {
     @Transaction
     @Query("SELECT * FROM Session WHERE id =:id")
     suspend fun getSessionWithData(id: Long): SessionWithData
+
+    @Transaction
+    @Query("SELECT * FROM Session WHERE id = (SELECT MAX(id) FROM Session) LIMIT 1")
+    fun getLastSessionWithData(): LiveData<SessionWithData>
 
     // SessionWithData
     @Transaction

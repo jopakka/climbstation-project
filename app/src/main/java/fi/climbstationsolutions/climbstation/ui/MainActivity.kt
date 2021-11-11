@@ -51,8 +51,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Un-comment this if you want to connect to server
-//        startActivity(Intent(this, ClimbActionActivity::class.java))
-//        finish()
+    //    startActivity(Intent(this, ClimbActionActivity::class.java))
+  //      finish()
 
         /*
             If no serialNo found, then start InitActivity
@@ -76,27 +76,6 @@ class MainActivity : AppCompatActivity() {
 
         val navView = binding.bottomNavigation
         navView.setupWithNavController(navController)
-    }
-
-    private fun navigateToClimb() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace<ClimbFragment>(R.id.fragmentContainer)
-        transaction.commit()
-    }
-
-    private fun navigateToStatistics() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace<StatisticsFragment>(R.id.fragmentContainer)
-        transaction.commit()
-    }
-
-    private fun navigateToSettings() {
-        Log.d("MainActivity.kt","BottomNavigation tracker clicked")
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace<SettingsFragment>(R.id.fragmentContainer)
-        transaction.commit()
     }
 
     /**
