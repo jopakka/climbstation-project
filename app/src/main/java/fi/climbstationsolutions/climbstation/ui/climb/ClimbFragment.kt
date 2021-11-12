@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,6 +43,8 @@ class ClimbFragment : Fragment(), CellClicklistener {
             }
 
             binding.startBtn.setOnClickListener(clickListener)
+
+            // currently inactive, as proper functionality has not been yet implemented
             binding.adjustBtn.setOnClickListener(clickListener)
         }
         return binding.root
@@ -100,8 +103,14 @@ class ClimbFragment : Fragment(), CellClicklistener {
     private val clickListener = View.OnClickListener {
         when (it) {
             binding.adjustBtn -> {
-                val adjustAction = ClimbFragmentDirections.actionClimbToAdjustFragment()
-                this.findNavController().navigate(adjustAction)
+//                val adjustAction = ClimbFragmentDirections.actionClimbToAdjustFragment()
+//                this.findNavController().navigate(adjustAction)
+
+                val text = "Not yet implemented"
+                val duration = Toast.LENGTH_SHORT
+
+                val toast = Toast.makeText(requireContext(), text, duration)
+                toast.show()
             }
             binding.startBtn -> {
                 Log.d("STARTBTN", "Works")

@@ -401,6 +401,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="8dp"
                         android:text="Adjust"
+                        android:backgroundTint="@color/button_grey"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/startBtn"
                         app:layout_constraintHorizontal_bias="0.5"
