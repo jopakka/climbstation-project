@@ -56,6 +56,7 @@
                     app:layout_constraintTop_toTopOf="@+id/climb_finished_result_container" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/climb_finished_result_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -79,6 +80,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/climb_finished_result_container">
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/climb_finished_difficulty_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -91,6 +93,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/climb_finished_difficulty_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -104,6 +107,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/climb_finished_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
