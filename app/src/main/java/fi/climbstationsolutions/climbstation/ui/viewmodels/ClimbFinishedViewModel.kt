@@ -7,20 +7,24 @@ import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.ui.climb.climbOnfragment.ClimbOnViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.lifecycle.MediatorLiveData
+
 
 class ClimbFinishedViewModel(context: Context) : ViewModel() {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
-    private val mSession: MutableLiveData<SessionWithData> by lazy {
-        MutableLiveData<SessionWithData>()
-    }
-    val session: LiveData<SessionWithData>
-        get() = mSession
+    private val liveDataMerger: MediatorLiveData<SessionWithData> =
+        MediatorLiveData<SessionWithData>()
 
-    fun addSessionId(id: Long) {
-        viewModelScope.launch(Dispatchers.Main) {
-            mSession.value = sessionDao.getSessionWithData(id)
+    val sessionWithData: LiveData<SessionWithData>
+        get() = liveDataMerger
+
+    fun getSessionId(id: Long) {
+        liveDataMerger.addSource(sessionDao.getSessionWithData(id)) { value: SessionWithData? ->
+            liveDataMerger.setValue(
+                value
+            )
         }
     }
 }

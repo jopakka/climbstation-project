@@ -50,7 +50,7 @@
                     android:text="@string/fragment_climb_finished_result_title"
                     android:textColor="@color/white"
                     android:textSize="24sp"
-                    app:climbFinishedTitle="@{viewModel.session.session.name}"
+                    app:climbFinishedTitle="@{viewModel.sessionWithData.session.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/climb_finished_result_container" />
@@ -64,7 +64,7 @@
                     android:text="@string/fragment_climb_finished_result_detail"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    app:climbFinishedTitleLength="@{viewModel.session.data}"
+                    app:climbFinishedTitleLength="@{viewModel.sessionWithData.data}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/climb_finished_result_title" />
@@ -331,7 +331,7 @@
                         android:gravity="center"
                         android:text="@string/fragment_climb_finished_time_value"
                         android:textColor="@color/white"
-                        app:climbFinishedDuration="@{viewModel.session.session}"
+                        app:climbFinishedDuration="@{viewModel.sessionWithData.session}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/climb_finished_time_title" />
@@ -383,7 +383,7 @@
                         android:gravity="center"
                         android:text="@string/fragment_climb_finished_length_value"
                         android:textColor="@color/white"
-                        app:climbFinishedDistance="@{viewModel.session.data}"
+                        app:climbFinishedDistance="@{viewModel.sessionWithData.data}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/climb_finished_length_title" />
@@ -435,7 +435,7 @@
                         android:gravity="center"
                         android:text="@string/fragment_climb_finished_calories_value"
                         android:textColor="@color/white"
-                        app:climbFinishedCalories="@{viewModel.session.data}"
+                        app:climbFinishedCalories="@{viewModel.sessionWithData.data}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/climb_finished_calories_title" />
@@ -487,7 +487,7 @@
                         android:gravity="center"
                         android:text="@string/fragment_climb_finished_speed_value"
                         android:textColor="@color/white"
-                        app:climbFinishedAverageSpeed="@{viewModel.session}"
+                        app:climbFinishedAverageSpeed="@{viewModel.sessionWithData}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/climb_finished_speed_title" />

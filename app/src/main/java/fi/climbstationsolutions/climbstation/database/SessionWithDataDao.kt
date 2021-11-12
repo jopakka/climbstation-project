@@ -32,12 +32,12 @@ interface SessionWithDataDao {
     // SessionWithData
     @Transaction
     @Query("SELECT * FROM Session WHERE id =:id")
-    suspend fun getSessionWithData(id: Long): SessionWithData
+    fun getSessionWithData(id: Long): LiveData<SessionWithData>
 
     // Latest SessionWithData
     @Transaction
     @Query("SELECT * FROM Session WHERE id = (SELECT MAX(id) FROM Session) LIMIT 1")
-    suspend fun getLastSessionWithData(): SessionWithData
+    fun getLastSessionWithData(): LiveData<SessionWithData>
 
     // SessionWithData
     @Transaction

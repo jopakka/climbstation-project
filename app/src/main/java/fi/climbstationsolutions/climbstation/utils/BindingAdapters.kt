@@ -54,30 +54,36 @@ fun bindSessionTime(view: TextView, time: Long) {
 }
 
 @BindingAdapter("sessionLength")
-fun bindSessionLength(view: TextView, bundle: Bundle?) {
+fun bindSessionLength(view: TextView, sessionWithData: SessionWithData?) {
 
-    val length: Int? = bundle?.getInt("length")
     var distance: Float? = 0f
 
-    if (length != null) {
-        distance = length / 1000f
+    if (sessionWithData?.data?.size != 0) {
+        distance = sessionWithData?.data?.last()?.totalDistance?.div(1000f)
     }
 
-    view.text = "${distance ?: 0}mm"
+    view.text = "${distance ?: 0}m"
 }
 
 @BindingAdapter("sessionCalories")
-fun bindSessionCalories(view: TextView, bundle: Bundle?) {
-    val length: Int? = bundle?.getInt("length")
+fun bindSessionCalories(view: TextView, sessionWithData: SessionWithData?) {
+    var distance: Float? = 0f
+
+    if (sessionWithData?.data?.size != 0) {
+        distance = sessionWithData?.data?.last()?.totalDistance?.div(1000f)
+    }
 
     val calorieCounter = CalorieCounter()
-    val calories = calorieCounter.countCalories(length?.toFloat() ?: 0f, 80f)
-    view.text = "${calories}kcal"
+    val calories = distance?.let { calorieCounter.countCalories(it, 80f) }
+    view.text = "${calories ?: 0}kcal"
 }
 
 @BindingAdapter("sessionSpeed")
-fun bindSessionSpeed(view: TextView, bundle: Bundle?) {
-    val speed: Int? = bundle?.getInt("speed")
+fun bindSessionSpeed(view: TextView, sessionWithData: SessionWithData?) {
+    var speed: Int? = 0
+    if (sessionWithData?.data?.size != 0) {
+        speed = sessionWithData?.data?.last()?.speed
+    }
 
     view.text = "${speed ?: 0}m/min"
 }
@@ -90,7 +96,7 @@ fun bindClimbFinishedTitle(view: TextView, title: String?) {
 
 @BindingAdapter("climbFinishedTitleLength")
 fun bindClimbFinishedTitleLengthAndGoal(view: TextView, data: List<Data>?) {
-    var distance: Int? = 0
+    var distance: Int? = null
 
     if (data?.size != null) {
         distance = data.last().totalDistance
