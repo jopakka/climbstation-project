@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation.ui.climb.climbOnfragment
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.*
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -14,14 +15,24 @@ import okhttp3.internal.format
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 
-class ClimbOnViewModel(context: Context) : ViewModel() {
-    private val database = AppDatabase.get(context)
-    private val sessionDao = database.sessionDao()
+import androidx.lifecycle.LiveData
 
-    val otherData = sessionDao.getLastSessionWithData()
 
-    val sessionWithData = sessionDao.getLastSessionWithData()
+class ClimbOnViewModel() : ViewModel() {
+
+    private val mBundle: MutableLiveData<Bundle> by lazy {
+        MutableLiveData<Bundle>()
+    }
+
+    val bundle: LiveData<Bundle>
+        get() = mBundle
+
+    fun addBundle(bundle: Bundle) {
+        mBundle.postValue(bundle)
+    }
 
     val timer: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
@@ -37,15 +48,5 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
                 timer.postValue(result)
             }
         }
-    }
-}
-
-class ClimbOnViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ClimbOnViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return ClimbOnViewModel(context) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

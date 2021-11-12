@@ -17,6 +17,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
@@ -34,11 +35,10 @@ import kotlin.math.roundToInt
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
     private val args: ClimbOnFragmentArgs by navArgs()
-    private val viewModel: ClimbOnViewModel by viewModels {
-        ClimbOnViewModelFactory(requireContext())
-    }
+    private val viewModel: ClimbOnViewModel by viewModels()
 
     private lateinit var broadcastManager: LocalBroadcastManager
+    private var sessionId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,18 +53,11 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_NAME))
         }
 
-        viewModel.otherData.observe(viewLifecycleOwner, sessionObserver)
-
         binding.stopBtn.setOnClickListener {
             stopClimbing()
         }
 
         return binding.root
-    }
-
-    private val sessionObserver = Observer<SessionWithData> {
-        viewModel.otherData.removeObservers(viewLifecycleOwner)
-        viewModel.startTimer()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,8 +73,15 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val message = intent.getLongExtra("sessionID", 0L)
-            Log.d("BroadcastReceiver", "Message: $message")
+            val id = intent.getLongExtra("sessionID", 0L)
+            val bundleInfo = intent.getBundleExtra("info")
+
+            if (bundleInfo != null) {
+                viewModel.addBundle(bundleInfo)
+            }
+            sessionId = id
+
+            viewModel.startTimer()
         }
     }
 
@@ -111,13 +111,8 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             activity.startForegroundService(it)
         }
 
-        val action = viewModel.sessionWithData.value?.session?.id?.let {
-            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(
-                it
-            )
-        }
-        if (action != null) {
-            this.findNavController().navigate(action)
-        }
+        val action =
+            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(sessionId ?: return)
+        this.findNavController().navigate(action)
     }
 }
