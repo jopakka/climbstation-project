@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/climbOnFragment"
-        android:name="fi.climbstationsolutions.climbstation.ui.climb.climbOnfragment.ClimbOnFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnFragment"
         android:label="ClimbOnFragment" >
         <argument
             android:name="profile"
@@ -57,7 +57,7 @@
         tools:layout="@layout/fragment_adjust" />
     <fragment
         android:id="@+id/climbFinishedFragment"
-        android:name="fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.climbFinished.ClimbFinishedFragment"
         android:label="fragment_climb_finished"
         tools:layout="@layout/fragment_climb_finished" >
         <argument

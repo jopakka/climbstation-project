@@ -1,26 +1,18 @@
-package fi.climbstationsolutions.climbstation.ui.climb.climbOnfragment
+package fi.climbstationsolutions.climbstation.ui.climb.climbOn
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.*
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.SessionWithData
-import fi.climbstationsolutions.climbstation.network.profile.Profile
-import fi.climbstationsolutions.climbstation.utils.Converters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import okhttp3.internal.format
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 
 import androidx.lifecycle.LiveData
-import fi.climbstationsolutions.climbstation.ui.viewmodels.ClimbFinishedViewModel
-import kotlinx.coroutines.withContext
 
 
 class ClimbOnViewModel(context: Context) : ViewModel() {
@@ -28,36 +20,43 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
-    private val mBundle: MutableLiveData<Bundle> by lazy {
-        MutableLiveData<Bundle>()
-    }
+    private val liveDataMerger: MediatorLiveData<SessionWithData> =
+        MediatorLiveData<SessionWithData>()
 
-    val bundle: LiveData<Bundle>
-        get() = mBundle
+    val sessionWithData: LiveData<SessionWithData>
+        get() = liveDataMerger
 
-    fun addBundle(bundle: Bundle) {
-        mBundle.postValue(bundle)
-    }
-
-    val timer: MutableLiveData<Long> by lazy {
-        MutableLiveData<Long>()
-    }
-
-    fun startTimer() {
-        viewModelScope.launch(Dispatchers.Default) {
-            val startTime = Calendar.getInstance().timeInMillis
-
-            while (true) {
-                delay(1000)
-                val result = Calendar.getInstance().timeInMillis - startTime
-                timer.postValue(result)
-            }
+    fun getSessionById(id: Long) {
+        liveDataMerger.addSource(sessionDao.getSessionWithData(id)) {
+            liveDataMerger.setValue(it)
         }
     }
 
-    suspend fun getSessionId(): Long = withContext(Dispatchers.IO) {
-        val sessionId = sessionDao.getLastSessionWithData()
-        return@withContext sessionId.session.id
+    fun getLastSession() {
+        liveDataMerger.addSource(sessionDao.getLastSessionWithData()) {
+            liveDataMerger.setValue(it)
+        }
+    }
+
+    private val mTimer: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>()
+    }
+
+    val timer: LiveData<Long>
+        get() = mTimer
+
+    fun startTimer() {
+        viewModelScope.launch(Dispatchers.Default) {
+            while (true) {
+                delay(1000)
+                val startTime = sessionWithData.value?.session?.createdAt?.time
+                val result = startTime?.let {
+                    Calendar.getInstance().timeInMillis - startTime
+                }
+                Log.d("Result", result.toString())
+                mTimer.postValue(result)
+            }
+        }
     }
 }
 
