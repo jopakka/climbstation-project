@@ -185,7 +185,7 @@ class ClimbStationService : Service() {
 
                 // Set endedAt time to session when it's finished
                 sessionID?.let {
-                    sessionDao.setEndedAtToSession(it, calendar.time)
+                    sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
