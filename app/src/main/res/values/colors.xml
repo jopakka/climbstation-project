@@ -15,4 +15,5 @@
     <color name="transparent">#00000000</color>
     <color name="horizontal_picker_nonfocus_color">#C8C8C8</color>
     <color name="climbstation_red">#B22222</color>
+    <color name="button_grey">#676767</color>
 </resources>
