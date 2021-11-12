@@ -32,7 +32,8 @@ class ClimbStationService : Service() {
         private const val NOTIFICATION_CHANNEL_GROUP_ID = "service_group"
         private const val NOTIFICATION_CHANNEL_GROUP_NAME = "Climbing group"
 
-        const val BROADCAST_NAME = "ClimbStationService"
+        const val BROADCAST_INFO_NAME = "ClimbStationService_Info"
+        const val BROADCAST_ID_NAME = "ClimbStationService_ID"
         var SERVICE_RUNNING = false
             private set
         var CLIMBING_ACTIVE = false
@@ -105,7 +106,7 @@ class ClimbStationService : Service() {
      * Broadcasts bundle named "info", which contains [Int]s "speed", "angle" and "length"
      */
     private fun broadcastValues(speed: Int, angle: Int, length: Int) {
-        val intent = Intent(BROADCAST_NAME)
+        val intent = Intent(BROADCAST_INFO_NAME)
 
         val bundle = Bundle()
         bundle.putInt("speed", speed)
@@ -120,7 +121,7 @@ class ClimbStationService : Service() {
      * Broadcasts id
      */
     private fun broadcastId(id: Long) {
-        val intent = Intent(BROADCAST_NAME)
+        val intent = Intent(BROADCAST_ID_NAME)
         intent.putExtra("id", id)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
