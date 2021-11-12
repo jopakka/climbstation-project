@@ -57,8 +57,13 @@ fun bindSessionTime(view: TextView, time: Long) {
 fun bindSessionLength(view: TextView, bundle: Bundle?) {
 
     val length: Int? = bundle?.getInt("length")
+    var distance: Float? = 0f
 
-    view.text = "${length ?: 0}"
+    if (length != null) {
+        distance = length / 1000f
+    }
+
+    view.text = "${distance ?: 0}mm"
 }
 
 @BindingAdapter("sessionCalories")
@@ -67,14 +72,14 @@ fun bindSessionCalories(view: TextView, bundle: Bundle?) {
 
     val calorieCounter = CalorieCounter()
     val calories = calorieCounter.countCalories(length?.toFloat() ?: 0f, 80f)
-    view.text = "$calories"
+    view.text = "${calories}kcal"
 }
 
 @BindingAdapter("sessionSpeed")
 fun bindSessionSpeed(view: TextView, bundle: Bundle?) {
     val speed: Int? = bundle?.getInt("speed")
 
-    view.text = "${speed ?: 0}"
+    view.text = "${speed ?: 0}m/min"
 }
 
 // ClimbFinishedFragment
@@ -91,7 +96,7 @@ fun bindClimbFinishedTitleLengthAndGoal(view: TextView, data: List<Data>?) {
         distance = data.last().totalDistance
     }
 
-    view.text = "${distance}"
+    view.text = "${distance}m"
 }
 
 @BindingAdapter("climbFinishedDuration")
@@ -114,7 +119,7 @@ fun bindClimbFinishedDistance(view: TextView, data: List<Data>?) {
         distance = data.last().totalDistance
     }
 
-    view.text = "${distance}"
+    view.text = "${distance}m"
 }
 
 @BindingAdapter("climbFinishedCalories")
@@ -127,7 +132,7 @@ fun bindClimbFinishedCalories(view: TextView, data: List<Data>?) {
 
     val calorieCounter = CalorieCounter()
     val calories = calorieCounter.countCalories(distance?.toFloat() ?: 0f, 80f)
-    view.text = "$calories"
+    view.text = "${calories}kcal"
 }
 
 @BindingAdapter("climbFinishedAverageSpeed")
@@ -137,16 +142,12 @@ fun bindClimbFinishedAverageSpeed(view: TextView, sessionWithData: SessionWithDa
     val startTime: Long = sessionWithData.session.createdAt.time
     val endTime: Long = sessionWithData.session.endedAt?.time ?: 0L
     val result = endTime - startTime
-    Log.d("bindingAdapters","finished speed result: $result")
 
     val seconds = result / 1000F
-    Log.d("BindingAdapters", "finished speed seconds: $seconds")
 
     val distance = sessionWithData.data.last().totalDistance / 1000F
-    Log.d("BindingAdapters","finished speed distance: $distance")
 
     val avrgSpeed = (distance / seconds) * 60
-    Log.d("BindingAdapters","finished speed avrgSpeed: $avrgSpeed")
 
     view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, avrgSpeed)
 }

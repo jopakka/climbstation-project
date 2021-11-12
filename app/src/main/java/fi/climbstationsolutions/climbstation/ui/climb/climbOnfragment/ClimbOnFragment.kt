@@ -55,6 +55,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
         broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
             registerReceiver(broadcastReceiverInfo, IntentFilter(ClimbStationService.BROADCAST_INFO_NAME))
+            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
         }
 
         binding.stopBtn.setOnClickListener {
@@ -73,6 +74,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiverInfo)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
     }
 
     private val broadcastReceiverInfo = object : BroadcastReceiver() {
@@ -85,6 +87,12 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
                 viewModel.addBundle(bundleInfo)
             }
 
+        }
+    }
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            viewModel.startTimer()
         }
     }
 
@@ -102,7 +110,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             )
             activity.startForegroundService(it)
         }
-        viewModel.startTimer()
     }
 
     private fun stopClimbing() {
