@@ -14,7 +14,7 @@ import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
-import fi.climbstationsolutions.climbstation.services.ClimbStationService.Companion.BROADCAST_NAME
+import fi.climbstationsolutions.climbstation.services.ClimbStationService.Companion.BROADCAST_INFO_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
@@ -53,7 +53,7 @@ class ClimbActionActivity : AppCompatActivity() {
         }
 
         broadcastManager = LocalBroadcastManager.getInstance(this).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_NAME))
+            registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_INFO_NAME))
         }
     }
 

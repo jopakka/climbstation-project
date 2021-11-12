@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation.ui.climb.climbOnfragment
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.*
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -14,14 +15,29 @@ import okhttp3.internal.format
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+
+import androidx.lifecycle.LiveData
+import fi.climbstationsolutions.climbstation.ui.viewmodels.ClimbFinishedViewModel
+import kotlinx.coroutines.withContext
+
 
 class ClimbOnViewModel(context: Context) : ViewModel() {
+
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
-    val otherData = sessionDao.getLastSessionWithData()
+    private val mBundle: MutableLiveData<Bundle> by lazy {
+        MutableLiveData<Bundle>()
+    }
 
-    val sessionWithData = sessionDao.getLastSessionWithData()
+    val bundle: LiveData<Bundle>
+        get() = mBundle
+
+    fun addBundle(bundle: Bundle) {
+        mBundle.postValue(bundle)
+    }
 
     val timer: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
@@ -37,6 +53,11 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
                 timer.postValue(result)
             }
         }
+    }
+
+    suspend fun getSessionId(): Long = withContext(Dispatchers.IO) {
+        val sessionId = sessionDao.getLastSessionWithData()
+        return@withContext sessionId.session.id
     }
 }
 

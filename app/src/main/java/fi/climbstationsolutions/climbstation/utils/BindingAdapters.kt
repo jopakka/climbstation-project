@@ -1,10 +1,12 @@
 package fi.climbstationsolutions.climbstation.utils
 
+import android.os.Bundle
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.Data
 import fi.climbstationsolutions.climbstation.database.Session
+import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.network.profile.Step
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -51,38 +53,27 @@ fun bindSessionTime(view: TextView, time: Long) {
 }
 
 @BindingAdapter("sessionLength")
-fun bindSessionLength(view: TextView, data: List<Data>?) {
+fun bindSessionLength(view: TextView, bundle: Bundle?) {
 
-    var distance: Int? = 0
+    val length: Int? = bundle?.getInt("length")
 
-    if (data?.size != 0) {
-        distance = data?.last()?.totalDistance
-    }
-
-    view.text = "${distance}"
+    view.text = "${length ?: 0}"
 }
 
 @BindingAdapter("sessionCalories")
-fun bindSessionCalories(view: TextView, data: List<Data>?) {
-    var distance: Int? = 0
-
-    if (data?.size != 0) {
-        distance = data?.last()?.totalDistance
-    }
+fun bindSessionCalories(view: TextView, bundle: Bundle?) {
+    val length: Int? = bundle?.getInt("length")
 
     val calorieCounter = CalorieCounter()
-    val calories = calorieCounter.countCalories(distance?.toFloat() ?: 0f, 80f)
+    val calories = calorieCounter.countCalories(length?.toFloat() ?: 0f, 80f)
     view.text = "$calories"
 }
 
 @BindingAdapter("sessionSpeed")
-fun bindSessionSpeed(view: TextView, data: List<Data>?) {
-    var speed: Int? = 0
-    if (data?.size != 0) {
-        speed = data?.last()?.speed
-    }
+fun bindSessionSpeed(view: TextView, bundle: Bundle?) {
+    val speed: Int? = bundle?.getInt("speed")
 
-    view.text = "$speed"
+    view.text = "${speed ?: 0}"
 }
 
 // ClimbFinishedFragment
@@ -91,44 +82,69 @@ fun bindClimbFinishedTitle(view: TextView, title: String?) {
     view.text = view.context.getString(R.string.fragment_climb_finished_result_title, title)
 }
 
-@BindingAdapter(value = ["climbFinishedTitleLength", "climbFinishedTitleGoalLength"], requireAll = false)
-fun bindClimbFinishedTitleLengthAndGoal(view: TextView, climbFinishedTitleLength: Float?, climbFinishedGoalLength: Float?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_result_detail, climbFinishedTitleLength, climbFinishedGoalLength)
-}
+@BindingAdapter("climbFinishedTitleLength")
+fun bindClimbFinishedTitleLengthAndGoal(view: TextView, data: List<Data>?) {
+    var distance: Int? = 0
 
-@BindingAdapter("climbFinishedDifficultyStart")
-fun bindClimbFinishedDifficultyStart(view: TextView, difficultyStart: String?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_difficulty_start, difficultyStart)
-}
+    if (data?.size != null) {
+        distance = data.last().totalDistance
+    }
 
-@BindingAdapter("climbFinishedDifficultyEnd")
-fun bindClimbFinishedDifficultyEnd(view: TextView, difficultyEnd: String?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_difficulty_end, difficultyEnd)
-}
-
-@BindingAdapter("climbFinishedMode")
-fun bindClimbFinishedMode(view: TextView, mode: String?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_mode, mode)
+    view.text = "${distance}"
 }
 
 @BindingAdapter("climbFinishedDuration")
-fun bindClimbFinishedDuration(view: TextView, duration: String?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_time_value, duration)
+fun bindClimbFinishedDuration(view: TextView, duration: Session?) {
+    val startTime: Long? = duration?.createdAt?.time
+    val endTime: Long? = duration?.endedAt?.time
+    val result = startTime?.let { endTime?.minus(it) }
+
+    val minutes = (result?.div(1000))?.div(60)
+    val seconds = (result?.div(1000))?.rem(60)
+
+    view.text = "00:${minutes ?: 0}:${seconds ?: 0}"
 }
 
 @BindingAdapter("climbFinishedDistance")
-fun bindClimbFinishedDistance(view: TextView, distance: Float?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_length_value, distance)
+fun bindClimbFinishedDistance(view: TextView, data: List<Data>?) {
+    var distance: Int? = 0
+
+    if (data?.size != null) {
+        distance = data.last().totalDistance
+    }
+
+    view.text = "${distance}"
 }
 
 @BindingAdapter("climbFinishedCalories")
-fun bindClimbFinishedCalories(view: TextView, calories: Float?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_calories_value, calories)
+fun bindClimbFinishedCalories(view: TextView, data: List<Data>?) {
+    var distance: Int? = 0
+
+    if (data?.size != null) {
+        distance = data.last().totalDistance
+    }
+
+    val calorieCounter = CalorieCounter()
+    val calories = calorieCounter.countCalories(distance?.toFloat() ?: 0f, 80f)
+    view.text = "$calories"
 }
 
 @BindingAdapter("climbFinishedAverageSpeed")
-fun bindClimbFinishedAverageSpeed(view: TextView, averageSpeed: Float?) {
-    view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, averageSpeed)
+fun bindClimbFinishedAverageSpeed(view: TextView, sessionWithData: SessionWithData?) {
+
+    sessionWithData ?: return
+    val startTime: Long = sessionWithData.session.createdAt.time
+    val endTime: Long = sessionWithData.session.endedAt?.time ?: 0L
+    val result = endTime - startTime
+
+    val seconds = result / 1000F
+
+    val distance = sessionWithData.data.last().totalDistance / 1000F
+
+    val avrgSpeed = distance / seconds
+
+    view.text = "$avrgSpeed m/sec"
+    view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, avrgSpeed)
 }
 
 // Settings fragment
