@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb
+package fi.climbstationsolutions.climbstation.ui.climb.climbFinished
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

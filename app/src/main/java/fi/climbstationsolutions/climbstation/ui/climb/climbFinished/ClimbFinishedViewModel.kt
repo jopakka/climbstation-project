@@ -4,9 +4,6 @@ import android.content.Context
 import androidx.lifecycle.*
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.SessionWithData
-import fi.climbstationsolutions.climbstation.ui.climb.climbOnfragment.ClimbOnViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import androidx.lifecycle.MediatorLiveData
 
 

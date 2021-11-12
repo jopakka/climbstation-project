@@ -19,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.climb.ClimbFinishedFragment">
+            tools:context=".ui.climb.climbFinished.ClimbFinishedFragment">
 
 <!--            <ImageView-->
 <!--                android:id="@+id/climb_finished_fragment_logo_image"-->
@@ -48,10 +48,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:gravity="center"
-                    android:text="@string/fragment_climb_finished_result_title"
+                    android:text="@{viewModel.sessionWithData.session.name}"
                     android:textColor="@color/white"
                     android:textSize="24sp"
-                    app:climbFinishedTitle="@{viewModel.sessionWithData.session.name}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/climb_finished_result_container" />
@@ -65,7 +64,6 @@
                     android:text="@string/fragment_climb_finished_result_detail"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    app:climbFinishedTitleLength="@{viewModel.sessionWithData.data}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/climb_finished_result_title" />
@@ -330,7 +328,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/fragment_climb_finished_time_value"
                         android:textColor="@color/white"
                         app:climbFinishedDuration="@{viewModel.sessionWithData.session}"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -382,9 +379,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/fragment_climb_finished_length_value"
+                        app:sessionLength="@{viewModel.sessionWithData}"
                         android:textColor="@color/white"
-                        app:climbFinishedDistance="@{viewModel.sessionWithData.data}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/climb_finished_length_title" />
@@ -434,9 +430,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/fragment_climb_finished_calories_value"
+                        app:sessionCalories="@{viewModel.sessionWithData}"
                         android:textColor="@color/white"
-                        app:climbFinishedCalories="@{viewModel.sessionWithData.data}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/climb_finished_calories_title" />
@@ -486,9 +481,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/fragment_climb_finished_speed_value"
                         android:textColor="@color/white"
-                        app:climbFinishedAverageSpeed="@{viewModel.sessionWithData}"
+                        app:sessionAverageSpeed="@{viewModel.sessionWithData}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/climb_finished_speed_title" />

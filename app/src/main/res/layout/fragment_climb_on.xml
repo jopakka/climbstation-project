@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="fi.climbstationsolutions.climbstation.ui.climb.climbOnfragment.ClimbOnViewModel" />
+            type="fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
