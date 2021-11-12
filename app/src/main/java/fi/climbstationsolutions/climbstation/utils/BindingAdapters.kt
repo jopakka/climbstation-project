@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation.utils
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import fi.climbstationsolutions.climbstation.R
@@ -136,14 +137,17 @@ fun bindClimbFinishedAverageSpeed(view: TextView, sessionWithData: SessionWithDa
     val startTime: Long = sessionWithData.session.createdAt.time
     val endTime: Long = sessionWithData.session.endedAt?.time ?: 0L
     val result = endTime - startTime
+    Log.d("bindingAdapters","finished speed result: $result")
 
     val seconds = result / 1000F
+    Log.d("BindingAdapters", "finished speed seconds: $seconds")
 
     val distance = sessionWithData.data.last().totalDistance / 1000F
+    Log.d("BindingAdapters","finished speed distance: $distance")
 
-    val avrgSpeed = distance / seconds
+    val avrgSpeed = (distance / seconds) * 60
+    Log.d("BindingAdapters","finished speed avrgSpeed: $avrgSpeed")
 
-    view.text = "$avrgSpeed m/sec"
     view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, avrgSpeed)
 }
 

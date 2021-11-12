@@ -7,30 +7,32 @@
     android:background="@drawable/darkened_mountain"
     tools:context=".ui.statistics.StatisticsFragment">
 
-    <ImageView
-        android:id="@+id/statistics_logo_image"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="50dp"
-        android:contentDescription="@string/content_description_climbstation_logo_image"
-        android:src="@drawable/cropped_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ImageView-->
+<!--        android:id="@+id/statistics_logo_image"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:contentDescription="@string/content_description_climbstation_logo_image"-->
+<!--        android:src="@drawable/cropped_logo"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="20dp"
+        android:layout_marginTop="20dp"
         app:drawableBottomCompat="@drawable/ic_arrow_up_24"
-        app:layout_constraintTop_toBottomOf="@id/statistics_logo_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/sessionList"
         app:drawableTint="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sessionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="70dp"
         android:layout_marginBottom="?attr/actionBarSize"
         android:scrollbars="vertical"
         app:layoutManager="LinearLayoutManager" />
