@@ -32,7 +32,8 @@ class ClimbStationService : Service() {
         private const val NOTIFICATION_CHANNEL_GROUP_ID = "service_group"
         private const val NOTIFICATION_CHANNEL_GROUP_NAME = "Climbing group"
 
-        const val BROADCAST_NAME = "ClimbStationService"
+        const val BROADCAST_INFO_NAME = "ClimbStationService_Info"
+        const val BROADCAST_ID_NAME = "ClimbStationService_ID"
         var SERVICE_RUNNING = false
             private set
         var CLIMBING_ACTIVE = false
@@ -105,7 +106,7 @@ class ClimbStationService : Service() {
      * Broadcasts bundle named "info", which contains [Int]s "speed", "angle" and "length"
      */
     private fun broadcastValues(speed: Int, angle: Int, length: Int) {
-        val intent = Intent(BROADCAST_NAME)
+        val intent = Intent(BROADCAST_INFO_NAME)
 
         val bundle = Bundle()
         bundle.putInt("speed", speed)
@@ -113,6 +114,15 @@ class ClimbStationService : Service() {
         bundle.putInt("length", length)
 
         intent.putExtra("info", bundle)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    /**
+     * Broadcasts id
+     */
+    private fun broadcastId(id: Long) {
+        val intent = Intent(BROADCAST_ID_NAME)
+        intent.putExtra("id", id)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -185,7 +195,7 @@ class ClimbStationService : Service() {
 
                 // Set endedAt time to session when it's finished
                 sessionID?.let {
-                    sessionDao.setEndedAtToSession(it, calendar.time)
+                    sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
@@ -223,13 +233,12 @@ class ClimbStationService : Service() {
     }
 
     /**
-     * Loop of getting info from ClimbStation and [sendIdFromBroadcast]
+     * Loop of getting info from ClimbStation and [broadcastId]
      */
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
-            Log.d(TAG, "Profile: $profile")
-
             setAngle(profile.steps[0].angle)
+            broadcastId(sessionID)
 
             while (SERVICE_RUNNING) {
                 CLIMBING_ACTIVE = true
