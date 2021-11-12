@@ -117,6 +117,15 @@ class ClimbStationService : Service() {
     }
 
     /**
+     * Broadcasts id
+     */
+    private fun broadcastId(id: Long) {
+        val intent = Intent(BROADCAST_NAME)
+        intent.putExtra("id", id)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    /**
      * Creates notification for service
      */
     private fun createNotification() {
@@ -223,13 +232,12 @@ class ClimbStationService : Service() {
     }
 
     /**
-     * Loop of getting info from ClimbStation and [sendIdFromBroadcast]
+     * Loop of getting info from ClimbStation and [broadcastId]
      */
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
-            Log.d(TAG, "Profile: $profile")
-
             setAngle(profile.steps[0].angle)
+            broadcastId(sessionID)
 
             while (SERVICE_RUNNING) {
                 CLIMBING_ACTIVE = true
