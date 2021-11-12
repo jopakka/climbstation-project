@@ -39,10 +39,6 @@ class ClimbFinishedFragment : Fragment() {
 
         viewModel.addSessionId(args.sessionId)
         binding.viewEarlierResultsBtn.setOnClickListener(clickListener)
-
-        viewModel.session.observe(viewLifecycleOwner) {
-            Log.d("TOIMII", it.toString())
-        }
         // Inflate the layout for this fragment
         return binding.root
     }

@@ -131,23 +131,19 @@ fun bindClimbFinishedCalories(view: TextView, data: List<Data>?) {
 
 @BindingAdapter("climbFinishedAverageSpeed")
 fun bindClimbFinishedAverageSpeed(view: TextView, sessionWithData: SessionWithData?) {
-    val startTime: Long? = sessionWithData?.session?.createdAt?.time
-    val endTime: Long? = sessionWithData?.session?.endedAt?.time
-    val result = startTime?.let { endTime?.minus(it) }
 
-    val minutes = (result?.div(1000))?.div(60)
+    sessionWithData ?: return
+    val startTime: Long = sessionWithData.session.createdAt.time
+    val endTime: Long = sessionWithData.session.endedAt?.time ?: 0L
+    val result = endTime - startTime
 
-    val distance = sessionWithData?.data?.last()?.totalDistance
+    val seconds = result / 1000F
 
-    var avrgSpeed: Long? = 0
+    val distance = sessionWithData.data.last().totalDistance / 1000F
 
-    if (minutes != null) {
-        if (distance != null) {
-            avrgSpeed = distance / minutes
-        }
-    }
+    val avrgSpeed = distance / seconds
 
-    view.text = "$avrgSpeed m/min"
+    view.text = "$avrgSpeed m/sec"
 }
 
 // Settings fragment

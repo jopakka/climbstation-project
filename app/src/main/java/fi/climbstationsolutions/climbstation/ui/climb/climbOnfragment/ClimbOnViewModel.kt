@@ -19,9 +19,14 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 
 import androidx.lifecycle.LiveData
+import fi.climbstationsolutions.climbstation.ui.viewmodels.ClimbFinishedViewModel
+import kotlinx.coroutines.withContext
 
 
-class ClimbOnViewModel() : ViewModel() {
+class ClimbOnViewModel(context: Context) : ViewModel() {
+
+    private val database = AppDatabase.get(context)
+    private val sessionDao = database.sessionDao()
 
     private val mBundle: MutableLiveData<Bundle> by lazy {
         MutableLiveData<Bundle>()
@@ -48,5 +53,20 @@ class ClimbOnViewModel() : ViewModel() {
                 timer.postValue(result)
             }
         }
+    }
+
+    suspend fun getSessionId(): Long = withContext(Dispatchers.IO) {
+        val sessionId = sessionDao.getLastSessionWithData()
+        return@withContext sessionId.session.id
+    }
+}
+
+class ClimbOnViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ClimbOnViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return ClimbOnViewModel(context) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

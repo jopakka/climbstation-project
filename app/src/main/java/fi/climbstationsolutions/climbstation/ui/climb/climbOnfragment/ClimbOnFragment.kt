@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -28,6 +29,8 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity
 import fi.climbstationsolutions.climbstation.utils.TimeService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.sql.Time
 import java.util.*
 import kotlin.math.roundToInt
@@ -35,10 +38,11 @@ import kotlin.math.roundToInt
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
     private val args: ClimbOnFragmentArgs by navArgs()
-    private val viewModel: ClimbOnViewModel by viewModels()
+    private val viewModel: ClimbOnViewModel by viewModels {
+        ClimbOnViewModelFactory(requireContext())
+    }
 
     private lateinit var broadcastManager: LocalBroadcastManager
-    private var sessionId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +54,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.viewModel = viewModel
 
         broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_NAME))
+            registerReceiver(broadcastReceiverInfo, IntentFilter(ClimbStationService.BROADCAST_INFO_NAME))
         }
 
         binding.stopBtn.setOnClickListener {
@@ -68,20 +72,19 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiverInfo)
     }
 
-    private val broadcastReceiver = object : BroadcastReceiver() {
+    private val broadcastReceiverInfo = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getLongExtra("sessionID", 0L)
+            Log.d("id", id.toString())
             val bundleInfo = intent.getBundleExtra("info")
 
             if (bundleInfo != null) {
                 viewModel.addBundle(bundleInfo)
             }
-            sessionId = id
 
-            viewModel.startTimer()
         }
     }
 
@@ -99,7 +102,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             )
             activity.startForegroundService(it)
         }
-
+        viewModel.startTimer()
     }
 
     private fun stopClimbing() {
@@ -111,8 +114,11 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             activity.startForegroundService(it)
         }
 
-        val action =
-            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(sessionId ?: return)
-        this.findNavController().navigate(action)
+        lifecycleScope.launch {
+            val id = viewModel.getSessionId()
+            val action =
+                ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id)
+            this@ClimbOnFragment.findNavController().navigate(action)
+        }
     }
 }
