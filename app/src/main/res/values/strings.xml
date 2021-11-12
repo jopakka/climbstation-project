@@ -22,7 +22,7 @@
     <string name="fragment_climb_finished_calories_title">CALORIES</string>
     <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
     <string name="fragment_climb_finished_speed_title">SPEED</string>
-    <string name="fragment_climb_finished_speed_value">%.1f m / min</string>
+    <string name="fragment_climb_finished_speed_value">%.3f m / min</string>
     <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
 
     <!--fragment_adjust strings-->
