@@ -67,4 +67,9 @@
             android:id="@+id/action_climbFinishedFragment_to_statistic"
             app:destination="@id/statistic" />
     </fragment>
+    <fragment
+        android:id="@+id/profile"
+        android:name="fi.climbstationsolutions.climbstation.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>
