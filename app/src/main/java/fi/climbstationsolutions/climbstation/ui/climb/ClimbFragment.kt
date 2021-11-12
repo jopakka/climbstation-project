@@ -1,16 +1,11 @@
 package fi.climbstationsolutions.climbstation.ui.climb
 
-import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,8 +16,9 @@ import fi.climbstationsolutions.climbstation.adapters.DifficultyRecyclerviewAdap
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbBinding
 import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
+import fi.climbstationsolutions.climbstation.services.ClimbStationService
 
-class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
+class ClimbFragment : Fragment(), CellClicklistener {
     private lateinit var binding: FragmentClimbBinding
 
     private val viewModel: ClimbViewModel by viewModels()
@@ -36,17 +32,18 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        val preferencePos = getPref()
+        if (!isServiceRunning()) {
+            val preferencePos = getPref()
 
-        binding.difficultyRv.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context, preferencePos)
+            binding.difficultyRv.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
+                adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment, context, preferencePos)
+            }
+
+            binding.startBtn.setOnClickListener(clickListener)
+            binding.adjustBtn.setOnClickListener(clickListener)
         }
-
-        binding.startBtn.setOnClickListener(clickListener)
-        binding.adjustBtn.setOnClickListener(clickListener)
-
         return binding.root
     }
 
@@ -57,6 +54,16 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
 
     override fun onCellClickListener(profile: Profile) {
         viewModel.postValue(profile)
+    }
+
+    private fun isServiceRunning(): Boolean {
+        return if (ClimbStationService.SERVICE_RUNNING) {
+            val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(null)
+            this.findNavController().navigate(startAction)
+            true
+        } else {
+            false
+        }
     }
 
     private fun savePref() {
@@ -71,7 +78,8 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
     }
 
     private fun getPref(): Int? {
-        val preferences = activity?.getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE) ?: return null
+        val preferences =
+            activity?.getSharedPreferences("PREFERENCES", Context.MODE_PRIVATE) ?: return null
         val level: String? = preferences.getString("PROFILE_LEVEL", null)
 
         val profiles = ProfileHandler.readProfiles(context ?: return null, R.raw.profiles)
@@ -92,11 +100,14 @@ class ClimbFragment : Fragment(R.layout.fragment_climb), CellClicklistener {
     private val clickListener = View.OnClickListener {
         when (it) {
             binding.adjustBtn -> {
-                val action = ClimbFragmentDirections.actionClimbToAdjustFragment()
-                this.findNavController().navigate(action)
+                val adjustAction = ClimbFragmentDirections.actionClimbToAdjustFragment()
+                this.findNavController().navigate(adjustAction)
             }
             binding.startBtn -> {
                 Log.d("STARTBTN", "Works")
+                val profile = viewModel.profile.value ?: return@OnClickListener
+                val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(profile)
+                this.findNavController().navigate(startAction)
             }
         }
     }

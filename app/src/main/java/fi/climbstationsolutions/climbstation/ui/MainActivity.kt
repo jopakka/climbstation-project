@@ -1,17 +1,12 @@
 package fi.climbstationsolutions.climbstation.ui
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.fragment.app.replace
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -22,7 +17,6 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFinishedFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragment
 import fi.climbstationsolutions.climbstation.ui.init.InitActivity
 import fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment
@@ -58,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Un-comment this if you want to connect to server
-//        startActivity(Intent(this, ClimbActionActivity::class.java))
-//        finish()
+    //    startActivity(Intent(this, ClimbActionActivity::class.java))
+  //      finish()
 
         /*
             If no serialNo found, then start InitActivity

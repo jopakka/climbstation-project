@@ -14,7 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/darkened_mountain"
-    tools:context=".ui.climb.AdjustFragment">
+    tools:context=".ui.climb.adjust.AdjustFragment">
 
     <ImageView
         android:id="@+id/logo"

@@ -10,6 +10,9 @@
     <string name="bottom_nav_profile">Profile</string>
     <string name="bottom_nav_settings">Settings</string>
 
+    <!--fragment_climb_on strings-->
+    <string name="stop_watch">%02d:%02d:%02d</string>
+
     <!--fragment_climb_finished strings-->
     <string name="fragment_climb_finished_result_title">%s</string>
     <string name="fragment_climb_finished_result_detail">You climbed %.1f m of your %.1f m goal</string>
