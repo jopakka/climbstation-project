@@ -59,12 +59,14 @@ class DatabaseTests {
         }
 
         val getSession = sessionDao.getSessionWithData(sId)
-        assertEquals(session.name, getSession.session.name)
-        assertEquals(session.createdAt, getSession.session.createdAt)
-        assertEquals("Amount of data", dataList.size, getSession.data.size)
-        assertEquals(dataList[0].angle, getSession.data[0].angle)
-        assertEquals(dataList[1].speed, getSession.data[1].speed)
-        assertEquals(dataList[2].totalDistance, getSession.data[2].totalDistance)
+        getSession.observeForever { s ->
+            assertEquals(session.name, s.session.name)
+            assertEquals(session.createdAt, s.session.createdAt)
+            assertEquals("Amount of data", dataList.size, s.data.size)
+            assertEquals(dataList[0].angle, s.data[0].angle)
+            assertEquals(dataList[1].speed, s.data[1].speed)
+            assertEquals(dataList[2].totalDistance, s.data[2].totalDistance)
+        }
     }
 
     //SettingsDao tests
