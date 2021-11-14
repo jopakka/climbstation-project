@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation
 
 import android.util.Log
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -9,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.util.*
@@ -19,6 +21,9 @@ class DatabaseTests {
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var settingsDao: SettingsDao
     private lateinit var calendar: Calendar
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setup() {
