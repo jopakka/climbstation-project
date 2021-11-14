@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/climb">
+
+    <fragment
+        android:id="@+id/climb"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.ClimbFragment"
+        android:label="ClimbFragment" >
+        <action
+            android:id="@+id/action_climb_to_adjustFragment"
+            app:destination="@id/adjustFragment" />
+        <action
+            android:id="@+id/action_climb_to_climbOnFragment"
+            app:destination="@id/climbOnFragment" />
+        <action
+            android:id="@+id/action_climb_to_climbOnFragment2"
+            app:destination="@id/climbOnFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/statistic"
+        android:name="fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment"
+        android:label="fragment_statistics"
+        tools:layout="@layout/fragment_statistics" >
+        <action
+            android:id="@+id/action_statistic_to_climbFinishedFragment"
+            app:destination="@id/climbFinishedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settings"
+        android:name="fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/adjustFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.adjust.AdjustFragment"
+        android:label="fragment_adjust"
+        tools:layout="@layout/fragment_adjust" >
+        <action
+            android:id="@+id/action_adjustFragment_to_climbOnFragment"
+            app:destination="@id/climbOnFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/climbOnFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnFragment"
+        android:label="ClimbOnFragment" >
+        <argument
+            android:name="profile"
+            app:argType="fi.climbstationsolutions.climbstation.network.profile.Profile"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_climbOnFragment_to_climbFinishedFragment"
+            app:destination="@id/climbFinishedFragment" />
+    </fragment>
+        tools:layout="@layout/fragment_adjust" />
+    <fragment
+        android:id="@+id/climbFinishedFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.climbFinished.ClimbFinishedFragment"
+        android:label="fragment_climb_finished"
+        tools:layout="@layout/fragment_climb_finished" >
+        <argument
+            android:name="sessionId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_climbFinishedFragment_to_statistic"
+            app:destination="@id/statistic" />
+    </fragment>
+    <fragment
+        android:id="@+id/profile"
+        android:name="fi.climbstationsolutions.climbstation.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

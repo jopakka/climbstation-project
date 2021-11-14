@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!--ClimbStation IP-address-->
+        <domain includeSubdomains="true">192.168.3.1</domain>
+
+        <!--Put your ip here for testing purposes, remember to remove after use-->
+        <!--Oskar-->
+        <domain includeSubdomains="true">192.168.86.228</domain>
+    </domain-config>
+</network-security-config>

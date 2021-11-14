@@ -1,9 +1,98 @@
 <resources>
     <string name="app_name">ClimbStation</string>
 
+    <!--Top app bar strings-->
+    <string name="top_app_bar_settings">Settings</string>
+
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
     <string name="bottom_nav_statistics">Statistics</string>
+    <string name="bottom_nav_profile">Profile</string>
     <string name="bottom_nav_settings">Settings</string>
 
+    <!--fragment_climb_on strings-->
+    <string name="stop_watch">%02d:%02d:%02d</string>
+
+    <!--fragment_climb_finished strings-->
+    <string name="fragment_climb_finished_result_title">%s</string>
+    <string name="fragment_climb_finished_result_detail">You climbed %.1f m of your %.1f m goal</string>
+    <string name="fragment_climb_finished_difficulty_start">Start difficulty: %s</string>
+    <string name="fragment_climb_finished_difficulty_end">End difficulty: %s</string>
+    <string name="fragment_climb_finished_mode">Mode: %s</string>
+    <string name="fragment_climb_finished_time_title">TIME</string>
+    <string name="fragment_climb_finished_time_value">%s</string>
+    <string name="fragment_climb_finished_length_title">LENGTH</string>
+    <string name="fragment_climb_finished_length_value">%.1f m</string>
+    <string name="fragment_climb_finished_calories_title">CALORIES</string>
+    <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
+    <string name="fragment_climb_finished_speed_title">SPEED</string>
+    <string name="fragment_climb_finished_speed_value">%.3f m / min</string>
+    <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
+
+    <!--fragment_adjust strings-->
+    <string name="fragment_adjust_title">ADJUST</string>
+    <string name="fragment_adjust_length">Length / m:</string>
+    <string name="fragment_adjust_speed">Speed: %d m / min</string>
+    <string name="fragment_adjust_mode">Mode:</string>
+    <string name="fragment_adjust_start">Start</string>
+
+    <!--statistics_session_history_item strings-->
+    <string name="stat_sess_history_item_date">5.11.2021</string>
+    <string name="stat_sess_history_item_duration">00:14:57</string>
+    <string name="stat_sess_history_item_name">Mount Everest </string>
+    <string name="stat_sess_history_item_distance">Distance: </string>
+    <string name="stat_sess_history_item_speed">Avrg speed: </string>
+
+    <!--fragment_settings strings-->
+    <string name="fragment_settings_title">SETTINGS</string>
+    <string name="fragment_settings_weight">Weight: %.1f kg</string>
+    <string name="fragment_settings_btn_edit">Edit</string>
+
+    <!--weight_prompt strings-->
+    <string name="weight_prompt_title">Enter your weight</string>
+    <string name="weight_prompt_kg">kg</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Accessibility for top app bar-->
+    <string name="content_description_settings_icon">settings</string>
+
+    <!--Accessibility for ClimbStation sprites-->
+    <string name="content_description_climbstation_logo_image">ClimbStation logo</string>
+
+    <!--Accessibility for fragment_climb_finished-->
+    <string name="content_description_fragment_climb_finished_graph">Graph displaying climbing angles</string>
+    <string name="content_description_fragment_climb_finished_btn_to_statistics">View earlier results</string>
+
+    <!--Accessibility for fragment_statistics-->
+    <string name="content_description_history_delete">Delete history item</string>
+
+    <!--Accessibility for fragment_adjust-->
+    <string name="content_description_fragment_adjust_start_btn">Start climbing session</string>
+
+    <!--Accessibility for weight_prompt-->
+    <string name="content_description_weight_title">Enter your weight in kilograms</string>
+    <string name="content_description_weight_input">Enter weight here</string>
+    <string name="content_description_weight_kg">Kilograms</string>
+
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+
+    <string name="enter_serial_no">Enter ClimbStation serial number</string>
+    <string name="example_no">e.g. 20110001</string>
+    <string name="continue_txt">Continue</string>
+    <string name="next_txt">Next</string>
+
+    <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
+
+    <!--units-->
+    <string name="speedLong">%d m/min</string>
+    <string name="distanceLong">%d meters</string>
+    <string name="angleLong">%d degree</string>
+
+    <!--unit abbreviations-->
+    <string name="speedShort">%d m/min</string>
+    <string name="distanceShort">%.3f m</string>
+    <string name="caloriesShort">%.3f kcal</string>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="number_list_layout_width">55dp</dimen>
+    <dimen name="string_list_layout_width">125dp</dimen>
+    <dimen name="seek_bar_thickness">4dp</dimen>
+    <dimen name="seek_bar_thumb_size">20dp</dimen>
+    <dimen name="statistics_bottom">76dp</dimen>
+</resources>

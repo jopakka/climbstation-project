@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation
 
+import fi.climbstationsolutions.climbstation.utils.CalorieCounter
 import org.junit.Test
 
 import org.junit.Assert.*

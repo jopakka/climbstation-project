@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/wifiInfoFragment">
+
+    <fragment
+        android:id="@+id/serialFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.init.SerialFragment"
+        android:label="SerialFragment"
+        tools:layout="@layout/fragment_serial" />
+    <fragment
+        android:id="@+id/wifiInfoFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.init.WifiInfoFragment"
+        android:label="WifiInfoFragment"
+        tools:layout="@layout/fragment_wifi_info">
+        <action
+            android:id="@+id/action_wifiInfoFragment_to_serialFragment"
+            app:destination="@id/serialFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="fi.climbstationsolutions.climbstation.ui.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <action
+        android:id="@+id/action_global_mainActivity"
+        app:destination="@id/mainActivity" />
+
+</navigation>
