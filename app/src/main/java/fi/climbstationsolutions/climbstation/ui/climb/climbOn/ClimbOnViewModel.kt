@@ -45,16 +45,18 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     val timer: LiveData<Long>
         get() = mTimer
 
+    var useTimer = true
+
     fun startTimer() {
         viewModelScope.launch(Dispatchers.Default) {
-            while (true) {
-                delay(1000)
+            while (useTimer) {
                 val startTime = sessionWithData.value?.session?.createdAt?.time
                 val result = startTime?.let {
                     Calendar.getInstance().timeInMillis - startTime
                 }
                 Log.d("Result", result.toString())
                 mTimer.postValue(result)
+                delay(1000)
             }
         }
     }

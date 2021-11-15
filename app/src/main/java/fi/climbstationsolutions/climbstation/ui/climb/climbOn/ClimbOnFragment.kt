@@ -20,7 +20,6 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
@@ -86,9 +85,9 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
 
         Intent(context, ClimbStationService::class.java).also {
-            it.putExtra(ClimbActionActivity.CLIMB_STATION_SERIAL_EXTRA, serial)
+            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
             it.putExtra(
-                ClimbActionActivity.PROFILE_EXTRA,
+                ClimbStationService.PROFILE_EXTRA,
                 args.profile
             )
             activity.startForegroundService(it)
@@ -101,10 +100,12 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
         if (ClimbStationService.SERVICE_RUNNING) {
             Intent(context, ClimbStationService::class.java).also {
-                it.action = ClimbActionActivity.ACTION_STOP
+                it.action = ClimbStationService.ACTION_STOP
                 activity.startForegroundService(it)
             }
         }
+
+        viewModel.useTimer = false
 
         val id = viewModel.sessionWithData.value?.session?.id
         val action =

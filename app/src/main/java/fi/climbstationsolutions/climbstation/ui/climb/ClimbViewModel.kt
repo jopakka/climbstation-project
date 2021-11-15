@@ -1,19 +1,27 @@
 package fi.climbstationsolutions.climbstation.ui.climb
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import fi.climbstationsolutions.climbstation.database.AppDatabase
+import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.network.profile.Profile
+import fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnViewModel
 
-class ClimbViewModel: ViewModel() {
-    private val mProfile: MutableLiveData<Profile> by lazy {
-        MutableLiveData<Profile>()
+class ClimbViewModel(application: Application): AndroidViewModel(application) {
+    private val db = AppDatabase.get(getApplication())
+    private val profileDao = db.profileDao()
+
+    val allProfiles = profileDao.getAllProfiles()
+
+    private val mProfileWithSteps: MutableLiveData<ClimbProfileWithSteps> by lazy {
+        MutableLiveData<ClimbProfileWithSteps>()
     }
-    val profile: LiveData<Profile>
-        get() = mProfile
+    val profileWithSteps: LiveData<ClimbProfileWithSteps>
+        get() = mProfileWithSteps
 
-    fun postValue(profile: Profile) {
-        mProfile.value = profile
+    fun setProfile(profile: ClimbProfileWithSteps) {
+        mProfileWithSteps.value = profile
     }
 }
