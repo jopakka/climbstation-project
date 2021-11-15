@@ -171,7 +171,7 @@ class ClimbStationService : Service() {
      * Login to ClimbStation using [clientKey]. Adds new [Session] to database.
      * Then starts to get info from ClimbStation.
      */
-    private fun beginSession(sessionName: String = "Climb") {
+    private fun beginSession() {
         var sessionID: Long? = null
 
         serviceScope.launch {
@@ -184,7 +184,7 @@ class ClimbStationService : Service() {
                 )
                 // Save session to database
                 val calendar = Calendar.getInstance()
-                sessionID = sessionDao.insertSession(Session(0, sessionName, calendar.time))
+                sessionID = sessionDao.insertSession(Session(0, profile.name, calendar.time))
                 Log.d(TAG, "sessionID: $sessionID")
 
                 val started = operateClimbStation("start")
