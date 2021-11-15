@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -19,5 +20,5 @@ interface ProfileDao {
     suspend fun deleteStep(id: Long)
 
     @Query("SELECT * FROM ClimbProfile")
-    suspend fun getAllProfiles(): List<ClimbProfileWithSteps>
+    fun getAllProfiles(): LiveData<List<ClimbProfileWithSteps>>
 }

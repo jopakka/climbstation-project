@@ -14,14 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClimbStation">
         <activity
-            android:name=".ui.GraphTestActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.init.InitActivity"
-            android:configChanges="orientation|screenSize|screenLayout"
-            android:exported="false"></activity>
-        <activity
-            android:name=".ui.ClimbActionActivity"
             android:configChanges="orientation|screenSize|screenLayout"
             android:exported="false" />
 

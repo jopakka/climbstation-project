@@ -1,7 +1,10 @@
 package fi.climbstationsolutions.climbstation.database
 
+import android.os.Parcelable
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import java.util.*
 
 @Entity
@@ -42,12 +45,13 @@ data class BodyWeight(
 )
 
 @Entity
+@Parcelize
 data class ClimbProfile(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val name: String,
     val speed: Int = 10,
     val isDefault: Boolean = false
-)
+) : Parcelable
 
 @Entity(
     foreignKeys = [
@@ -59,14 +63,16 @@ data class ClimbProfile(
         )
     ]
 )
+@Parcelize
 data class ClimbStep(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val profileId: Long,
     val distance: Int,
     val angle: Int
-)
+) : Parcelable
 
+@Parcelize
 data class ClimbProfileWithSteps(
-    @Embedded val profile: ClimbProfile,
-    @Relation(parentColumn = "id", entityColumn = "profileId") val steps: List<ClimbStep>
-)
+    @Embedded val profile: @RawValue ClimbProfile,
+    @Relation(parentColumn = "id", entityColumn = "profileId") val steps: @RawValue List<ClimbStep>
+) : Parcelable
