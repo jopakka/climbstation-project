@@ -20,6 +20,7 @@ class DatabaseTests {
     private lateinit var db: AppDatabase
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var settingsDao: SettingsDao
+    private lateinit var profileDao: ProfileDao
     private lateinit var calendar: Calendar
 
     @get:Rule
@@ -31,6 +32,7 @@ class DatabaseTests {
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         sessionDao = db.sessionDao()
         settingsDao = db.settingsDao()
+        profileDao = db.profileDao()
         calendar = Calendar.getInstance()
     }
 
@@ -97,5 +99,71 @@ class DatabaseTests {
         // try to insert after already having a weight set
         userId = settingsDao.insertUserBodyWeight(inputWeight)
         assertEquals(1, userId)
+    }
+
+    @Test
+    fun insertAndGetProfile(): Unit = runBlocking {
+        val profile = ClimbProfile(0, "Test climb profile")
+        val id = profileDao.insertProfile(profile)
+        val profileWithSteps = profileDao.getProfileWithSteps(id)
+
+        assertEquals(id, profileWithSteps.profile.id)
+        assertEquals(profile.name, profileWithSteps.profile.name)
+        assertEquals(10, profileWithSteps.profile.speed)
+        assertEquals(false, profileWithSteps.profile.isDefault)
+    }
+
+    @Test
+    fun insertSteps(): Unit = runBlocking {
+        val profile = ClimbProfile(0, "Another test climb profile")
+        val id = profileDao.insertProfile(profile)
+
+        val steps = listOf(
+            ClimbStep(0, id, 3, 10),
+            ClimbStep(0, id, 1, -10),
+            ClimbStep(0, id, 5, 34),
+        )
+        steps.forEach {
+            profileDao.insertStep(it)
+        }
+
+        val profileWithSteps = profileDao.getProfileWithSteps(id)
+        assertEquals(id, profileWithSteps.steps.first().profileId)
+        assertEquals(-10, profileWithSteps.steps[1].angle)
+        assertEquals(5, profileWithSteps.steps[2].distance)
+    }
+
+    @Test
+    fun deleteStep(): Unit = runBlocking {
+        val profile = ClimbProfile(0, "Another test climb profile 123")
+        val id = profileDao.insertProfile(profile)
+
+        val steps = listOf(
+            ClimbStep(0, id, 5, 12),
+            ClimbStep(0, id, 6, -31),
+            ClimbStep(0, id, 1, 5),
+        )
+        steps.forEach {
+            profileDao.insertStep(it)
+        }
+
+        var profileWithSteps = profileDao.getProfileWithSteps(id)
+        assertEquals(3, profileWithSteps.steps.size)
+
+        profileDao.deleteStep(1)
+
+        profileWithSteps = profileDao.getProfileWithSteps(id)
+        assertEquals(2, profileWithSteps.steps.size)
+    }
+
+    @Test
+    fun deleteProfile(): Unit = runBlocking {
+        val profile = ClimbProfile(0, "Another test climb profile 123")
+        val id = profileDao.insertProfile(profile)
+
+        profileDao.deleteProfile(id)
+
+        val profileWithSteps = profileDao.getProfileWithSteps(id)
+        assertEquals(null, profileWithSteps)
     }
 }
