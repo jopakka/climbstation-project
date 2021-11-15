@@ -17,4 +17,7 @@ interface ProfileDao {
 
     @Query("DELETE FROM ClimbStep WHERE id = :id AND (SELECT isDefault FROM ClimbProfile WHERE id = ClimbStep.profileId) = 0")
     suspend fun deleteStep(id: Long)
+
+    @Query("SELECT * FROM ClimbProfile")
+    suspend fun getAllProfiles(): List<ClimbProfileWithSteps>
 }
