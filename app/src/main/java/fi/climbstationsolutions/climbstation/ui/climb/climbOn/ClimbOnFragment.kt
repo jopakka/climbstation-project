@@ -105,6 +105,8 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             }
         }
 
+        viewModel.useTimer = false
+
         val id = viewModel.sessionWithData.value?.session?.id
         val action =
             id?.let { ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(it) }
