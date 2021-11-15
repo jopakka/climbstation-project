@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -28,11 +29,10 @@ class StatisticsAdapter(
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val historyDate: TextView = view.findViewById(R.id.historyDate)
-        val historyName: TextView = view.findViewById(R.id.historyName)
-        val historyDuration: TextView = view.findViewById(R.id.historyDuration)
-        val historyItem: TextView = view.findViewById(R.id.historyItem)
+        val historyProfile: TextView = view.findViewById(R.id.historyProfile)
+        val historyDuration: TextView = view.findViewById(R.id.historyTimeValue)
+        val historyDistance: TextView = view.findViewById(R.id.historyDistanceValue)
 
-        val historyItemDelete: MaterialButton = view.findViewById(R.id.historyItemDelete)
     }
 
     // Create new views (invoked by the layout manager)
@@ -48,17 +48,23 @@ class StatisticsAdapter(
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
         val sessionId = dataSet[position].sessionId
-        viewHolder.historyDate.text = dataSet[position].sessionDate.toString()
-        viewHolder.historyName.text = dataSet[position].sessionName
-        viewHolder.historyDuration.text = "00:09:14"
+//        viewHolder.historyDate.text = dataSet[position].sessionDate.toString()
+        viewHolder.historyProfile.text = dataSet[position].sessionName
+//        viewHolder.historyDuration.text = "00:09:14"
 
-        viewHolder.historyItem.setOnClickListener {
+        viewHolder.historyDistance.setOnClickListener {
             enterSessionDetailView(sessionId)
         }
 
-        viewHolder.historyItemDelete.setOnClickListener {
+        viewHolder.itemView.setOnClickListener { enterSessionDetailView(sessionId) }
+        viewHolder.itemView.setOnLongClickListener {
             deleteSession()
+            true
         }
+
+//        viewHolder.historyItemDelete.setOnClickListener {
+//            deleteSession()
+//        }
 
     }
 
@@ -95,4 +101,19 @@ class StatisticsAdapter(
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
+
+//    override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+//        Log.d("StatisticsAdapter","onInterceptTouchEvent")
+//        return false
+//    }
+//
+//    override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+//        Log.d("StatisticsAdapter","onTouchEvent")
+//    }
+//
+//    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+//        Log.d("StatisticsAdapter","onRequestDisallowInterceptTouchEvent")
+//    }
+
+
 }

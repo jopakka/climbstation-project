@@ -16,4 +16,5 @@
     <color name="horizontal_picker_nonfocus_color">#C8C8C8</color>
     <color name="climbstation_red">#B22222</color>
     <color name="button_grey">#676767</color>
+    <color name="list_item_subtitle_grey">#6E6E6E</color>
 </resources>

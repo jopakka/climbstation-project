@@ -38,10 +38,11 @@
 
     <!--statistics_session_history_item strings-->
     <string name="stat_sess_history_item_date">5.11.2021</string>
-    <string name="stat_sess_history_item_duration">00:14:57</string>
-    <string name="stat_sess_history_item_name">Mount Everest </string>
-    <string name="stat_sess_history_item_distance">Distance: </string>
-    <string name="stat_sess_history_item_speed">Avrg speed: </string>
+    <string name="stat_sess_history_item_profile">Athlete</string>
+    <string name="stat_sess_history_item_duration_title">TIME</string>
+    <string name="stat_sess_history_item_duration_value">00:14:57</string>
+    <string name="stat_sess_history_item_distance_title">Distance</string>
+    <string name="stat_sess_history_item_distance_value">28.3 m</string>
 
     <!--fragment_settings strings-->
     <string name="fragment_settings_title">SETTINGS</string>
