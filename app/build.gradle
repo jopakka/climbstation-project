@@ -88,6 +88,7 @@ dependencies {
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 

@@ -11,6 +11,6 @@ interface SettingsDao {
     @Query("UPDATE BodyWeight SET weight =:weight WHERE id = 1")
     suspend fun updateUserBodyWeight(weight: Float)
 
-    @Insert
+    @Insert(onConflict = 1)
     suspend fun insertUserBodyWeight(data: BodyWeight): Long
 }
