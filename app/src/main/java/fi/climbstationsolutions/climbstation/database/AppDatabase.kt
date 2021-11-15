@@ -49,7 +49,7 @@ abstract class AppDatabase : RoomDatabase() {
                             val dao = get(context).profileDao()
                             val profiles = ProfileHandler.readProfiles(context, R.raw.profiles)
                             profiles.forEach {
-                                val id = dao.insertProfile(ClimbProfile(0, it.name, default = true))
+                                val id = dao.insertProfile(ClimbProfile(0, it.name, isDefault = true))
                                 it.steps.forEach { s ->
                                     dao.insertStep(ClimbStep(0, id, s.distance, s.angle))
                                 }
