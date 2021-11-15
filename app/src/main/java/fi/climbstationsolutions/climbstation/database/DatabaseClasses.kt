@@ -40,3 +40,33 @@ data class BodyWeight(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val weight: Float = 70.00f
 )
+
+@Entity
+data class ClimbProfile(
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    val name: String,
+    val speed: Int = 10,
+    val default: Boolean = false
+)
+
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = ClimbProfile::class,
+            parentColumns = ["id"],
+            childColumns = ["profileId"],
+            onDelete = CASCADE
+        )
+    ]
+)
+data class ClimbStep(
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    val profileId: Long,
+    val distance: Int,
+    val angle: Int
+)
+
+data class ClimbProfileWithSteps(
+    @Embedded val profile: ClimbProfile,
+    @Relation(parentColumn = "id", entityColumn = "profileId") val steps: List<ClimbStep>
+)
