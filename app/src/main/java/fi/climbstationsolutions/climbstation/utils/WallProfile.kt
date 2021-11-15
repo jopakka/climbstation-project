@@ -5,6 +5,8 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
+import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.Step
 import kotlin.math.abs
@@ -24,7 +26,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private var wallBounds: RectF? = null
     private val profilePath = Path()
 
-    var profile: Profile? = null
+    var profile: ClimbProfileWithSteps? = null
         set(value) {
             if (value == field) return
             field = value
@@ -128,7 +130,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
      * Calculates xy coordinates for next step in path and then draws it and
      * returns those coordinates
      */
-    private fun calculateAndDrawLine(p: Path, s: Step): Pair<Float, Float> {
+    private fun calculateAndDrawLine(p: Path, s: ClimbStep): Pair<Float, Float> {
         val a = (cos(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
         val b = (sin(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
         p.rLineTo(b, a)

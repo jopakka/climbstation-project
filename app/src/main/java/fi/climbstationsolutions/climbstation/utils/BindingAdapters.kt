@@ -35,11 +35,9 @@ fun bindStepsToAngle(view: TextView, steps: List<ClimbStep>?) {
     view.text = view.context.getString(R.string.angleLong, angle)
 }
 
-@BindingAdapter("stepsToSpeed")
-fun bindStepsToSpeed(view: TextView, steps: List<ClimbStep>?) {
-    val speed = 0
-
-    view.text = view.context.getString(R.string.speedShort, speed)
+@BindingAdapter("speed")
+fun bindSpeed(view: TextView, speed: Int?) {
+    view.text = view.context.getString(R.string.speedShort, speed ?: 0)
 }
 
 @BindingAdapter("sessionTime")

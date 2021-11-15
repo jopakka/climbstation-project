@@ -42,21 +42,31 @@ class ClimbFragment : Fragment(), CellClickListener {
 
             binding.startBtn.setOnClickListener(clickListener)
 
-            // currently inactive, as proper functionality has not been yet implemented
-            binding.adjustBtn.setOnClickListener(clickListener)
+//            // currently inactive, as proper functionality has not been yet implemented
+//            binding.adjustBtn.setOnClickListener(clickListener)
         }
         return binding.root
     }
 
     override fun onCellClickListener(profile: ClimbProfileWithSteps) {
         setProfile(profile)
+        setWallVisualizationProfile(profile)
+    }
+
+    private fun setWallVisualizationProfile(profile: ClimbProfileWithSteps) {
+        binding.wallProfile.profile = profile
     }
 
     private fun setProfilesToRecyclerView() {
         viewModel.allProfiles.observe(viewLifecycleOwner) {
             val adapter = binding.difficultyRv.adapter as DifficultyRecyclerviewAdapter
             adapter.addProfiles(it)
-            setProfile(it.first())
+
+            val prof = it.firstOrNull()
+            if(prof != null) {
+                setProfile(prof)
+                setWallVisualizationProfile(prof)
+            }
         }
     }
 
@@ -107,16 +117,16 @@ class ClimbFragment : Fragment(), CellClickListener {
 
     private val clickListener = View.OnClickListener {
         when (it) {
-            binding.adjustBtn -> {
-//                val adjustAction = ClimbFragmentDirections.actionClimbToAdjustFragment()
-//                this.findNavController().navigate(adjustAction)
-
-                val text = "Not yet implemented"
-                val duration = Toast.LENGTH_SHORT
-
-                val toast = Toast.makeText(requireContext(), text, duration)
-                toast.show()
-            }
+//            binding.adjustBtn -> {
+////                val adjustAction = ClimbFragmentDirections.actionClimbToAdjustFragment()
+////                this.findNavController().navigate(adjustAction)
+//
+//                val text = "Not yet implemented"
+//                val duration = Toast.LENGTH_SHORT
+//
+//                val toast = Toast.makeText(requireContext(), text, duration)
+//                toast.show()
+//            }
             binding.startBtn -> {
                 Log.d("STARTBTN", "Works")
                 val profile = viewModel.profileWithSteps.value ?: return@OnClickListener
