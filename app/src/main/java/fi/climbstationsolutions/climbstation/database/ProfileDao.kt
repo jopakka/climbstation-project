@@ -21,4 +21,7 @@ interface ProfileDao {
 
     @Query("SELECT * FROM ClimbProfile")
     fun getAllProfiles(): LiveData<List<ClimbProfileWithSteps>>
+
+    @Query("SELECT * FROM ClimbProfile WHERE id = :id")
+    suspend fun getProfileWithSteps(id: Long): ClimbProfileWithSteps
 }
