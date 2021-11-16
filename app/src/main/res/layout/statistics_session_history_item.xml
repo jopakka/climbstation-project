@@ -1,169 +1,179 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
-    android:gravity="center_vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.card.MaterialCardView
+    <data>
+
+        <variable
+            name="sessionItem"
+            type="fi.climbstationsolutions.climbstation.database.SessionWithData" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/card_white"
-        app:cardCornerRadius="12dp"
-        app:cardUseCompatPadding="true"
-        app:strokeColor="@color/climbstation_red"
-        app:strokeWidth="2dp">
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:gravity="center_vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/card_white"
+            app:cardCornerRadius="12dp"
+            app:cardUseCompatPadding="true"
+            app:strokeColor="@color/climbstation_red"
+            app:strokeWidth="2dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/historyProfileDateContainer"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/historyGuideline1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".05" />
-
-                <TextView
-                    android:id="@+id/historyProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/stat_sess_history_item_profile"
-                    android:textColor="@color/black"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/historyGuideline1"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/historyGuideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".55" />
-
-                <TextView
-                    android:id="@+id/historyDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:text="@string/stat_sess_history_item_date"
-                    android:textColor="@color/black"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-
-                    app:layout_constraintStart_toStartOf="@+id/historyGuideline2"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/historyDateSeparator"
-                android:layout_width="match_parent"
-                android:layout_height="6dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@color/climbstation_red"
-                app:layout_constraintBottom_toTopOf="@+id/historyTimeDistanceContainer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/historyProfileDateContainer" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/historyTimeDistanceContainer"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/historyDateSeparator">
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/historyGuideline3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".05" />
+                android:layout_height="wrap_content"
+                android:padding="8dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/historyTimeContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="75dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/historyGuideline3"
+                    android:id="@+id/historyProfileDateContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/historyTimeTitle"
-                        android:layout_width="match_parent"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/historyGuideline1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stat_sess_history_item_duration_title"
-                        android:textColor="@color/list_item_subtitle_grey"
-                        android:textSize="24sp"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".05" />
 
                     <TextView
-                        android:id="@+id/historyTimeValue"
-                        android:layout_width="match_parent"
+                        android:id="@+id/historyProfile"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stat_sess_history_item_duration_value"
+                        android:gravity="start"
+                        android:text="@string/stat_sess_history_item_profile"
                         android:textColor="@color/black"
                         android:textSize="28sp"
-                        app:layout_constraintTop_toBottomOf="@+id/historyTimeTitle" />
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/historyGuideline1"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/historyGuideline2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".55" />
+
+                    <TextView
+                        android:id="@+id/historyDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="@string/stat_sess_history_item_date"
+                        android:textColor="@color/black"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+
+                        app:layout_constraintStart_toStartOf="@+id/historyGuideline2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/historyGuideline4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".55" />
+                <View
+                    android:id="@+id/historyDateSeparator"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/climbstation_red"
+                    app:layout_constraintBottom_toTopOf="@+id/historyTimeDistanceContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/historyProfileDateContainer" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/historyDistanceContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="75dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/historyTimeDistanceContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/historyDateSeparator">
 
-                    app:layout_constraintStart_toStartOf="@+id/historyGuideline4"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/historyDistanceTitle"
-                        android:layout_width="match_parent"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/historyGuideline3"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stat_sess_history_item_distance_title"
-                        android:textColor="@color/list_item_subtitle_grey"
-                        android:textSize="24sp"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".05" />
 
-                    <TextView
-                        android:id="@+id/historyDistanceValue"
-                        android:layout_width="match_parent"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/historyTimeContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="75dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/historyGuideline3"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/historyTimeTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stat_sess_history_item_duration_title"
+                            android:textColor="@color/list_item_subtitle_grey"
+                            android:textSize="24sp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/historyTimeValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stat_sess_history_item_duration_value"
+                            android:textColor="@color/black"
+                            android:textSize="28sp"
+                            app:layout_constraintTop_toBottomOf="@+id/historyTimeTitle" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/historyGuideline4"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stat_sess_history_item_distance_value"
-                        android:textColor="@color/black"
-                        android:textSize="28sp"
-                        app:layout_constraintTop_toBottomOf="@+id/historyDistanceTitle" />
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".55" />
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/historyDistanceContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="75dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+
+                        app:layout_constraintStart_toStartOf="@+id/historyGuideline4"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/historyDistanceTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stat_sess_history_item_distance_title"
+                            android:textColor="@color/list_item_subtitle_grey"
+                            android:textSize="24sp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/historyDistanceValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stat_sess_history_item_distance_value"
+                            android:textColor="@color/black"
+                            android:textSize="28sp"
+                            app:layout_constraintTop_toBottomOf="@+id/historyDistanceTitle" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
+</layout>
