@@ -4,22 +4,25 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
-import fi.climbstationsolutions.climbstation.database.Data
 import fi.climbstationsolutions.climbstation.database.Session
 import fi.climbstationsolutions.climbstation.database.SessionWithData
-import fi.climbstationsolutions.climbstation.network.profile.Step
 import java.util.concurrent.TimeUnit
 
 
 @BindingAdapter("stepsToDistance")
 fun bindStepsToDistance(view: TextView, steps: List<ClimbStep>?) {
-    var distance = 0
-    if (steps != null) {
-        for (i in steps) {
-            distance += i.distance
-        }
-    }
+    val distance = if(steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
+    else 0
+
     view.text = view.context.getString(R.string.distanceLong, distance)
+}
+
+@BindingAdapter("stepsToDistanceShort")
+fun bindStepsToDistanceShort(view: TextView, steps: List<ClimbStep>?) {
+    val distance = if(steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
+    else 0
+
+    view.text = view.resources.getString(R.string.distanceShort, distance.toFloat())
 }
 
 @BindingAdapter("stepsToAngle")
@@ -87,14 +90,14 @@ fun bindSessionSpeed(view: TextView, sessionWithData: SessionWithData?) {
 
 @BindingAdapter("climbFinishedDuration")
 fun bindClimbFinishedDuration(view: TextView, duration: Session?) {
-    val startTime: Long? = duration?.createdAt?.time
-    val endTime: Long? = duration?.endedAt?.time
-    val result = startTime?.let { endTime?.minus(it) }
+    val startTime: Long = duration?.createdAt?.time ?: 0L
+    val endTime: Long = duration?.endedAt?.time ?: 0L
+    val result = endTime - startTime
 
     val timer = String.format(
-        "%02d:%02d:%02d", result?.let { TimeUnit.MILLISECONDS.toHours(it) },
-        result?.let { TimeUnit.MILLISECONDS.toMinutes(it) }?.rem(TimeUnit.HOURS.toMinutes(1)),
-        result?.let { TimeUnit.MILLISECONDS.toSeconds(it) }?.rem(TimeUnit.MINUTES.toSeconds(1))
+        "%02d:%02d:%02d", result.let { TimeUnit.MILLISECONDS.toHours(it) },
+        result.let { TimeUnit.MILLISECONDS.toMinutes(it) }.rem(TimeUnit.HOURS.toMinutes(1)),
+        result.let { TimeUnit.MILLISECONDS.toSeconds(it) }.rem(TimeUnit.MINUTES.toSeconds(1))
     )
 
     view.text = timer
@@ -128,4 +131,12 @@ fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
 @BindingAdapter("adjustSpeed")
 fun bindAdjustSpeed(view: TextView, speed: Int?) {
     view.text = view.context.getString(R.string.fragment_adjust_speed, speed)
+}
+
+@BindingAdapter("stepsAverageAngle")
+fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
+    val avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
+    else 0f
+
+    view.text = view.resources.getString(R.string.angleShort, avgAngle)
 }

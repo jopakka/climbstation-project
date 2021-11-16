@@ -99,6 +99,7 @@
 
     <!--unit abbreviations-->
     <string name="speedShort">%d m/min</string>
-    <string name="distanceShort">%.3f m</string>
+    <string name="distanceShort">%.1f m</string>
     <string name="caloriesShort">%.3f kcal</string>
+    <string name="angleShort">%.1f°</string>
 </resources>
