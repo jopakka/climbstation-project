@@ -3,10 +3,13 @@ package fi.climbstationsolutions.climbstation.utils
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.database.ClimbStep
+import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.Step
 import kotlin.math.abs
@@ -31,7 +34,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
             if (value == field) return
             field = value
             recreateProfile = true
-            postInvalidate()
+            invalidate()
         }
 
     var climbingProgression: Float = 0f
@@ -42,6 +45,13 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
                 value < 0f -> 0f
                 else -> value
             }
+            invalidate()
+        }
+
+    var sessionWithData: SessionWithData? = null
+        set(value) {
+            if(field == value) return
+            field = value
             invalidate()
         }
 
@@ -65,6 +75,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
             if (recreateProfile) {
                 createProfilePath(this)
             }
+            climbingProgression = calculateProgression()
             val paint = gradientPaint()
             drawPath(profilePath, paint)
         }
@@ -237,4 +248,9 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
     }
 
+    private fun calculateProgression(): Float {
+        val max = profile?.steps?.sumOf { it.distance }?.toFloat() ?: return climbingProgression
+        val total = sessionWithData?.data?.lastOrNull()?.totalDistance?.div(1000f) ?: return climbingProgression
+        return total / max
+    }
 }

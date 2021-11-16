@@ -13,12 +13,14 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 
 import androidx.lifecycle.LiveData
+import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 
 
 class ClimbOnViewModel(context: Context) : ViewModel() {
 
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
+    private val profileDao = database.profileDao()
 
     private val liveDataMerger: MediatorLiveData<SessionWithData> =
         MediatorLiveData<SessionWithData>()
@@ -26,15 +28,31 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     val sessionWithData: LiveData<SessionWithData>
         get() = liveDataMerger
 
+    private val mProfileWithSteps: MediatorLiveData<ClimbProfileWithSteps> by lazy {
+        MediatorLiveData<ClimbProfileWithSteps>()
+    }
+    val profileWithSteps: LiveData<ClimbProfileWithSteps>
+        get() = mProfileWithSteps
+
     fun getSessionById(id: Long) {
         liveDataMerger.addSource(sessionDao.getSessionWithData(id)) {
-            liveDataMerger.setValue(it)
+            liveDataMerger.value = it
         }
     }
 
     fun getLastSession() {
         liveDataMerger.addSource(sessionDao.getLastSessionWithData()) {
-            liveDataMerger.setValue(it)
+            liveDataMerger.value = it
+        }
+    }
+
+    fun getProfile() {
+        mProfileWithSteps.addSource(sessionWithData) {
+            viewModelScope.launch(Dispatchers.IO) {
+                if(it != null) {
+                    mProfileWithSteps.postValue(profileDao.getProfileWithSteps(it.session.profileId))
+                }
+            }
         }
     }
 
