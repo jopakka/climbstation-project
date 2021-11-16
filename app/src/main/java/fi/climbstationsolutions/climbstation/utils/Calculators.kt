@@ -1,6 +1,9 @@
 package fi.climbstationsolutions.climbstation.utils
 
+import android.util.Log
 import fi.climbstationsolutions.climbstation.database.ClimbStep
+import kotlin.math.cos
+import kotlin.math.sin
 
 object Calculators {
     fun averageAngleFromSteps(steps: List<ClimbStep>): Float {
@@ -14,4 +17,20 @@ object Calculators {
 
         return angles.toFloat() / amountOfDistances.toFloat()
     }
+
+    fun calculateDistance(steps: List<ClimbStep>): Int {
+        return steps.sumOf { it.distance }
+    }
+
+    fun calculateHeight(steps: List<ClimbStep>) {
+        var height = 0f
+        steps.forEach { s ->
+            val a = (cos(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
+            val b = (sin(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
+            Log.d("TEST", "a: $a, b: $b, angle: ${s.angle}")
+        }
+
+    }
+
+
 }
