@@ -42,5 +42,5 @@ interface SessionWithDataDao {
     // SessionWithData
     @Transaction
     @Query("SELECT * FROM Session")
-    suspend fun getAllSessionsWithData(): List<SessionWithData>
+    fun getAllSessionsWithData(): LiveData<List<SessionWithData>>
 }
