@@ -44,7 +44,7 @@ class DatabaseTests {
     // SessionDao tests
     @Test
     fun insertSessionAndGet(): Unit = runBlocking {
-        val session = Session(0, "testing db", calendar.time)
+        val session = Session(0, "testing db", calendar.time, 1)
         val id = sessionDao.insertSession(session)
 
         assertEquals(id, sessionDao.getSessionById(id).id)
@@ -54,7 +54,7 @@ class DatabaseTests {
 
     @Test
     fun insertSessionWithData(): Unit = runBlocking {
-        val session = Session(0, "Another db test", calendar.time)
+        val session = Session(0, "Another db test", calendar.time, 2)
         val sId = sessionDao.insertSession(session)
         val dataList = listOf(
             Data(0, sId, 100, -21, 340),
