@@ -51,16 +51,16 @@ class ClimbStationService : Service() {
      * Creates notification, initializes variables and starts session.
      * If [intent]s action is [ACTION_STOP] then stops service.
      */
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (intent.action != null && intent.action.equals(ACTION_STOP, true)) {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action != null && intent.action.equals(ACTION_STOP, true)) {
             stopService()
         } else {
-            intent.extras?.let {
-                createNotification()
+            intent?.extras?.let {
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, ""),
                     it.getParcelable(PROFILE_EXTRA)
                 )
+                createNotification()
                 beginSession()
             }
         }
@@ -180,7 +180,14 @@ class ClimbStationService : Service() {
                 )
                 // Save session to database
                 val calendar = Calendar.getInstance()
-                sessionID = sessionDao.insertSession(Session(0, profileWithSteps.profile.name, calendar.time))
+                sessionID = sessionDao.insertSession(
+                    Session(
+                        0,
+                        profileWithSteps.profile.name,
+                        calendar.time,
+                        profileWithSteps.profile.id
+                    )
+                )
                 Log.d(TAG, "sessionID: $sessionID")
 
                 val started = operateClimbStation("start")

@@ -74,6 +74,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             } else {
                 viewModel.getLastSession()
             }
+            viewModel.getProfile()
             viewModel.startTimer()
         }
     }
