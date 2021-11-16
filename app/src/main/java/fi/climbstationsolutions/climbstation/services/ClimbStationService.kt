@@ -9,16 +9,9 @@ import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.database.AppDatabase
-import fi.climbstationsolutions.climbstation.database.Data
-import fi.climbstationsolutions.climbstation.database.Session
-import fi.climbstationsolutions.climbstation.database.SessionWithDataDao
+import fi.climbstationsolutions.climbstation.database.*
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
-import fi.climbstationsolutions.climbstation.network.profile.Profile
-import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity
-import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.ACTION_STOP
-import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.CLIMB_STATION_SERIAL_EXTRA
-import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity.Companion.PROFILE_EXTRA
+import fi.climbstationsolutions.climbstation.ui.MainActivity
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -32,6 +25,9 @@ class ClimbStationService : Service() {
         private const val NOTIFICATION_CHANNEL_GROUP_ID = "service_group"
         private const val NOTIFICATION_CHANNEL_GROUP_NAME = "Climbing group"
 
+        const val PROFILE_EXTRA = "Profile"
+        const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
+        const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
         const val BROADCAST_INFO_NAME = "ClimbStationService_Info"
         const val BROADCAST_ID_NAME = "ClimbStationService_ID"
         var SERVICE_RUNNING = false
@@ -49,7 +45,7 @@ class ClimbStationService : Service() {
     private lateinit var climbStationSerialNo: String
     private lateinit var clientKey: String
     private lateinit var sessionDao: SessionWithDataDao
-    private lateinit var profile: Profile
+    private lateinit var profileWithSteps: ClimbProfileWithSteps
 
     /**
      * Creates notification, initializes variables and starts session.
@@ -85,10 +81,10 @@ class ClimbStationService : Service() {
      * @param serialNo ClimbStations serial number
      * @param prof Wanted climbing profile
      */
-    private fun initService(serialNo: String, prof: Profile?) {
+    private fun initService(serialNo: String, prof: ClimbProfileWithSteps?) {
         SERVICE_RUNNING = true
         climbStationSerialNo = serialNo
-        profile = prof ?: throw NullPointerException("No profile passed to extras")
+        profileWithSteps = prof ?: throw NullPointerException("No profile passed to extras")
         sessionDao = AppDatabase.get(this).sessionDao()
     }
 
@@ -130,7 +126,7 @@ class ClimbStationService : Service() {
      * Creates notification for service
      */
     private fun createNotification() {
-        val notificationIntent = Intent(this, ClimbActionActivity::class.java)
+        val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             this,
             0,
@@ -184,7 +180,7 @@ class ClimbStationService : Service() {
                 )
                 // Save session to database
                 val calendar = Calendar.getInstance()
-                sessionID = sessionDao.insertSession(Session(0, profile.name, calendar.time))
+                sessionID = sessionDao.insertSession(Session(0, profileWithSteps.profile.name, calendar.time))
                 Log.d(TAG, "sessionID: $sessionID")
 
                 val started = operateClimbStation("start")
@@ -237,7 +233,7 @@ class ClimbStationService : Service() {
      */
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
-            setAngle(profile.steps[0].angle)
+            setAngle(profileWithSteps.steps[0].angle)
             broadcastId(sessionID)
 
             while (SERVICE_RUNNING) {
@@ -275,14 +271,14 @@ class ClimbStationService : Service() {
     }
 
     private suspend fun adjustToProfile(distance: Int) {
-        var step = profile.steps[currentStep]
-        val stepsSoFar = profile.steps.filterIndexed { index, _ -> index < currentStep }
+        var step = profileWithSteps.steps[currentStep]
+        val stepsSoFar = profileWithSteps.steps.filterIndexed { index, _ -> index < currentStep }
         val distanceSoFar = stepsSoFar.sumOf { it.distance }
 
         if (distanceSoFar + step.distance >= distance) {
             currentStep += 1
 
-            if (currentStep > profile.steps.size) {
+            if (currentStep > profileWithSteps.steps.size) {
                 // TODO("What should it do after program")
                 // Now it just set wall to 0 angle and stops service
                 setAngle(0)
@@ -291,7 +287,7 @@ class ClimbStationService : Service() {
                 return
             }
 
-            step = profile.steps[currentStep]
+            step = profileWithSteps.steps[currentStep]
             setAngle(step.angle)
         }
     }

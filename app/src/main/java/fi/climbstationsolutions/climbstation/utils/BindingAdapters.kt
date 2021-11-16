@@ -3,6 +3,7 @@ package fi.climbstationsolutions.climbstation.utils
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.database.Data
 import fi.climbstationsolutions.climbstation.database.Session
 import fi.climbstationsolutions.climbstation.database.SessionWithData
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 
 @BindingAdapter("stepsToDistance")
-fun bindStepsToDistance(view: TextView, steps: List<Step>?) {
+fun bindStepsToDistance(view: TextView, steps: List<ClimbStep>?) {
     var distance = 0
     if (steps != null) {
         for (i in steps) {
@@ -22,7 +23,7 @@ fun bindStepsToDistance(view: TextView, steps: List<Step>?) {
 }
 
 @BindingAdapter("stepsToAngle")
-fun bindStepsToAngle(view: TextView, steps: List<Step>?) {
+fun bindStepsToAngle(view: TextView, steps: List<ClimbStep>?) {
     var angle = 0
     if (steps != null) {
         for (i in steps) {
@@ -34,11 +35,9 @@ fun bindStepsToAngle(view: TextView, steps: List<Step>?) {
     view.text = view.context.getString(R.string.angleLong, angle)
 }
 
-@BindingAdapter("stepsToSpeed")
-fun bindStepsToSpeed(view: TextView, steps: List<Step>?) {
-    val speed = 0
-
-    view.text = view.context.getString(R.string.speedShort, speed)
+@BindingAdapter("speed")
+fun bindSpeed(view: TextView, speed: Int?) {
+    view.text = view.context.getString(R.string.speedShort, speed ?: 0)
 }
 
 @BindingAdapter("sessionTime")

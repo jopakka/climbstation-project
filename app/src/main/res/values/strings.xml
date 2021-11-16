@@ -10,6 +10,13 @@
     <string name="bottom_nav_profile">Profile</string>
     <string name="bottom_nav_settings">Settings</string>
 
+    <!--fragment_climb strings-->
+    <string name="fragment_climb_dif_rv_title">test</string>
+    <string name="fragment_climb_dif_rv_length_title">Length</string>
+    <string name="fragment_climb_dif_rv_length_value">0 m</string>
+    <string name="fragment_climb_dif_rv_average_angle_title">Average angle</string>
+    <string name="fragment_climb_dif_rv_average_angle_value">0 deg</string>
+
     <!--fragment_climb_on strings-->
     <string name="stop_watch">%02d:%02d:%02d</string>
 

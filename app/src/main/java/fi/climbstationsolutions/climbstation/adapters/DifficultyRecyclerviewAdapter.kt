@@ -1,24 +1,26 @@
 package fi.climbstationsolutions.climbstation.adapters
 
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.databinding.SingleDifficultyItemBinding
-import fi.climbstationsolutions.climbstation.network.profile.Profile
-import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
-import fi.climbstationsolutions.climbstation.ui.climb.CellClicklistener
+import fi.climbstationsolutions.climbstation.ui.climb.CellClickListener
 
 
-class DifficultyRecyclerviewAdapter(
-    private val cellClickListener: CellClicklistener,
-    private val context: Context,
-    sharedPrefPos: Int?
-) : RecyclerView.Adapter<DifficultyRecyclerviewAdapter.ViewHolder>() {
+class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClickListener) :
+    RecyclerView.Adapter<DifficultyRecyclerviewAdapter.ViewHolder>() {
 
-    private var selectedItemPos = sharedPrefPos ?: -1
-    private var lastItemSelectedPos = sharedPrefPos ?: -1
+    private val mProfileList: MutableList<ClimbProfileWithSteps> = mutableListOf()
+    private var selectedPosition = 0
+
+    fun addProfiles(list: List<ClimbProfileWithSteps>) {
+        val startPos = mProfileList.size
+        mProfileList.addAll(list)
+        notifyItemRangeInserted(startPos, list.size)
+    }
 
     class ViewHolder(private val binding: SingleDifficultyItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -31,7 +33,7 @@ class DifficultyRecyclerviewAdapter(
             }
         }
 
-        fun bind(item: Profile) {
+        fun bind(item: ClimbProfileWithSteps) {
             binding.profileItem = item
             binding.executePendingBindings()
         }
@@ -41,7 +43,7 @@ class DifficultyRecyclerviewAdapter(
         }
 
         fun defaultBg() {
-            binding.singleDfItem.setBackgroundResource(R.color.transparent)
+            binding.singleDfItem.setBackgroundResource(R.drawable.layout_background_default)
         }
     }
 
@@ -50,31 +52,27 @@ class DifficultyRecyclerviewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = ProfileHandler.readProfiles(context, R.raw.profiles)[position]
+        val item = mProfileList[position]
         holder.bind(item)
 
-        if (selectedItemPos == position) {
+        if (selectedPosition == position) {
             holder.selectedBg()
         } else {
             holder.defaultBg()
         }
 
         holder.itemView.setOnClickListener {
+            Log.d("DRVA","holder.itemview clicked")
             cellClickListener.onCellClickListener(item)
             singleSelection(position)
         }
     }
 
-    override fun getItemCount(): Int = ProfileHandler.readProfiles(context, R.raw.profiles).size
+    override fun getItemCount(): Int = mProfileList.size
 
     private fun singleSelection(pos: Int) {
-        selectedItemPos = pos
-        lastItemSelectedPos = if (lastItemSelectedPos == -1)
-            selectedItemPos
-        else {
-            notifyItemChanged(lastItemSelectedPos)
-            selectedItemPos
-        }
-        notifyItemChanged(selectedItemPos)
+        notifyItemChanged(selectedPosition)
+        selectedPosition = pos
+        notifyItemChanged(pos)
     }
 }
