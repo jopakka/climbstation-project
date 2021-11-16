@@ -22,13 +22,13 @@ object Calculators {
         return steps.sumOf { it.distance }
     }
 
-    fun calculateHeight(steps: List<ClimbStep>) {
+    fun calculateHeight(steps: List<ClimbStep>): Float {
         var height = 0f
         steps.forEach { s ->
-            val a = (cos(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
-            val b = (sin(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
-            Log.d("TEST", "a: $a, b: $b, angle: ${s.angle}")
+            val h = (cos(Math.toRadians(s.angle.toDouble())) * s.distance).toFloat()
+            height += h
         }
+        return height
 
     }
 
