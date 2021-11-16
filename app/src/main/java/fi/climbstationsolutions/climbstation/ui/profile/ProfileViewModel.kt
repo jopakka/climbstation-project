@@ -1,13 +1,9 @@
 package fi.climbstationsolutions.climbstation.ui.profile
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fi.climbstationsolutions.climbstation.database.AppDatabase
-import fi.climbstationsolutions.climbstation.ui.viewmodels.ClimbFinishedViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class ProfileViewModel(context: Context): ViewModel() {
     private val database = AppDatabase.get(context)
