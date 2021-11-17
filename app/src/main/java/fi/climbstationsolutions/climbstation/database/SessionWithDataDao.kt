@@ -44,6 +44,15 @@ interface SessionWithDataDao {
     @Query("SELECT * FROM Session")
     fun getAllSessionsWithData(): LiveData<List<SessionWithData>>
 
-    @Query("SELECT sum(max) FROM (SELECT MAX(totalDistance) AS max FROM Data GROUP BY sessionId) AS total_distances ORDER BY max")
+    @Query("SELECT SUM(max) FROM (SELECT MAX(totalDistance) AS max FROM Data GROUP BY sessionId)")
     fun getAllTimeDistance(): LiveData<Int>
+
+    @Query("SELECT SUM(dates) FROM (SELECT endedAt - createdAt AS dates FROM Session)")
+    fun getAllTimeDuration(): LiveData<Long>
+
+    @Query("SELECT SUM(max) FROM (SELECT MAX(totalDistance) AS max FROM Data GROUP BY (SELECT id FROM Session WHERE id = sessionId GROUP BY createdAt >= DATETIME('now', '-7 days')))")
+    fun getSevenDayDistance(): LiveData<Int>
+
+    @Query("SELECT SUM(dates) FROM (SELECT endedAt - createdAt AS dates FROM Session GROUP BY createdAt >= DATETIME('now', '-7 days'))")
+    fun getSevenDayDuration(): LiveData<Long>
 }

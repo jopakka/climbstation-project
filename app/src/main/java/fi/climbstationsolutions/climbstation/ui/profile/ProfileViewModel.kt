@@ -12,6 +12,9 @@ class ProfileViewModel(context: Context) : ViewModel() {
     val allSessions = sessionDao.getAllSessionsWithData()
 
     val allTimeDistance = sessionDao.getAllTimeDistance()
+    val allTimeDuration = sessionDao.getAllTimeDuration()
+    val sevenDayDistance = sessionDao.getSevenDayDistance()
+    val sevenDateDuration = sessionDao.getSevenDayDuration()
 }
 
 class ProfileViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
