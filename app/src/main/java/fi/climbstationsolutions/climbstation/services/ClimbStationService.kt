@@ -31,6 +31,7 @@ class ClimbStationService : Service() {
         const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
         const val BROADCAST_ID_NAME = "ClimbStationService_ID"
         const val BROADCAST_ERROR = "ClimbStationService_Error"
+        const val BROADCAST_ERROR_CLIMB = "ClimbStationService_Error_Climb"
         var SERVICE_RUNNING = false
             private set
         var CLIMBING_ACTIVE = false
@@ -114,6 +115,12 @@ class ClimbStationService : Service() {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
+    private fun broadcastClimbError(message: String = "") {
+        val intent = Intent(BROADCAST_ERROR_CLIMB)
+        intent.putExtra(EXTRA_ERROR, message)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
     /**
      * Creates notification for service
      */
@@ -189,9 +196,7 @@ class ClimbStationService : Service() {
                     throw Exception("ClimbStation not started")
 
                 // Set endedAt time to session when it's finished
-                sessionID?.let {
-                    sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
-                }
+                setEndTimeForSession(sessionID)
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
                 sessionID?.let {
@@ -245,6 +250,7 @@ class ClimbStationService : Service() {
         } catch (e: Exception) {
             Log.e(TAG, "GetInfo error: ${e.localizedMessage}")
             CLIMBING_ACTIVE = false
+            broadcastClimbError(getString(R.string.error_while_getting_info))
             stopService()
         }
     }
@@ -319,6 +325,12 @@ class ClimbStationService : Service() {
             } catch (e: Exception) {
                 Log.e(TAG, "Logout error: ${e.localizedMessage}")
             }
+        }
+    }
+
+    private suspend fun setEndTimeForSession(sessionID: Long?) {
+        sessionID?.let {
+            sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
         }
     }
 }
