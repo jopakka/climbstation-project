@@ -43,4 +43,7 @@ interface SessionWithDataDao {
     @Transaction
     @Query("SELECT * FROM Session")
     fun getAllSessionsWithData(): LiveData<List<SessionWithData>>
+
+    @Query("SELECT sum(max) FROM (SELECT MAX(totalDistance) AS max FROM Data GROUP BY sessionId) AS total_distances ORDER BY max")
+    fun getAllTimeDistance(): LiveData<Int>
 }

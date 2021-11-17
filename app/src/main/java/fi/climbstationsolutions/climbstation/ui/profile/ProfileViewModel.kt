@@ -9,12 +9,15 @@ import fi.climbstationsolutions.climbstation.ui.viewmodels.ClimbFinishedViewMode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ProfileViewModel(context: Context): ViewModel() {
+class ProfileViewModel(context: Context) : ViewModel() {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
     val allSessions = sessionDao.getAllSessionsWithData()
+
+    val allTimeDistance = sessionDao.getAllTimeDistance()
 }
+
 class ProfileViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {

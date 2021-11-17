@@ -4,10 +4,10 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
-import fi.climbstationsolutions.climbstation.database.Data
 import fi.climbstationsolutions.climbstation.database.Session
 import fi.climbstationsolutions.climbstation.database.SessionWithData
-import fi.climbstationsolutions.climbstation.network.profile.Step
+import java.text.DateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -85,6 +85,13 @@ fun bindSessionSpeed(view: TextView, sessionWithData: SessionWithData?) {
     view.text = view.context.getString(R.string.speedShort, speed)
 }
 
+@BindingAdapter("sessionDate")
+fun bindSessionDate(view: TextView, date: Date) {
+    val sessionDate = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
+
+    view.text = sessionDate
+}
+
 @BindingAdapter("climbFinishedDuration")
 fun bindClimbFinishedDuration(view: TextView, duration: Session?) {
     val startTime: Long? = duration?.createdAt?.time
@@ -128,4 +135,9 @@ fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
 @BindingAdapter("adjustSpeed")
 fun bindAdjustSpeed(view: TextView, speed: Int?) {
     view.text = view.context.getString(R.string.fragment_adjust_speed, speed)
+}
+
+@BindingAdapter("allTimeDistance")
+fun bindAllTimeDistance(view: TextView, distance: Int) {
+    view.text = view.context.getString(R.string.distanceShort, distance.div(1000f))
 }
