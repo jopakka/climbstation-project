@@ -22,29 +22,13 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     private val sessionDao = database.sessionDao()
     private val profileDao = database.profileDao()
 
-    private val liveDataMerger: MediatorLiveData<SessionWithData> =
-        MediatorLiveData<SessionWithData>()
-
-    val sessionWithData: LiveData<SessionWithData>
-        get() = liveDataMerger
+    val sessionWithData = sessionDao.getLastSessionWithData()
 
     private val mProfileWithSteps: MediatorLiveData<ClimbProfileWithSteps> by lazy {
         MediatorLiveData<ClimbProfileWithSteps>()
     }
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
-
-    fun getSessionById(id: Long) {
-        liveDataMerger.addSource(sessionDao.getSessionWithData(id)) {
-            liveDataMerger.value = it
-        }
-    }
-
-    fun getLastSession() {
-        liveDataMerger.addSource(sessionDao.getLastSessionWithData()) {
-            liveDataMerger.value = it
-        }
-    }
 
     fun getProfile() {
         mProfileWithSteps.addSource(sessionWithData) {

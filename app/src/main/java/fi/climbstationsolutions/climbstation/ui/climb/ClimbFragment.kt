@@ -45,28 +45,20 @@ class ClimbFragment : Fragment(), CellClickListener {
         binding.viewModel = viewModel
         viewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
-        if (!ClimbStationService.CLIMBING_ACTIVE) {
-            binding.difficultyRv.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment)
-            }
-
-            setProfilesToRecyclerView()
-
-            binding.startBtn.setOnClickListener(clickListener)
-
-            broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-                registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_ID_NAME))
-                registerReceiver(errorsBroadcastReceiver, IntentFilter(BROADCAST_ERROR))
-            }
-        } else {
-            try {
-                val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(null)
-                this.findNavController().navigate(startAction)
-            } catch (e: Exception) {
-                Log.e("TEST", "climb: ${e.localizedMessage}")
-            }
+        binding.difficultyRv.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = DifficultyRecyclerviewAdapter(this@ClimbFragment)
         }
+
+        setProfilesToRecyclerView()
+
+        binding.startBtn.setOnClickListener(clickListener)
+
+        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
+            registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_ID_NAME))
+            registerReceiver(errorsBroadcastReceiver, IntentFilter(BROADCAST_ERROR))
+        }
+
         return binding.root
     }
 
@@ -94,16 +86,6 @@ class ClimbFragment : Fragment(), CellClickListener {
     private fun setProfile(profile: ClimbProfileWithSteps) {
         viewModel.setProfile(profile)
     }
-
-//    private fun isServiceRunning(): Boolean {
-//        return if (ClimbStationService.SERVICE_RUNNING) {
-//            val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(null)
-//            this.findNavController().navigate(startAction)
-//            true
-//        } else {
-//            false
-//        }
-//    }
 
     private fun startClimbing() {
 
@@ -136,7 +118,7 @@ class ClimbFragment : Fragment(), CellClickListener {
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(it)
+                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
                     findNavController().navigate(startAction)
                 } ?: run {
                     showAlertDialog(getString(R.string.error_no_profile_selected))
