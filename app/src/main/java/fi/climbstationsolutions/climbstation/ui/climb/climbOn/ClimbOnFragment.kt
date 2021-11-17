@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
@@ -44,7 +45,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             stopClimbing()
         }
 
-        viewModel.getLastSession()
+//        viewModel.getLastSession()
         viewModel.getProfile()
         viewModel.startTimer()
 

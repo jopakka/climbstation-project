@@ -48,10 +48,6 @@
         android:name="fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnFragment"
         android:label="ClimbOnFragment"
         tools:layout="@layout/fragment_climb_on">
-        <argument
-            android:name="profile"
-            app:argType="fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps"
-            app:nullable="true" />
         <action
             android:id="@+id/action_climbOnFragment_to_climbFinishedFragment"
             app:destination="@id/climbFinishedFragment"
