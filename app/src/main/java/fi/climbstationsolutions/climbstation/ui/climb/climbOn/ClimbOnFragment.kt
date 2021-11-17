@@ -23,12 +23,12 @@ import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
-    private val args: ClimbOnFragmentArgs by navArgs()
+//    private val args: ClimbOnFragmentArgs by navArgs()
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
 
-    private lateinit var broadcastManager: LocalBroadcastManager
+//    private lateinit var broadcastManager: LocalBroadcastManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,27 +39,27 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
-        }
+//        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
+//            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
+//        }
 
         binding.stopBtn.setOnClickListener {
             stopClimbing()
         }
 
-        if (ClimbStationService.SERVICE_RUNNING) {
+//        if (ClimbStationService.SERVICE_RUNNING) {
             viewModel.startTimer()
             viewModel.getLastSession()
-        }
+//        }
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (!ClimbStationService.SERVICE_RUNNING)
-            startClimbing()
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//        if (!ClimbStationService.SERVICE_RUNNING)
+//            startClimbing()
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -79,21 +79,21 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         }
     }
 
-    private fun startClimbing() {
-
-        val context = context ?: return
-        val activity = activity ?: return
-        val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
-
-        Intent(context, ClimbStationService::class.java).also {
-            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
-            it.putExtra(
-                ClimbStationService.PROFILE_EXTRA,
-                args.profile
-            )
-            activity.startForegroundService(it)
-        }
-    }
+//    private fun startClimbing() {
+//
+//        val context = context ?: return
+//        val activity = activity ?: return
+//        val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
+//
+//        Intent(context, ClimbStationService::class.java).also {
+//            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
+//            it.putExtra(
+//                ClimbStationService.PROFILE_EXTRA,
+//                args.profile
+//            )
+//            activity.startForegroundService(it)
+//        }
+//    }
 
     private fun stopClimbing() {
         val context = context ?: return
@@ -106,7 +106,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             }
         }
 
-        viewModel.useTimer = false
+//        viewModel.useTimer = false
 
         val id = viewModel.sessionWithData.value?.session?.id
         val action =

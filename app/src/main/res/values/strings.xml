@@ -84,6 +84,10 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="congratulations">Congratulations</string>
+    <string name="error">Error</string>
+
+    <string name="error_while_connecting">We have troubles to connect ClimbStation. Please try again.</string>
+    <string name="error_no_profile_selected">No profile selected.</string>
 
     <string name="enter_serial_no">Enter ClimbStation serial number</string>
     <string name="example_no">e.g. 20110001</string>

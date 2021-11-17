@@ -63,10 +63,11 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     val timer: LiveData<Long>
         get() = mTimer
 
-    var useTimer = true
+    private var useTimer = true
 
     fun startTimer() {
         viewModelScope.launch(Dispatchers.Default) {
+            useTimer = true
             while (useTimer) {
                 val startTime = sessionWithData.value?.session?.createdAt?.time
                 val result = startTime?.let {
@@ -77,6 +78,10 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
                 delay(1000)
             }
         }
+    }
+
+    fun stopTimer() {
+        useTimer = false
     }
 }
 

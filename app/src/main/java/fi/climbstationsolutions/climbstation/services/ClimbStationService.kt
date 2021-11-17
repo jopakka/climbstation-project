@@ -26,10 +26,11 @@ class ClimbStationService : Service() {
         private const val NOTIFICATION_CHANNEL_GROUP_NAME = "Climbing group"
 
         const val PROFILE_EXTRA = "Profile"
+        const val EXTRA_ERROR = "ErrorMessage"
         const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
         const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
-        const val BROADCAST_INFO_NAME = "ClimbStationService_Info"
         const val BROADCAST_ID_NAME = "ClimbStationService_ID"
+        const val BROADCAST_ERROR = "ClimbStationService_Error"
         var SERVICE_RUNNING = false
             private set
         var CLIMBING_ACTIVE = false
@@ -99,26 +100,17 @@ class ClimbStationService : Service() {
     }
 
     /**
-     * Broadcasts bundle named "info", which contains [Int]s "speed", "angle" and "length"
-     */
-    private fun broadcastValues(speed: Int, angle: Int, length: Int) {
-        val intent = Intent(BROADCAST_INFO_NAME)
-
-        val bundle = Bundle()
-        bundle.putInt("speed", speed)
-        bundle.putInt("angle", angle)
-        bundle.putInt("length", length)
-
-        intent.putExtra("info", bundle)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
-    }
-
-    /**
      * Broadcasts id
      */
     private fun broadcastId(id: Long) {
         val intent = Intent(BROADCAST_ID_NAME)
         intent.putExtra("id", id)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    private fun broadcastError(message: String = "") {
+        val intent = Intent(BROADCAST_ERROR)
+        intent.putExtra(EXTRA_ERROR, message)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -205,6 +197,7 @@ class ClimbStationService : Service() {
                 sessionID?.let {
                     sessionDao.deleteSession(it)
                 }
+                broadcastError(getString(R.string.error_while_connecting))
                 stopService()
             }
         }
@@ -271,8 +264,6 @@ class ClimbStationService : Service() {
         // Save info to database
         val dID = sessionDao.insertData(Data(0, sessionID, speed, angle, length))
         Log.d(TAG, "dataID: $dID")
-
-        broadcastValues(speed, angle, length)
 
         adjustToProfile(info.length.toInt())
     }
