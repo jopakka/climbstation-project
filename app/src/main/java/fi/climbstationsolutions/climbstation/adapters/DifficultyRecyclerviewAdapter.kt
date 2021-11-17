@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -42,7 +43,7 @@ class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClickList
         }
 
         fun defaultBg() {
-            binding.singleDfItem.setBackgroundResource(R.color.transparent)
+            binding.singleDfItem.setBackgroundResource(R.drawable.layout_background_default)
         }
     }
 
@@ -61,6 +62,7 @@ class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClickList
         }
 
         holder.itemView.setOnClickListener {
+            Log.d("DRVA","holder.itemview clicked")
             cellClickListener.onCellClickListener(item)
             singleSelection(position)
         }

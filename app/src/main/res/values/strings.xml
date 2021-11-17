@@ -10,6 +10,13 @@
     <string name="bottom_nav_profile">Profile</string>
     <string name="bottom_nav_settings">Settings</string>
 
+    <!--fragment_climb strings-->
+    <string name="fragment_climb_dif_rv_title">test</string>
+    <string name="fragment_climb_dif_rv_length_title">Length</string>
+    <string name="fragment_climb_dif_rv_length_value">0 m</string>
+    <string name="fragment_climb_dif_rv_average_angle_title">Average angle</string>
+    <string name="fragment_climb_dif_rv_average_angle_value">0 deg</string>
+
     <!--fragment_climb_on strings-->
     <string name="stop_watch">%02d:%02d:%02d</string>
 
@@ -53,9 +60,6 @@
     <string name="weight_prompt_title">Enter your weight</string>
     <string name="weight_prompt_kg">kg</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <!--Accessibility for top app bar-->
     <string name="content_description_settings_icon">settings</string>
 
@@ -79,6 +83,16 @@
 
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="congratulations">Congratulations</string>
+    <string name="error">Error</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="error_while_connecting">We have troubles to connect ClimbStation. Please try again.</string>
+    <string name="error_no_profile_selected">No profile selected.</string>
+    <string name="error_while_getting_info">We have troubles to get info from ClimbStation.</string>
+
+    <string name="prompt_quit_session">Do you want to quit the session?</string>
 
     <string name="enter_serial_no">Enter ClimbStation serial number</string>
     <string name="example_no">e.g. 20110001</string>
@@ -94,6 +108,7 @@
 
     <!--unit abbreviations-->
     <string name="speedShort">%d m/min</string>
-    <string name="distanceShort">%.3f m</string>
+    <string name="distanceShort">%.1f m</string>
     <string name="caloriesShort">%.3f kcal</string>
+    <string name="angleShort">%.1f°</string>
 </resources>

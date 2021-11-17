@@ -21,7 +21,17 @@ class ClimbViewModel(application: Application): AndroidViewModel(application) {
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
 
+    private val mLoading: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().also { it.value = false }
+    }
+    val loading: LiveData<Boolean>
+        get() = mLoading
+
     fun setProfile(profile: ClimbProfileWithSteps) {
         mProfileWithSteps.value = profile
+    }
+
+    fun setLoading(value: Boolean) {
+        mLoading.value = value
     }
 }

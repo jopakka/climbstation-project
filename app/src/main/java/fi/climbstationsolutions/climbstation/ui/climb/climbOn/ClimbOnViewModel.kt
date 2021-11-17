@@ -13,28 +13,30 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 
 import androidx.lifecycle.LiveData
+import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 
 
 class ClimbOnViewModel(context: Context) : ViewModel() {
 
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
+    private val profileDao = database.profileDao()
 
-    private val liveDataMerger: MediatorLiveData<SessionWithData> =
-        MediatorLiveData<SessionWithData>()
+    val sessionWithData = sessionDao.getLastSessionWithData()
 
-    val sessionWithData: LiveData<SessionWithData>
-        get() = liveDataMerger
-
-    fun getSessionById(id: Long) {
-        liveDataMerger.addSource(sessionDao.getSessionWithData(id)) {
-            liveDataMerger.setValue(it)
-        }
+    private val mProfileWithSteps: MediatorLiveData<ClimbProfileWithSteps> by lazy {
+        MediatorLiveData<ClimbProfileWithSteps>()
     }
+    val profileWithSteps: LiveData<ClimbProfileWithSteps>
+        get() = mProfileWithSteps
 
-    fun getLastSession() {
-        liveDataMerger.addSource(sessionDao.getLastSessionWithData()) {
-            liveDataMerger.setValue(it)
+    fun getProfile() {
+        mProfileWithSteps.addSource(sessionWithData) {
+            viewModelScope.launch(Dispatchers.IO) {
+                if(it != null) {
+                    mProfileWithSteps.postValue(profileDao.getProfileWithSteps(it.session.profileId))
+                }
+            }
         }
     }
 
@@ -45,10 +47,11 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     val timer: LiveData<Long>
         get() = mTimer
 
-    var useTimer = true
+    private var useTimer = true
 
     fun startTimer() {
         viewModelScope.launch(Dispatchers.Default) {
+            useTimer = true
             while (useTimer) {
                 val startTime = sessionWithData.value?.session?.createdAt?.time
                 val result = startTime?.let {
@@ -59,6 +62,10 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
                 delay(1000)
             }
         }
+    }
+
+    fun stopTimer() {
+        useTimer = false
     }
 }
 

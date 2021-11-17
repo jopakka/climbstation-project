@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="profile" />
+    <attr name="sessionWithData" />
     <declare-styleable name="WallProfile">
+        <attr name="profile" />
+        <attr name="sessionWithData" />
         <attr name="wallColor" format="color"/>
         <attr name="wallFillColor" format="color"/>
     </declare-styleable>
