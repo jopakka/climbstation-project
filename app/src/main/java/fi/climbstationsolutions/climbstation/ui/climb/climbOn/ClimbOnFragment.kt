@@ -14,14 +14,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
-//    private val args: ClimbOnFragmentArgs by navArgs()
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
@@ -41,15 +41,14 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             registerReceiver(errorBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB))
         }
 
-        binding.stopBtn.setOnClickListener {
+        binding.btnStop.setOnClickListener {
             stopClimbing()
         }
 
-//        viewModel.getLastSession()
-        viewModel.getProfile()
         viewModel.startTimer()
 
         setBackButtonAction()
+        setupPager()
 
         return binding.root
     }
@@ -57,6 +56,17 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(errorBroadcastReceiver)
+    }
+
+    private fun setupPager() {
+        binding.climbOnPager.adapter = TabPagerAdapter(this)
+        TabLayoutMediator(binding.tabLayout, binding.climbOnPager) { tab, pos ->
+            tab.text = when(pos) {
+                0 -> getString(R.string.wall)
+                1 -> getString(R.string.stats)
+                else -> null
+            }
+        }.attach()
     }
 
     private fun setBackButtonAction() {
