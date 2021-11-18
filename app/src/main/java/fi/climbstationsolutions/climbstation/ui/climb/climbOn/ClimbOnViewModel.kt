@@ -30,7 +30,7 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
 
-    fun getProfile() {
+    init {
         mProfileWithSteps.addSource(sessionWithData) {
             viewModelScope.launch(Dispatchers.IO) {
                 if(it != null) {

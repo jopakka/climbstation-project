@@ -72,6 +72,9 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
     testImplementation "androidx.arch.core:core-testing:$arch_version"
 
+    // ViewPager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
     // Navigation
     def nav_version = '2.3.5'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
