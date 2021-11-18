@@ -3,14 +3,16 @@ package fi.climbstationsolutions.climbstation.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.database.SettingsDao
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
@@ -20,7 +22,7 @@ import fi.climbstationsolutions.climbstation.ui.init.InitActivity
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
@@ -32,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         setTheme(R.style.Theme_ClimbStation)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        binding.overflowNavView.setNavigationItemSelectedListener(this)
 
         /*
             If no serialNo found, then start InitActivity
@@ -48,14 +52,19 @@ class MainActivity : AppCompatActivity() {
             viewModel.setWeight()
 
             binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+                Log.d("topAppBar", "menu clicked")
                 when (menuItem.itemId) {
-                    R.id.settings -> {
-                        // Handle favorite icon press
-                        Log.d("top_app_bar_navigation_item_click", "settings clicked")
-                        navController.navigate(R.id.settings)
+                    R.id.more -> {
+                        if (binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+                            binding.overflowDrawerLayout.closeDrawer(GravityCompat.END)
+                        } else if (!binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+                            binding.overflowDrawerLayout.openDrawer(GravityCompat.END)
+                        }
                         true
                     }
-                    else -> false
+                    else -> {
+                        false
+                    }
                 }
             }
         }
@@ -95,5 +104,20 @@ class MainActivity : AppCompatActivity() {
         val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
         val serialNo = prefs[SERIAL_NO_PREF_NAME, ""]
         return serialNo != ""
+    }
+
+    // For top app bar overflow menu items
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_settings -> {
+                Log.d("MainActivity3 menu item click", "settings clicked")
+                return true
+            }
+            R.id.nav_info -> {
+                Log.d("MainActivity3 menu item click", "info clicked")
+                return true
+            }
+        }
+        return false
     }
 }

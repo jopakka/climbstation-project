@@ -2,7 +2,7 @@
     <string name="app_name">ClimbStation</string>
 
     <!--Top app bar strings-->
-    <string name="top_app_bar_settings">Settings</string>
+    <string name="top_app_bar_overflow_title">more</string>
 
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
@@ -61,7 +61,7 @@
     <string name="weight_prompt_kg">kg</string>
 
     <!--Accessibility for top app bar-->
-    <string name="content_description_settings_icon">settings</string>
+    <string name="content_description_overflow_icon">top navigation menu</string>
 
     <!--Accessibility for ClimbStation sprites-->
     <string name="content_description_climbstation_logo_image">ClimbStation logo</string>

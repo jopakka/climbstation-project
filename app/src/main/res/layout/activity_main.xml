@@ -36,6 +36,26 @@
         app:layout_constraintTop_toBottomOf="@id/topAppBarContainer"
         app:navGraph="@navigation/navigation_main" />
 
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/overflow_drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity"
+        tools:openDrawer="end">
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/overflow_nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:fitsSystemWindows="true"
+            android:backgroundTint="@color/light_transparent"
+            app:headerLayout="@layout/overflow_menu_header_layout"
+            app:itemTextColor="@color/black"
+            app:itemIconTint="@color/black"
+            app:menu="@menu/overflow_menu_items" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
