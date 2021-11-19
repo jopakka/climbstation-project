@@ -70,7 +70,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
             wallOutlineColor =
                 typedArray.getColor(R.styleable.WallProfile_wallOutlineColor, Color.WHITE)
             wallOutlineThickness =
-                typedArray.getFloat(R.styleable.WallProfile_wallOutlineThickness, 0f)
+                typedArray.getFloat(R.styleable.WallProfile_wallOutlineThickness, 20f)
             wallFillColor = typedArray.getColor(
                 R.styleable.WallProfile_wallFillColor,
                 ContextCompat.getColor(context, R.color.climbstation_red)
