@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<view class="fi.climbstationsolutions.climbstation.utils.WallProfile"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<view xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/wall_profile"
+    class="fi.climbstationsolutions.climbstation.utils.WallProfile"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
