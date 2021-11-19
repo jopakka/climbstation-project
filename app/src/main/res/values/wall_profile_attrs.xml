@@ -7,5 +7,7 @@
         <attr name="sessionWithData" />
         <attr name="wallColor" format="color"/>
         <attr name="wallFillColor" format="color"/>
+        <attr name="wallOutlineColor" format="color"/>
+        <attr name="wallOutlineThickness" format="float"/>
     </declare-styleable>
 </resources>
