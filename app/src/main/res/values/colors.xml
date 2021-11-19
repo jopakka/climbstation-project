@@ -19,4 +19,5 @@
     <color name="list_item_subtitle_grey">#6E6E6E</color>
     <color name="list_item_non_selected_background">#C6C6C6</color>
     <color name="super_grey">#333333</color>
+    <color name="fragment_background_color">#A31E1D1D</color>
 </resources>

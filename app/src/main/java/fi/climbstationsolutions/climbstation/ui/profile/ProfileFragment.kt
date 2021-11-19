@@ -33,6 +33,8 @@ class ProfileFragment : Fragment() {
                 adapter = StatisticsAdapter(it)
             }
         }
+
+
         return binding.root
     }
 }
