@@ -29,7 +29,7 @@ class ProfileFragment : Fragment() {
         viewModel.allSessions.observe(viewLifecycleOwner) {
             Log.d("RV", it.toString())
             binding.sessionRv.apply {
-                layoutManager = LinearLayoutManager(context)
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
                 adapter = StatisticsAdapter(it)
             }
         }
