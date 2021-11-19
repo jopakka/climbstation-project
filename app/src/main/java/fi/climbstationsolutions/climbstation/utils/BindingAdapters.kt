@@ -92,7 +92,7 @@ fun bindSessionSpeed(view: TextView, sessionWithData: SessionWithData?) {
 
 @BindingAdapter("sessionDate")
 fun bindSessionDate(view: TextView, date: Date) {
-    val sessionDate = DateFormat.getDateInstance(DateFormat.SHORT).format(date)
+    val sessionDate = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
 
     view.text = sessionDate
 }

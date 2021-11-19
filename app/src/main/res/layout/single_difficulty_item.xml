@@ -29,6 +29,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/dif_rv_title_separator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,19 +43,21 @@
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@color/climbstation_red"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dif_rv_title" />
+            app:layout_constraintTop_toBottomOf="@+id/dif_rv_title" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -97,10 +100,10 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    app:stepsToDistanceShort="@{profileItem.steps}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/Length_subtitle"
+                    app:stepsToDistanceShort="@{profileItem.steps}"
                     tools:text="12m" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
