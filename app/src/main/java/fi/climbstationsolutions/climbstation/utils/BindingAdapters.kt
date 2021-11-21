@@ -46,13 +46,24 @@ fun bindSpeed(view: TextView, speed: Int?) {
 }
 
 @BindingAdapter("sessionTime")
-fun bindSessionTime(view: TextView, time: Long) {
+fun bindSessionTimeLong(view: TextView, time: Long) {
 
     val hours = TimeUnit.MILLISECONDS.toHours(time)
     val minutes = TimeUnit.MILLISECONDS.toMinutes(time) % TimeUnit.HOURS.toMinutes(1)
     val seconds = TimeUnit.MILLISECONDS.toSeconds(time) % TimeUnit.MINUTES.toSeconds(1)
 
     view.text = view.context.getString(R.string.stop_watch, hours, minutes, seconds)
+}
+
+@BindingAdapter("sessionTime")
+fun bindSessionTime(view: TextView, sessionWithData: SessionWithData?) {
+    sessionWithData ?: return
+
+    val endTime = sessionWithData.session.endedAt?.time ?: 0L
+    val startTime = sessionWithData.session.createdAt.time
+    val time = if(endTime == 0L) 0L else endTime - startTime
+
+    bindSessionTimeLong(view, time)
 }
 
 @BindingAdapter("sessionLength")
@@ -125,7 +136,7 @@ fun bindSessionAverageSpeed(view: TextView, sessionWithData: SessionWithData?) {
 
     val avrgSpeed = (distance / seconds) * 60
 
-    view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, avrgSpeed)
+    view.text = view.context.getString(R.string.float_single_decimal, avrgSpeed)
 }
 
 // Settings fragment
