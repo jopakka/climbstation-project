@@ -136,7 +136,7 @@ fun bindSessionAverageSpeed(view: TextView, sessionWithData: SessionWithData?) {
 
     val avrgSpeed = (distance / seconds) * 60
 
-    view.text = view.context.getString(R.string.fragment_climb_finished_speed_value, avrgSpeed)
+    view.text = view.context.getString(R.string.float_single_decimal, avrgSpeed)
 }
 
 // Settings fragment

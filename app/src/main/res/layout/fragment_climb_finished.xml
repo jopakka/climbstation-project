@@ -18,7 +18,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/btnClimbAgain"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -374,7 +374,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/speedTitleLayout"
-                        app:sessionSpeed="@{viewModel.sessionWithData}"
+                        app:sessionAverageSpeed="@{viewModel.sessionWithData}"
                         tools:text="5" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -382,7 +382,7 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnClimbAgain"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -390,12 +390,12 @@
             android:layout_marginBottom="8dp"
             android:text="@string/climb_again"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/button2"
+            app:layout_constraintEnd_toStartOf="@+id/btnFinish"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnFinish"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -407,7 +407,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/button" />
+            app:layout_constraintStart_toEndOf="@+id/btnClimbAgain" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbFinishedBinding
 
 class ClimbFinishedFragment : Fragment() {
@@ -26,6 +29,7 @@ class ClimbFinishedFragment : Fragment() {
         viewModel.getSessionId(args.sessionId)
         viewModel.getProfile()
 
+        setUI()
         setWallProfile()
 
         // Inflate the layout for this fragment
@@ -40,5 +44,21 @@ class ClimbFinishedFragment : Fragment() {
         viewModel.sessionWithData.observe(viewLifecycleOwner) {
             binding.climbFinishedWallProfile.sessionWithData = it
         }
+    }
+
+    private fun setUI() {
+        binding.apply {
+            btnClimbAgain.setOnClickListener(climbAgainAction)
+            btnFinish.setOnClickListener(finishAction)
+        }
+    }
+
+    private val climbAgainAction = View.OnClickListener {
+        Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
+    }
+
+    private val finishAction = View.OnClickListener {
+        val direction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimb()
+        findNavController().navigate(direction)
     }
 }
