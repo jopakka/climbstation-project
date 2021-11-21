@@ -85,6 +85,7 @@
     <string name="stop">Stop</string>
     <string name="congratulations">Congratulations</string>
     <string name="error">Error</string>
+    <string name="warning">Warning</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -106,6 +107,11 @@
     <string name="burned_calories">Burned calories</string>
     <string name="climbed_distance">Climbed distance</string>
     <string name="current_speed">Current speed</string>
+    <string name="total_time">Total time</string>
+    <string name="average_speed">Average speed</string>
+
+    <string name="climb_again">Climb again</string>
+    <string name="finish">Finish</string>
 
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 

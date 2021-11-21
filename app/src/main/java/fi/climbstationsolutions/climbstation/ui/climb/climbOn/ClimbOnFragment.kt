@@ -84,7 +84,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     private fun showYesNoDialog(positiveAction: () -> Unit) {
         val builder = AlertDialog.Builder(activity).apply {
-            setTitle(R.string.error)
+            setTitle(R.string.warning)
             setMessage(R.string.prompt_quit_session)
             setPositiveButton(R.string.yes) { _, _ ->
                 positiveAction()

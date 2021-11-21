@@ -26,7 +26,19 @@ class ClimbFinishedFragment : Fragment() {
         viewModel.getSessionId(args.sessionId)
         viewModel.getProfile()
 
+        setWallProfile()
+
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    private fun setWallProfile() {
+        viewModel.profileWithSteps.observe(viewLifecycleOwner) {
+            binding.climbFinishedWallProfile.profile = it
+        }
+
+        viewModel.sessionWithData.observe(viewLifecycleOwner) {
+            binding.climbFinishedWallProfile.sessionWithData = it
+        }
     }
 }
