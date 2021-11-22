@@ -33,7 +33,7 @@
     <string name="fragment_climb_finished_calories_title">CALORIES</string>
     <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
     <string name="fragment_climb_finished_speed_title">SPEED</string>
-    <string name="fragment_climb_finished_speed_value">%.3f m / min</string>
+    <string name="fragment_climb_finished_speed_value">%.1f</string>
     <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
 
     <!--fragment_adjust strings-->
@@ -85,6 +85,7 @@
     <string name="stop">Stop</string>
     <string name="congratulations">Congratulations</string>
     <string name="error">Error</string>
+    <string name="warning">Warning</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -99,13 +100,25 @@
     <string name="continue_txt">Continue</string>
     <string name="next_txt">Next</string>
 
+    <!-- View pager tabs -->
     <string name="wall">Wall</string>
     <string name="stats">Stats</string>
+    <string name="history">History</string>
+
+    <string name="past_7_days">Past 7 days</string>
+    <string name="all_time">All time</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
 
     <string name="elapsed_time">Elapsed time</string>
     <string name="burned_calories">Burned calories</string>
     <string name="climbed_distance">Climbed distance</string>
     <string name="current_speed">Current speed</string>
+    <string name="total_time">Total time</string>
+    <string name="average_speed">Average speed</string>
+
+    <string name="climb_again">Climb again</string>
+    <string name="finish">Finish</string>
 
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
