@@ -1,10 +1,13 @@
 package fi.climbstationsolutions.climbstation.ui
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.ExpandableListAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
+import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
@@ -161,28 +165,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val childItem =
                     listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
                 Log.d("MainActivity_menuChildClick", "childItem: $childItem")
-                val myContext = this
                 if (childItem == "Bodyweight") {
-                    try {
-                        var result = false
-                        mainScope.launch {
-                            val test = async {
-                                MenuActions().updateUserWeight(
-                                    applicationContext,
-                                    myContext,
-                                    viewModel
-                                )
-                            }
-                            result = test.await()
-                            if (result) {
-                                Log.d("MainActivity_menuChildClick", "result true")
-                                (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
-                            } else {
-                                Log.d("MainActivity_menuChildClick", "result false")
-                            }
+                    MenuActions().updateUserWeight(this) {
+                        val weight = it.toFloatOrNull()
+                        viewModel.setWeight(weight) {
+                            (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
                         }
-                    } catch (e: IOException) {
-                        Log.d("MainActivity_menuChildClick", "error while updating user weight: $e")
                     }
                 } else {
                     Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
