@@ -7,12 +7,6 @@
         android:title="@string/bottom_nav_climb"/>
 
     <item
-        android:id="@+id/statistic"
-        android:enabled="true"
-        android:icon="@drawable/statistics_menu_logo"
-        android:title="@string/bottom_nav_statistics"/>
-
-    <item
         android:id="@+id/profile"
         android:enabled="true"
         android:icon="@drawable/ic_person_24"

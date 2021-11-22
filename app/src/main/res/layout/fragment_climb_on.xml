@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnViewModel" />
@@ -13,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/darkened_mountain">
+        android:background="@color/fragment_background_color">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -26,13 +25,13 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tab 1" />
+                tools:text="Tab 1" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tab 2" />
+                tools:text="Tab 2" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager2.widget.ViewPager2
@@ -42,10 +41,8 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/btnStop"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
         <Button
             android:id="@+id/btnStop"

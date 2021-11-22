@@ -75,6 +75,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
                 showYesNoDialog {
                     if(isEnabled) {
                         isEnabled = false
+                        viewModel.stopTimer()
                         stopClimbing()
                     }
                 }

@@ -8,20 +8,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbFinishedBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 
 class ClimbFinishedFragment : Fragment() {
     private lateinit var binding: FragmentClimbFinishedBinding

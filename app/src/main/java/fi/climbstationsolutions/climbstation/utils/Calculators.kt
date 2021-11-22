@@ -1,9 +1,7 @@
 package fi.climbstationsolutions.climbstation.utils
 
-import android.util.Log
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import kotlin.math.cos
-import kotlin.math.sin
 
 object Calculators {
     fun averageAngleFromSteps(steps: List<ClimbStep>): Float {

@@ -1,7 +1,10 @@
 package fi.climbstationsolutions.climbstation.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Transaction
 import java.util.*
 
 @Dao
@@ -41,8 +44,8 @@ interface SessionWithDataDao {
 
     // SessionWithData
     @Transaction
-    @Query("SELECT * FROM Session")
-    fun getAllSessionsWithData(): LiveData<List<SessionWithData>>
+    @Query("SELECT * FROM Session ORDER BY CASE WHEN :desc = 1 THEN createdAt END DESC, CASE WHEN :desc = 0 THEN createdAt END ASC")
+    fun getAllSessionsWithData(desc: Boolean = true): LiveData<List<SessionWithData>>
 
     @Query("SELECT SUM(max) FROM (SELECT MAX(totalDistance) AS max FROM Data GROUP BY sessionId)")
     fun getAllTimeDistance(): LiveData<Int>

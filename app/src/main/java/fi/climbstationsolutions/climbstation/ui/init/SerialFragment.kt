@@ -1,11 +1,9 @@
 package fi.climbstationsolutions.climbstation.ui.init
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +19,8 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.MainActivity
 
 class SerialFragment : Fragment() {
-    companion object {
-        private const val TAG = "SerialFragment"
-    }
 
     private lateinit var binding: FragmentSerialBinding
     private val viewModel: InitViewModel by viewModels()
