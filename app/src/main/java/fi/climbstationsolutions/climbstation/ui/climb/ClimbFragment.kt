@@ -15,7 +15,6 @@ import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.DifficultyRecyclerviewAdapter
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
@@ -115,6 +114,7 @@ class ClimbFragment : Fragment(), CellClickListener {
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getLongExtra("id", -1L)
+            viewModel.setLoading(false)
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
@@ -123,7 +123,6 @@ class ClimbFragment : Fragment(), CellClickListener {
                 } ?: run {
                     showAlertDialog(getString(R.string.error_no_profile_selected))
                 }
-                viewModel.setLoading(false)
             }
         }
     }

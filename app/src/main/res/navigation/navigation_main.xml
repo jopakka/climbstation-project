@@ -16,19 +16,12 @@
         <action
             android:id="@+id/action_climb_to_climbOnFragment"
             app:destination="@id/climbOnFragment" />
-        <action
-            android:id="@+id/action_climb_to_climbOnFragment2"
-            app:destination="@id/climbOnFragment" />
     </fragment>
     <fragment
         android:id="@+id/statistic"
         android:name="fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment"
         android:label="fragment_statistics"
-        tools:layout="@layout/fragment_statistics" >
-        <action
-            android:id="@+id/action_statistic_to_climbFinishedFragment"
-            app:destination="@id/climbFinishedFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_statistics" />
     <fragment
         android:id="@+id/settings"
         android:name="fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment"
@@ -62,12 +55,31 @@
             android:name="sessionId"
             app:argType="long" />
         <action
-            android:id="@+id/action_climbFinishedFragment_to_statistic"
-            app:destination="@id/statistic" />
+            android:id="@+id/action_climbFinishedFragment_to_climb"
+            app:destination="@id/climb"
+            app:popUpTo="@id/climb"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_climbFinishedFragment_to_climbOnFragment"
+            app:destination="@id/climbOnFragment"
+            app:popUpTo="@id/climb" />
     </fragment>
     <fragment
         android:id="@+id/profile"
         android:name="fi.climbstationsolutions.climbstation.ui.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_to_climbHistory"
+            app:destination="@id/climbHistory" />
+    </fragment>
+    <fragment
+        android:id="@+id/climbHistory"
+        android:name="fi.climbstationsolutions.climbstation.ui.history.ClimbHistoryFragment"
+        android:label="ClimbHistory"
+        tools:layout="@layout/fragment_history">
+        <argument
+            android:name="sessionId"
+            app:argType="long" />
+    </fragment>
 </navigation>

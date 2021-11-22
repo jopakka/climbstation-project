@@ -36,7 +36,7 @@
     <string name="fragment_climb_finished_calories_title">CALORIES</string>
     <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
     <string name="fragment_climb_finished_speed_title">SPEED</string>
-    <string name="fragment_climb_finished_speed_value">%.3f m / min</string>
+    <string name="fragment_climb_finished_speed_value">%.1f</string>
     <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
 
     <!--fragment_adjust strings-->
@@ -49,7 +49,7 @@
     <!--statistics_session_history_item strings-->
     <string name="stat_sess_history_item_date">5.11.2021</string>
     <string name="stat_sess_history_item_profile">Athlete</string>
-    <string name="stat_sess_history_item_duration_title">TIME</string>
+    <string name="stat_sess_history_item_duration_title">Time</string>
     <string name="stat_sess_history_item_duration_value">00:14:57</string>
     <string name="stat_sess_history_item_distance_title">Distance</string>
     <string name="stat_sess_history_item_distance_value">28.3 m</string>
@@ -88,6 +88,7 @@
     <string name="stop">Stop</string>
     <string name="congratulations">Congratulations</string>
     <string name="error">Error</string>
+    <string name="warning">Warning</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -102,16 +103,40 @@
     <string name="continue_txt">Continue</string>
     <string name="next_txt">Next</string>
 
+    <!-- View pager tabs -->
+    <string name="wall">Wall</string>
+    <string name="stats">Stats</string>
+    <string name="history">History</string>
+
+    <string name="past_7_days">Past 7 days</string>
+    <string name="all_time">All time</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+
+    <string name="elapsed_time">Elapsed time</string>
+    <string name="burned_calories">Burned calories</string>
+    <string name="climbed_distance">Climbed distance</string>
+    <string name="current_speed">Current speed</string>
+    <string name="total_time">Total time</string>
+    <string name="average_speed">Average speed</string>
+
+    <string name="climb_again">Climb again</string>
+    <string name="finish">Finish</string>
+
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
     <!--units-->
     <string name="speedLong">%d m/min</string>
     <string name="distanceLong">%d meters</string>
     <string name="angleLong">%d degree</string>
+    <string name="meter_short">m</string>
+    <string name="kcal">kcal</string>
+    <string name="meters_per_minutes">m/min</string>
 
     <!--unit abbreviations-->
     <string name="speedShort">%d m/min</string>
     <string name="distanceShort">%.1f m</string>
     <string name="caloriesShort">%.3f kcal</string>
     <string name="angleShort">%.1f°</string>
+    <string name="float_single_decimal">%.1f</string>
 </resources>

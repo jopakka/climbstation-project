@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class InitViewModel : ViewModel() {

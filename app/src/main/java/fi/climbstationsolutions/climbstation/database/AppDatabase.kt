@@ -9,9 +9,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.network.profile.ProfileHandler
 import fi.climbstationsolutions.climbstation.utils.Converters
-import kotlinx.coroutines.*
-import java.io.File
-import java.util.concurrent.Executors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 @Database(
     entities = [
