@@ -2,13 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    
+
     <data>
+
         <variable
             name="viewModel"
             type="fi.climbstationsolutions.climbstation.ui.profile.ProfileViewModel" />
     </data>
-    
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,7 +32,7 @@
                     android:id="@+id/textView10"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Past 7 days"
+                    android:text="@string/past_7_days"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -68,8 +69,9 @@
                         android:id="@+id/textView15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="DISTANCE"
+                        android:text="@string/distance"
                         android:textAlignment="center"
+                        android:textAllCaps="true"
                         android:textColor="#BDBDBD"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -107,8 +109,9 @@
                         android:id="@+id/textView17"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TIME"
+                        android:text="@string/time"
                         android:textAlignment="center"
+                        android:textAllCaps="true"
                         android:textColor="#BFBFBF"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -141,7 +144,7 @@
                     android:id="@+id/allTime_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="All time"
+                    android:text="@string/all_time"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -178,8 +181,9 @@
                         android:id="@+id/allTime_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="DISTANCE"
+                        android:text="@string/distance"
                         android:textAlignment="center"
+                        android:textAllCaps="true"
                         android:textColor="#BDBDBD"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -217,8 +221,9 @@
                         android:id="@+id/allTime_time_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TIME"
+                        android:text="@string/time"
                         android:textAlignment="center"
+                        android:textAllCaps="true"
                         android:textColor="#BFBFBF"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"

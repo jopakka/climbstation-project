@@ -100,9 +100,15 @@
     <string name="continue_txt">Continue</string>
     <string name="next_txt">Next</string>
 
+    <!-- View pager tabs -->
     <string name="wall">Wall</string>
     <string name="stats">Stats</string>
     <string name="history">History</string>
+
+    <string name="past_7_days">Past 7 days</string>
+    <string name="all_time">All time</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
 
     <string name="elapsed_time">Elapsed time</string>
     <string name="burned_calories">Burned calories</string>

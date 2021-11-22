@@ -2,7 +2,6 @@ package fi.climbstationsolutions.climbstation.services
 
 import android.app.*
 import android.content.Intent
-import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat

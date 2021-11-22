@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.databinding.StatisticsSessionHistoryItemBinding
-import fi.climbstationsolutions.climbstation.ui.climb.CellClickListener
 import fi.climbstationsolutions.climbstation.ui.profile.SessionClickListener
 
 class StatisticsAdapter(private val list: List<SessionWithData>, private val clickListener: SessionClickListener) : RecyclerView.Adapter<StatisticsAdapter.ViewHolder>() {

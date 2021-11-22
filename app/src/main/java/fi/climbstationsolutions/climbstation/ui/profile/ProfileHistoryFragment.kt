@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fi.climbstationsolutions.climbstation.adapters.StatisticsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileHistoryBinding
 
-class ProfileHistoryFragment : Fragment(),SessionClickListener {
+class ProfileHistoryFragment : Fragment(), SessionClickListener {
     private lateinit var binding: FragmentProfileHistoryBinding
     private val viewModel: ProfileViewModel by viewModels(
         ownerProducer = { requireParentFragment() }

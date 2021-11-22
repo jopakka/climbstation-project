@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.database.SettingsDao
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
