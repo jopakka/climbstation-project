@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_climb_to_climbOnFragment"
             app:destination="@id/climbOnFragment" />
-        <action
-            android:id="@+id/action_climb_to_climbOnFragment2"
-            app:destination="@id/climbOnFragment" />
     </fragment>
     <fragment
         android:id="@+id/statistic"
@@ -71,5 +68,18 @@
         android:id="@+id/profile"
         android:name="fi.climbstationsolutions.climbstation.ui.profile.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profile_to_climbHistory"
+            app:destination="@id/climbHistory" />
+    </fragment>
+    <fragment
+        android:id="@+id/climbHistory"
+        android:name="fi.climbstationsolutions.climbstation.ui.history.ClimbHistoryFragment"
+        android:label="ClimbHistory"
+        tools:layout="@layout/fragment_history">
+        <argument
+            android:name="sessionId"
+            app:argType="long" />
+    </fragment>
 </navigation>

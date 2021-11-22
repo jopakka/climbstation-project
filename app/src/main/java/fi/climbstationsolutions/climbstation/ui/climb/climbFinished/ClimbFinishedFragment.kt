@@ -39,10 +39,8 @@ class ClimbFinishedFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.getSessionId(args.sessionId)
-        viewModel.getProfile()
 
         setUI()
-        setWallProfile()
         setBroadcastManager()
 
         // Inflate the layout for this fragment
@@ -57,16 +55,6 @@ class ClimbFinishedFragment : Fragment() {
     private fun setBroadcastManager() {
         broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
             registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
-        }
-    }
-
-    private fun setWallProfile() {
-        viewModel.profileWithSteps.observe(viewLifecycleOwner) {
-            binding.climbFinishedWallProfile.profile = it
-        }
-
-        viewModel.sessionWithData.observe(viewLifecycleOwner) {
-            binding.climbFinishedWallProfile.sessionWithData = it
         }
     }
 
