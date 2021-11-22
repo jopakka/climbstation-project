@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ExpandableListAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
@@ -21,10 +23,22 @@ import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.init.InitActivity
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
+import fi.climbstationsolutions.climbstation.utils.ExpandableListData.data
+import fi.climbstationsolutions.climbstation.utils.MenuActions
+import kotlinx.coroutines.*
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private val parentJob = Job()
+    private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
+    private val mainScope = CoroutineScope(Dispatchers.Main + parentJob)
+
+    // for drawer menu
+    private var adapter: ExpandableListAdapter? = null
+    private var titleList: List<String>? = null
 
     private val viewModel: MainActivityViewModel by viewModels {
         MainActivityViewModelFactory(this)
@@ -35,7 +49,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        binding.overflowNavView.setNavigationItemSelectedListener(this)
+//        binding.overflowNavView.setNavigationItemSelectedListener(this)
+
+        // sets ClimbStation drawer menu logo to expandableListView
+        val listHeaderView =
+            layoutInflater.inflate(R.layout.overflow_menu_header_layout, null, false)
+        binding.expendableList.addHeaderView(listHeaderView)
 
         /*
             If no serialNo found, then start InitActivity
@@ -59,6 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             binding.overflowDrawerLayout.closeDrawer(GravityCompat.END)
                         } else if (!binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
                             binding.overflowDrawerLayout.openDrawer(GravityCompat.END)
+                            setupCustomExpandableList()
                         }
                         true
                     }
@@ -119,5 +139,54 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         return false
+    }
+
+    private fun setupCustomExpandableList() {
+        if (binding.expendableList != null) {
+            val listData = data
+            Log.d("listData1", "listData1: ${listData}")
+            Log.d("HashMap_data", "data: $listData")
+            titleList = ArrayList(listData.keys)
+            adapter = CustomExpandableListAdapter(
+                this,
+                titleList as ArrayList<String>,
+                listData,
+                viewModel
+            )
+            binding.expendableList.setAdapter(adapter)
+
+            binding.expendableList.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
+                val childItem =
+                    listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
+                Log.d("MainActivity_menuChildClick", "childItem: $childItem")
+                val myContext = this
+                if (childItem == "Bodyweight") {
+                    try {
+                        var result = false
+                        mainScope.launch {
+                            val test = async {
+                                MenuActions().updateUserWeight(
+                                    applicationContext,
+                                    myContext,
+                                    viewModel
+                                )
+                            }
+                            result = test.await()
+                            if (result) {
+                                Log.d("MainActivity_menuChildClick", "result true")
+                                (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
+                            } else {
+                                Log.d("MainActivity_menuChildClick", "result false")
+                            }
+                        }
+                    } catch (e: IOException) {
+                        Log.d("MainActivity_menuChildClick", "error while updating user weight: $e")
+                    }
+                } else {
+                    Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
+                }
+                false
+            }
+        }
     }
 }

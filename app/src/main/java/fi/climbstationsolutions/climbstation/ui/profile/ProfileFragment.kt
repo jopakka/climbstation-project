@@ -23,6 +23,9 @@ class ProfileFragment : Fragment() {
     ): View {
         binding = FragmentProfileBinding.inflate(layoutInflater)
 
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+
         viewModel.allSessions.observe(viewLifecycleOwner) {
             Log.d("RV", it.toString())
             binding.sessionRv.apply {

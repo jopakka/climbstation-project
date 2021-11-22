@@ -26,6 +26,7 @@ class ClimbFinishedFragment : Fragment() {
         viewModel.getSessionId(args.sessionId)
         viewModel.getProfile()
 
+
         // Inflate the layout for this fragment
         return binding.root
     }

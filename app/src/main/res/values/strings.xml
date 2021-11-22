@@ -4,6 +4,9 @@
     <!--Top app bar strings-->
     <string name="top_app_bar_overflow_title">more</string>
 
+    <!--Menu strings-->
+    <string name="child_item_title">%s: %.1f kg</string>
+
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
     <string name="bottom_nav_statistics">Statistics</string>
@@ -85,9 +88,14 @@
     <string name="stop">Stop</string>
     <string name="congratulations">Congratulations</string>
     <string name="error">Error</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="error_while_connecting">We have troubles to connect ClimbStation. Please try again.</string>
     <string name="error_no_profile_selected">No profile selected.</string>
+    <string name="error_while_getting_info">We have troubles to get info from ClimbStation.</string>
+
+    <string name="prompt_quit_session">Do you want to quit the session?</string>
 
     <string name="enter_serial_no">Enter ClimbStation serial number</string>
     <string name="example_no">e.g. 20110001</string>

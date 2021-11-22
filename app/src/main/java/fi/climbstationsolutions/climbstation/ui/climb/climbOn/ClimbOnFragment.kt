@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.ui.climb.climbOn
 
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -16,10 +18,6 @@ import androidx.navigation.fragment.navArgs
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
-import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
-import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
-import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
-import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
@@ -28,7 +26,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         ClimbOnViewModelFactory(requireContext())
     }
 
-//    private lateinit var broadcastManager: LocalBroadcastManager
+    private lateinit var broadcastManager: LocalBroadcastManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,61 +37,76 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-//        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-//            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
-//        }
+        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
+            registerReceiver(errorBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB))
+        }
 
         binding.stopBtn.setOnClickListener {
             stopClimbing()
         }
 
-//        if (ClimbStationService.SERVICE_RUNNING) {
-            viewModel.startTimer()
-            viewModel.getLastSession()
-//        }
+//        viewModel.getLastSession()
+        viewModel.getProfile()
+        viewModel.startTimer()
+
+        setBackButtonAction()
 
         return binding.root
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        if (!ClimbStationService.SERVICE_RUNNING)
-//            startClimbing()
-//    }
-
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(errorBroadcastReceiver)
     }
 
-    private val broadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val id = intent.getLongExtra("id", 0L)
-            if (id != 0L) {
-                viewModel.getSessionById(id)
-            } else {
-                viewModel.getLastSession()
+    private fun setBackButtonAction() {
+        activity?.let {
+            it.onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+                showYesNoDialog {
+                    if(isEnabled) {
+                        isEnabled = false
+                        stopClimbing()
+                    }
+                }
             }
-            viewModel.getProfile()
-            viewModel.startTimer()
         }
     }
 
-//    private fun startClimbing() {
-//
-//        val context = context ?: return
-//        val activity = activity ?: return
-//        val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
-//
-//        Intent(context, ClimbStationService::class.java).also {
-//            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
-//            it.putExtra(
-//                ClimbStationService.PROFILE_EXTRA,
-//                args.profile
-//            )
-//            activity.startForegroundService(it)
-//        }
-//    }
+    private fun showYesNoDialog(positiveAction: () -> Unit) {
+        val builder = AlertDialog.Builder(activity).apply {
+            setTitle(R.string.error)
+            setMessage(R.string.prompt_quit_session)
+            setPositiveButton(R.string.yes) { _, _ ->
+                positiveAction()
+            }
+            setNegativeButton(R.string.no) { d, _ ->
+                d.cancel()
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showErrorDialog(message: String, positiveAction: () -> Unit) {
+        val builder = AlertDialog.Builder(activity).apply {
+            setTitle(R.string.error)
+            setMessage(message)
+            setPositiveButton(android.R.string.ok) { _, _ ->
+                positiveAction()
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private val errorBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val message = intent.getStringExtra(ClimbStationService.EXTRA_ERROR) ?: return
+            showErrorDialog(message) {
+                findNavController().navigateUp()
+            }
+        }
+    }
 
     private fun stopClimbing() {
         val context = context ?: return
@@ -105,8 +118,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
                 activity.startForegroundService(it)
             }
         }
-
-//        viewModel.useTimer = false
 
         val id = viewModel.sessionWithData.value?.session?.id
         val action =

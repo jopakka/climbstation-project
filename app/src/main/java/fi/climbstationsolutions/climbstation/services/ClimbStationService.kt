@@ -31,6 +31,7 @@ class ClimbStationService : Service() {
         const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
         const val BROADCAST_ID_NAME = "ClimbStationService_ID"
         const val BROADCAST_ERROR = "ClimbStationService_Error"
+        const val BROADCAST_ERROR_CLIMB = "ClimbStationService_Error_Climb"
         var SERVICE_RUNNING = false
             private set
         var CLIMBING_ACTIVE = false
@@ -114,6 +115,12 @@ class ClimbStationService : Service() {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
+    private fun broadcastClimbError(message: String = "") {
+        val intent = Intent(BROADCAST_ERROR_CLIMB)
+        intent.putExtra(EXTRA_ERROR, message)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
     /**
      * Creates notification for service
      */
@@ -180,7 +187,7 @@ class ClimbStationService : Service() {
                         profileWithSteps.profile.id
                     )
                 )
-                Log.d(TAG, "sessionID: $sessionID")
+//                Log.d(TAG, "sessionID: $sessionID")
 
                 val started = operateClimbStation("start")
                 if (started)
@@ -189,9 +196,7 @@ class ClimbStationService : Service() {
                     throw Exception("ClimbStation not started")
 
                 // Set endedAt time to session when it's finished
-                sessionID?.let {
-                    sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
-                }
+                setEndTimeForSession(sessionID)
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
                 sessionID?.let {
@@ -245,6 +250,7 @@ class ClimbStationService : Service() {
         } catch (e: Exception) {
             Log.e(TAG, "GetInfo error: ${e.localizedMessage}")
             CLIMBING_ACTIVE = false
+            broadcastClimbError(getString(R.string.error_while_getting_info))
             stopService()
         }
     }
@@ -255,7 +261,7 @@ class ClimbStationService : Service() {
     private suspend fun getInfo(sessionID: Long) {
         // Get ClimbStation info
         val info = ClimbStationRepository.deviceInfo(climbStationSerialNo, clientKey)
-        Log.d(TAG, "Info: $info")
+//        Log.d(TAG, "Info: $info")
 
         val speed = info.speedNow.toInt()
         val angle = info.angleNow.toInt()
@@ -263,7 +269,7 @@ class ClimbStationService : Service() {
 
         // Save info to database
         val dID = sessionDao.insertData(Data(0, sessionID, speed, angle, length))
-        Log.d(TAG, "dataID: $dID")
+//        Log.d(TAG, "dataID: $dID")
 
         adjustToProfile(info.length.toInt())
     }
@@ -293,7 +299,7 @@ class ClimbStationService : Service() {
     private suspend fun setAngle(angle: Int) {
         try {
             val response = ClimbStationRepository.setAngle(climbStationSerialNo, clientKey, angle)
-            Log.d(TAG, "SetAngle: $response")
+//            Log.d(TAG, "SetAngle: $response")
         } catch (e: Exception) {
             Log.e(TAG, "SetAngle error: ${e.localizedMessage}")
         }
@@ -302,7 +308,7 @@ class ClimbStationService : Service() {
     private suspend fun setSpeed(speed: Int) {
         try {
             val response = ClimbStationRepository.setSpeed(climbStationSerialNo, clientKey, speed)
-            Log.d(TAG, "SetSpeed: $response")
+//            Log.d(TAG, "SetSpeed: $response")
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
         }
@@ -315,10 +321,16 @@ class ClimbStationService : Service() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val logout = ClimbStationRepository.logout(climbStationSerialNo, clientKey)
-                Log.d(TAG, "Logout: $logout")
+//                Log.d(TAG, "Logout: $logout")
             } catch (e: Exception) {
                 Log.e(TAG, "Logout error: ${e.localizedMessage}")
             }
+        }
+    }
+
+    private suspend fun setEndTimeForSession(sessionID: Long?) {
+        sessionID?.let {
+            sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
         }
     }
 }

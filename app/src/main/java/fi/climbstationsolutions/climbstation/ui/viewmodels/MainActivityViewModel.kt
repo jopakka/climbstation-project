@@ -1,14 +1,13 @@
 package fi.climbstationsolutions.climbstation.ui.viewmodels
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.BodyWeight
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivityViewModel(context: Context) : ViewModel() {
     private val db = AppDatabase.get(context)
@@ -17,13 +16,24 @@ class MainActivityViewModel(context: Context) : ViewModel() {
     private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
     private var userBodyWeightDefault: Float = 70.00F
 
-    fun setWeight() {
+    fun setWeight(inputWeight: Float? = null) {
         ioScope.launch {
             val userWeight = settingsDao.getBodyWeightById(1)
             if (userWeight == null) {
                 settingsDao.insertUserBodyWeight(BodyWeight(1, userBodyWeightDefault))
             }
+            if(inputWeight != null) {
+                if(userWeight != null) {
+                    settingsDao.updateUserBodyWeight(inputWeight)
+                }
+            }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getWeight(): Float? = withContext(Dispatchers.IO){
+            val userWeight = settingsDao.getBodyWeightById(1)
+        return@withContext userWeight?.weight
     }
 }
 
