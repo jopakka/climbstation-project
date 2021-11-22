@@ -74,7 +74,9 @@ class MainActivity : AppCompatActivity() {
 
     private val onDestChangedListener = NavController.OnDestinationChangedListener { _, d, _ ->
         when (d.id) {
-            R.id.climbOnFragment, R.id.climbFinishedFragment -> hideBottomNav()
+            R.id.climbOnFragment,
+            R.id.climbFinishedFragment,
+            R.id.climbHistory -> hideBottomNav()
             else -> showBottomNav()
         }
     }
