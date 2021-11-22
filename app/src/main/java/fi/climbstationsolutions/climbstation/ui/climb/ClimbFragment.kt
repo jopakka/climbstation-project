@@ -114,8 +114,8 @@ class ClimbFragment : Fragment(), CellClickListener {
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getLongExtra("id", -1L)
+            viewModel.setLoading(false)
             if (id != -1L) {
-                viewModel.setLoading(false)
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
                     val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
