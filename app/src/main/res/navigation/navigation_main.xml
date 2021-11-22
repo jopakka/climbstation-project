@@ -62,6 +62,10 @@
             app:destination="@id/climb"
             app:popUpTo="@id/climb"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_climbFinishedFragment_to_climbOnFragment"
+            app:destination="@id/climbOnFragment"
+            app:popUpTo="@id/climb" />
     </fragment>
     <fragment
         android:id="@+id/profile"
