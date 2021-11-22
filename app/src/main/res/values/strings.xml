@@ -124,8 +124,8 @@
 
     <!--units-->
     <string name="speedLong">%d m/min</string>
-    <string name="distanceLong">%d meters</string>
-    <string name="angleLong">%d degree</string>
+    <string name="distanceLong">%.1f meters</string>
+    <string name="angleLong">%.1f degrees</string>
     <string name="meter_short">m</string>
     <string name="kcal">kcal</string>
     <string name="meters_per_minutes">m/min</string>
