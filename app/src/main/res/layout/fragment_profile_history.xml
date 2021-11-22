@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".ui.GraphTestActivity">
+    tools:background="@color/fragment_background_color">
 
-    <fi.climbstationsolutions.climbstation.utils.WallProfile
-        android:id="@+id/wall_profile"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        app:wallColor="@color/white"
-        app:wallFillColor="@color/climbstation_red"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/sessionRv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/statistics_session_history_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

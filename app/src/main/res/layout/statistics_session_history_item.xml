@@ -1,119 +1,196 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
-    android:gravity="center_vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.card.MaterialCardView
+    <data>
+
+        <variable
+            name="sessionItem"
+            type="fi.climbstationsolutions.climbstation.database.SessionWithData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/climbstation_red_list_item">
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rv_background_layout"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/historyProfileDateContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/historyDateSeparator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/historyItem"
+                android:id="@+id/historyProfile"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                android:drawablePadding="16dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@{sessionItem.session.name}"
+                android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textSize="25sp"
-                app:drawableLeftCompat="@drawable/ic_save_24"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/historyDateSeparator" />
+                android:textSize="26sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/historyDate"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="Beginner" />
 
             <TextView
                 android:id="@+id/historyDate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="@string/stat_sess_history_item_date"
-                android:textColor="@color/white"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/historyDateSeparator"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/historyDateSeparator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@android:color/white"
-                app:layout_constraintBottom_toTopOf="@id/historyItemDelete"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/historyDate" />
-
-            <TextView
-                android:id="@+id/historyName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="@string/stat_sess_history_item_name"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/historyDuration"
-                app:layout_constraintEnd_toStartOf="@id/historyItemDelete"
-                app:layout_constraintStart_toEndOf="@id/historyItem"
-                app:layout_constraintTop_toBottomOf="@+id/historyDateSeparator" />
-
-            <TextView
-                android:id="@+id/historyDuration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="0dp"
-                android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="@string/stat_sess_history_item_duration"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:gravity="start"
+                android:textColor="@color/black"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/historyItemDelete"
-                app:layout_constraintStart_toEndOf="@id/historyItem"
-                app:layout_constraintTop_toBottomOf="@+id/historyDateSeparator" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/historyItemDelete"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/transparent"
-                android:contentDescription="@string/content_description_history_delete"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                app:cornerRadius="0dp"
-                app:icon="@drawable/ic_delete_24"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/historyDateSeparator" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                app:sessionDate="@{sessionItem.session.createdAt}"
+                tools:text="10. nov 2021" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</FrameLayout>
+
+        <View
+            android:id="@+id/historyDateSeparator"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/climbstation_red"
+            app:layout_constraintBottom_toTopOf="@+id/historyTimeDistanceContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/historyProfileDateContainer" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/historyTimeDistanceContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/historyDateSeparator">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/historyTimeContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline10"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <TextView
+                    android:id="@+id/historyTimeTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_sess_history_item_duration_title"
+                    android:textColor="#757575"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/historyTimeValue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/historyTimeValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:climbFinishedDuration="@{sessionItem.session}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/historyTimeTitle"
+                    tools:text="00:02:24" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/historyDistanceContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline10"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/historyDistanceTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stat_sess_history_item_distance_title"
+                    android:textColor="#757575"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toTopOf="@+id/historyDistanceValue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/historyDistanceValue"
+                    sessionLength="@{sessionItem}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/historyDistanceTitle"
+                    tools:text="20.4m" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.1" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.ui.climb.climbOn
 
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -8,23 +9,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
-import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
-import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
-import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
-import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.ClimbActionActivity
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
-    private val args: ClimbOnFragmentArgs by navArgs()
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
@@ -41,57 +38,84 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.viewModel = viewModel
 
         broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
+            registerReceiver(errorBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB))
         }
 
-        binding.stopBtn.setOnClickListener {
+        binding.btnStop.setOnClickListener {
             stopClimbing()
         }
 
-        if (ClimbStationService.SERVICE_RUNNING) {
-            viewModel.startTimer()
-            viewModel.getLastSession()
-        }
+        viewModel.startTimer()
+
+        setBackButtonAction()
+        setupPager()
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (!ClimbStationService.SERVICE_RUNNING)
-            startClimbing()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(errorBroadcastReceiver)
     }
 
-    private val broadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val id = intent.getLongExtra("id", 0L)
-            if (id != 0L) {
-                viewModel.getSessionById(id)
-            } else {
-                viewModel.getLastSession()
+    private fun setupPager() {
+        binding.climbOnPager.adapter = TabPagerAdapter(this)
+        TabLayoutMediator(binding.tabLayout, binding.climbOnPager) { tab, pos ->
+            tab.text = when(pos) {
+                0 -> getString(R.string.wall)
+                1 -> getString(R.string.stats)
+                else -> null
             }
-            viewModel.startTimer()
+        }.attach()
+    }
+
+    private fun setBackButtonAction() {
+        activity?.let {
+            it.onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+                showYesNoDialog {
+                    if(isEnabled) {
+                        isEnabled = false
+                        viewModel.stopTimer()
+                        stopClimbing()
+                    }
+                }
+            }
         }
     }
 
-    private fun startClimbing() {
+    private fun showYesNoDialog(positiveAction: () -> Unit) {
+        val builder = AlertDialog.Builder(activity).apply {
+            setTitle(R.string.warning)
+            setMessage(R.string.prompt_quit_session)
+            setPositiveButton(R.string.yes) { _, _ ->
+                positiveAction()
+            }
+            setNegativeButton(R.string.no) { d, _ ->
+                d.cancel()
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
 
-        val context = context ?: return
-        val activity = activity ?: return
-        val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
+    private fun showErrorDialog(message: String, positiveAction: () -> Unit) {
+        val builder = AlertDialog.Builder(activity).apply {
+            setTitle(R.string.error)
+            setMessage(message)
+            setPositiveButton(android.R.string.ok) { _, _ ->
+                positiveAction()
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
 
-        Intent(context, ClimbStationService::class.java).also {
-            it.putExtra(ClimbActionActivity.CLIMB_STATION_SERIAL_EXTRA, serial)
-            it.putExtra(
-                ClimbActionActivity.PROFILE_EXTRA,
-                args.profile
-            )
-            activity.startForegroundService(it)
+    private val errorBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val message = intent.getStringExtra(ClimbStationService.EXTRA_ERROR) ?: return
+            showErrorDialog(message) {
+                findNavController().navigateUp()
+            }
         }
     }
 
@@ -101,7 +125,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
         if (ClimbStationService.SERVICE_RUNNING) {
             Intent(context, ClimbStationService::class.java).also {
-                it.action = ClimbActionActivity.ACTION_STOP
+                it.action = ClimbStationService.ACTION_STOP
                 activity.startForegroundService(it)
             }
         }

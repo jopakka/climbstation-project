@@ -4,7 +4,11 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
+import fi.climbstationsolutions.climbstation.database.ClimbStep
+import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.network.profile.Profile
 import fi.climbstationsolutions.climbstation.network.profile.Step
 import kotlin.math.abs
@@ -21,18 +25,18 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
     private var recreateProfile = true
     private var wallStartX = 0f
-    private var wallBounds: RectF? = null
+    private var outlineBounds: RectF? = null
     private val profilePath = Path()
 
-    var profile: Profile? = null
+    var profile: ClimbProfileWithSteps? = null
         set(value) {
             if (value == field) return
             field = value
             recreateProfile = true
-            postInvalidate()
+            invalidate()
         }
 
-    var climbingProgression: Float = 0f
+    private var climbingProgression: Float = 0f
         set(value) {
             if (value == field) return
             field = when {
@@ -43,14 +47,34 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
             invalidate()
         }
 
+    var sessionWithData: SessionWithData? = null
+        set(value) {
+            if (field == value) return
+            field = value
+            invalidate()
+        }
+
     private var wallColor: Int
     private var wallFillColor: Int
+    private var wallOutlineColor: Int
+    private var wallOutlineThickness: Float = 0f
+        set(value) {
+            if(value < 0f) return
+            field = value
+        }
 
     init {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.WallProfile, 0, 0)
         try {
             wallColor = typedArray.getColor(R.styleable.WallProfile_wallColor, Color.DKGRAY)
-            wallFillColor = typedArray.getColor(R.styleable.WallProfile_wallFillColor, Color.GREEN)
+            wallOutlineColor =
+                typedArray.getColor(R.styleable.WallProfile_wallOutlineColor, Color.WHITE)
+            wallOutlineThickness =
+                typedArray.getFloat(R.styleable.WallProfile_wallOutlineThickness, 00f)
+            wallFillColor = typedArray.getColor(
+                R.styleable.WallProfile_wallFillColor,
+                ContextCompat.getColor(context, R.color.climbstation_red)
+            )
         } finally {
             typedArray.recycle()
         }
@@ -63,8 +87,9 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
             if (recreateProfile) {
                 createProfilePath(this)
             }
-            val paint = gradientPaint()
-            drawPath(profilePath, paint)
+            climbingProgression = calculateProgression()
+            drawPath(profilePath, outlinePaint())
+            drawPath(profilePath, gradientPaint())
         }
     }
 
@@ -108,17 +133,10 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
                     if (xDistance < minX) minX = xDistance
                 }
 
-                when {
-                    // Negative wall
-                    xDistance >= 0f && minX >= 0f -> rLineTo(-xDistance, 0f)
-                    // Neutral wall
-                    xDistance >= 0f && minX < 0f -> rLineTo(minX - xDistance, 0f)
-                }
-
-                scalePathToFitScreen(canvas, this)
+                scalePathToFitScreen(this)
                 flipPathAround(this)
                 movePathToVisible(this)
-                movePathMiddleOfView(this)
+                movePathMiddleOfView(canvas, this)
                 fillPathToScreenEdge(this)
             }
         }
@@ -128,7 +146,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
      * Calculates xy coordinates for next step in path and then draws it and
      * returns those coordinates
      */
-    private fun calculateAndDrawLine(p: Path, s: Step): Pair<Float, Float> {
+    private fun calculateAndDrawLine(p: Path, s: ClimbStep): Pair<Float, Float> {
         val a = (cos(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
         val b = (sin(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
         p.rLineTo(b, a)
@@ -138,26 +156,33 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
     /**
      * Scales [path] to fit view
      */
-    private fun scalePathToFitScreen(canvas: Canvas, path: Path) {
-        wallBounds = pathBounds(path).also {
-            val cBounds = RectF(canvas.clipBounds)
-
+    private fun scalePathToFitScreen(path: Path) {
+        outlineBounds = pathBounds(path).also {
             val ratio = min(
-                cBounds.width() / it.width(),
-                cBounds.height() / it.height()
+                width / (it.width()),
+                height / (it.height())
             )
 
             val scaleBiggerMatrix = Matrix()
             scaleBiggerMatrix.setScale(ratio, ratio)
             path.transform(scaleBiggerMatrix)
         }
+
+        outlineBounds = pathBounds(path).also {
+            val ratio = (it.height() - wallOutlineThickness) / it.height()
+
+            val scaleBiggerMatrix = Matrix()
+            scaleBiggerMatrix.setScale(ratio, ratio)
+            path.transform(scaleBiggerMatrix)
+        }
+        outlineBounds = pathBounds(path)
     }
 
     /**
      * Flips [path] around its X-axis
      */
     private fun flipPathAround(path: Path) {
-        wallBounds = pathBounds(path).also {
+        outlineBounds = pathBounds(path).also {
             // Scale profilePath around
             val scaleAround = Matrix()
             scaleAround.setScale(1f, -1f, it.centerX(), it.centerY())
@@ -169,7 +194,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
      * Move [path] to fully visible
      */
     private fun movePathToVisible(path: Path) {
-        wallBounds = pathBounds(path).also {
+        outlineBounds = pathBounds(path).also {
             val transformMatrix = Matrix()
             transformMatrix.setTranslate(
                 if (it.left < 0f) abs(it.left) else 0f,
@@ -182,12 +207,15 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
     /**
      * Moves [path] to middle of view
      */
-    private fun movePathMiddleOfView(path: Path) {
-        wallBounds = pathBounds(path).also {
+    private fun movePathMiddleOfView(canvas: Canvas, path: Path) {
+        outlineBounds = pathBounds(path).also {
+            val cBound = RectF(canvas.clipBounds)
+
             // Move profilePath to middle of view
             val moveMatrix = Matrix()
-            val newX = (width.toFloat() - it.width()) / 2f
-            moveMatrix.setTranslate(newX, 0f)
+            val newX = (cBound.width() - it.width()) / 2f
+            val newY = (cBound.height() - it.height()) / 2f
+            moveMatrix.setTranslate(newX, newY)
             path.transform(moveMatrix)
 
             wallStartX = newX
@@ -199,8 +227,10 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
      */
     private fun fillPathToScreenEdge(path: Path) {
         path.apply {
-            lineTo(0f, 0f)
-            rLineTo(0f, wallBounds?.height() ?: 0f)
+            val x = wallOutlineThickness / 2f
+            lineTo(x, x)
+            rLineTo(x, outlineBounds?.height() ?: 0f)
+            close()
         }
     }
 
@@ -219,8 +249,9 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
      */
     private fun gradientPaint(): Paint {
         return Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            val mHeight = wallBounds?.height() ?: 0f
-            val progress = mHeight * (100f - climbingProgression) / 100f
+            val mHeight = outlineBounds?.height()?.plus(outlineBounds?.top ?: 0f) ?: 0f
+            val progress =
+                mHeight * (100f - climbingProgression) / 100f + (wallOutlineThickness / 2)
             val gradient = LinearGradient(
                 0f,
                 progress,
@@ -235,4 +266,18 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
     }
 
+    private fun calculateProgression(): Float {
+        val max = profile?.steps?.sumOf { it.distance }?.toFloat() ?: return climbingProgression
+        val total = sessionWithData?.data?.lastOrNull()?.totalDistance?.div(1000f)
+            ?: return climbingProgression
+        return total / max
+    }
+
+    private fun outlinePaint(): Paint {
+        return Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            this.color = wallOutlineColor
+            this.strokeWidth = wallOutlineThickness
+            this.style = Paint.Style.FILL_AND_STROKE
+        }
+    }
 }

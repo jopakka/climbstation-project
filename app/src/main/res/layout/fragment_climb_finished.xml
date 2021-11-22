@@ -7,506 +7,84 @@
 
         <variable
             name="viewModel"
-            type="fi.climbstationsolutions.climbstation.ui.viewmodels.ClimbFinishedViewModel" />
+            type="fi.climbstationsolutions.climbstation.ui.climb.climbFinished.ClimbFinishedViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/darkened_mountain"
-        android:scrollbars="vertical">
+        android:background="@drawable/darkened_mountain">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/txtCongrats"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/congratulations"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/finished_stats"
+            layout="@layout/layout_climb_statistics"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnClimbAgain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtCongrats"
+            app:profile="@{viewModel.profileWithSteps}"
+            app:session="@{viewModel.sessionWithData}" />
+
+        <Button
+            android:id="@+id/btnClimbAgain"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:context=".ui.climb.climbFinished.ClimbFinishedFragment">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/climb_again"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnFinish"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
-<!--            <ImageView-->
-<!--                android:id="@+id/climb_finished_fragment_logo_image"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginTop="50dp"-->
-<!--                android:contentDescription="@string/content_description_climbstation_logo_image"-->
-<!--                android:src="@drawable/cropped_logo"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.0"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
+        <Button
+            android:id="@+id/btnFinish"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#21BE17"
+            android:text="@string/finish"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnClimbAgain" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/climb_finished_result_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <include
+            tools:visibility="gone"
+            android:id="@+id/include"
+            layout="@layout/loading_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:isVisible="@{viewModel.loading}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/climb_finished_result_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:gravity="center"
-                    android:text="@{viewModel.sessionWithData.session.name}"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/climb_finished_result_container" />
-
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/climb_finished_result_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/fragment_climb_finished_result_detail"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/climb_finished_result_title" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/climb_finished_mode_difficulty_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/climb_finished_result_container">
-
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/climb_finished_difficulty_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/fragment_climb_finished_difficulty_start"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/climb_finished_difficulty_end"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/climb_finished_difficulty_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/fragment_climb_finished_difficulty_end"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/climb_finished_difficulty_start"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/climb_finished_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="@string/fragment_climb_finished_mode"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/climb_finished_mode_difficulty_container" />
-
-            <LinearLayout
-                android:id="@+id/climb_finished_graph"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="25dp"
-                android:contentDescription="@string/content_description_fragment_climb_finished_graph"
-                android:orientation="vertical"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/climb_finished_mode">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="#90858282" />
-
-                <View
-                    android:layout_width="165dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="#90858282" />
-
-                <View
-                    android:layout_width="155dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="#90858282" />
-
-                <View
-                    android:layout_width="140dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="#90858282" />
-
-                <View
-                    android:layout_width="120dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="#90858282" />
-
-                <View
-                    android:layout_width="125dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="#90858282" />
-
-                <View
-                    android:layout_width="130dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="115dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="90dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="90dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="100dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="110dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="95dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="85dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="75dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="65dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-
-                <View
-                    android:layout_width="55dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="5dp"
-                    android:background="@color/primary_dark" />
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/climb_finished_result_variables_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/climb_finished_graph"
-                app:layout_constraintTop_toBottomOf="@id/climb_finished_mode">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/climb_finished_time_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <View
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginEnd="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_time_value"
-                        app:layout_constraintEnd_toStartOf="@+id/climb_finished_time_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:layout_width="50dp"
-                        android:layout_height="2dp"
-                        android:layout_marginStart="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_time_value"
-                        app:layout_constraintStart_toEndOf="@+id/climb_finished_time_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_time_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/fragment_climb_finished_time_title"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_time_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        app:climbFinishedDuration="@{viewModel.sessionWithData.session}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/climb_finished_time_title" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/climb_finished_length_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/climb_finished_time_container">
-
-                    <View
-                        android:layout_width="37dp"
-                        android:layout_height="2dp"
-                        android:layout_marginEnd="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_length_value"
-                        app:layout_constraintEnd_toStartOf="@+id/climb_finished_length_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:layout_width="37dp"
-                        android:layout_height="2dp"
-                        android:layout_marginStart="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_length_value"
-                        app:layout_constraintStart_toEndOf="@+id/climb_finished_length_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_length_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/fragment_climb_finished_length_title"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_length_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:sessionLength="@{viewModel.sessionWithData}"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/climb_finished_length_title" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/climb_finished_calories_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/climb_finished_length_container">
-
-                    <View
-                        android:layout_width="30dp"
-                        android:layout_height="2dp"
-                        android:layout_marginEnd="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_calories_value"
-                        app:layout_constraintEnd_toStartOf="@+id/climb_finished_calories_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:layout_width="30dp"
-                        android:layout_height="2dp"
-                        android:layout_marginStart="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_calories_value"
-                        app:layout_constraintStart_toEndOf="@+id/climb_finished_calories_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_calories_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/fragment_climb_finished_calories_title"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_calories_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:sessionCalories="@{viewModel.sessionWithData}"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/climb_finished_calories_title" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/climb_finished_speed_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/climb_finished_calories_container">
-
-                    <View
-                        android:layout_width="44dp"
-                        android:layout_height="2dp"
-                        android:layout_marginEnd="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_speed_value"
-                        app:layout_constraintEnd_toStartOf="@+id/climb_finished_speed_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <View
-                        android:layout_width="44dp"
-                        android:layout_height="2dp"
-                        android:layout_marginStart="3dp"
-                        android:background="@android:color/white"
-                        app:layout_constraintBottom_toTopOf="@+id/climb_finished_speed_value"
-                        app:layout_constraintStart_toEndOf="@+id/climb_finished_speed_title"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_speed_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/fragment_climb_finished_speed_title"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/climb_finished_speed_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        app:sessionAverageSpeed="@{viewModel.sessionWithData}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/climb_finished_speed_title" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/view_earlier_results_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="25dp"
-                android:contentDescription="@string/content_description_fragment_climb_finished_btn_to_statistics"
-                android:padding="20dp"
-                android:text="@string/fragment_climb_finished_view_earlier_results"
-                android:textColor="@color/white"
-                android:textSize="21sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/climb_finished_result_variables_container" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
