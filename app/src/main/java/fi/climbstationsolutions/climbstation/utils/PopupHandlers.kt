@@ -5,12 +5,7 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
-import fi.climbstationsolutions.climbstation.database.AppDatabase
-import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
-import kotlinx.coroutines.*
 
 class PopupHandlers {
 
