@@ -9,21 +9,13 @@ import com.google.mlkit.vision.common.InputImage
 
 class QrAnalyzer(private val listener: (String) -> Unit) : ImageAnalysis.Analyzer {
 
+    /**
+     * Analyzes [imageProxy] and checks is it [Int].
+     * Then sends it to [listener]
+     */
     override fun analyze(imageProxy: ImageProxy) {
-        val buffer = imageProxy.planes[0].buffer
-        val image = InputImage.fromByteBuffer(
-            buffer,
-            imageProxy.width,
-            imageProxy.height,
-            imageProxy.imageInfo.rotationDegrees,
-            InputImage.IMAGE_FORMAT_NV21
-        )
-
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-            .build()
-        val scanner = BarcodeScanning.getClient(options)
-        scanner.process(image)
+        val scanner = getScanner(getOptions())
+        scanner.process(getInputImage(imageProxy))
             .addOnSuccessListener { barcodes ->
                 barcodes.forEach {
                     val serial = it.rawValue
@@ -36,4 +28,28 @@ class QrAnalyzer(private val listener: (String) -> Unit) : ImageAnalysis.Analyze
 
         imageProxy.close()
     }
+
+    /**
+     * Makes [InputImage] from [imageProxy]
+     */
+    private fun getInputImage(imageProxy: ImageProxy): InputImage {
+        val buffer = imageProxy.planes[0].buffer
+        return InputImage.fromByteBuffer(
+            buffer,
+            imageProxy.width,
+            imageProxy.height,
+            imageProxy.imageInfo.rotationDegrees,
+            InputImage.IMAGE_FORMAT_NV21
+        )
+    }
+
+    /**
+     * Options for barcodeScanner.
+     * Detects only QR-codes
+     */
+    private fun getOptions() = BarcodeScannerOptions.Builder()
+            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+            .build()
+
+    private fun getScanner(options: BarcodeScannerOptions) = BarcodeScanning.getClient(options)
 }
