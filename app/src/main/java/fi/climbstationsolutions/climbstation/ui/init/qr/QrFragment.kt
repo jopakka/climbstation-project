@@ -9,15 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.common.util.concurrent.ListenableFuture
+import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentQrBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -68,16 +69,22 @@ class QrFragment : Fragment() {
                 val imageAnalyzer = ImageAnalysis.Builder()
                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                     .build().also {
-                    it.setAnalyzer(cameraExecutor, QrAnalyzer { s ->
-                        Log.d(TAG, "QR: $s")
-                    })
-                }
+                        it.setAnalyzer(cameraExecutor, QrAnalyzer { s ->
+                            Log.d(TAG, "QR: $s")
+                        })
+                    }
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
                 try {
                     cameraProvider.apply {
                         unbindAll()
-                        bindToLifecycle(viewLifecycleOwner, cameraSelector, preview, imageCapture, imageAnalyzer)
+                        bindToLifecycle(
+                            viewLifecycleOwner,
+                            cameraSelector,
+                            preview,
+                            imageCapture,
+                            imageAnalyzer
+                        )
                     }
                 } catch (e: Exception) {
                     Log.e(TAG, "Use case binding failed", e)
@@ -103,15 +110,36 @@ class QrFragment : Fragment() {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    private val cameraPermissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-        if (it) {
-            startCamera()
-        } else {
-            Toast.makeText(
-                context,
-                "Permissions not granted by the user.",
-                Toast.LENGTH_SHORT
-            ).show()
+    private val cameraPermissionResult =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) {
+                startCamera()
+            } else {
+                if(shouldShowRequestPermissionRationale(REQUIRED_PERMISSION)) {
+                    showCameraAlertDialog()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Permissions not granted by the user.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         }
+
+    private fun showCameraAlertDialog() {
+        val context = context ?: return
+        val builder = AlertDialog.Builder(context)
+            .setTitle(R.string.camera_alert_title)
+            .setMessage(R.string.camera_alert_message)
+            .setPositiveButton(R.string.camera_alert_positive) { _, _ ->
+                askPermissions()
+            }
+            .setNegativeButton(R.string.no) { d, _ ->
+                d.cancel()
+            }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }
