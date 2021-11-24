@@ -22,7 +22,6 @@ class QrAnalyzer(private val listener: (String) -> Unit) : ImageAnalysis.Analyze
                     if (!serial.isNullOrEmpty() && serial.toIntOrNull() != null) {
                         listener(serial)
                     }
-
                 }
             }
 
@@ -48,8 +47,8 @@ class QrAnalyzer(private val listener: (String) -> Unit) : ImageAnalysis.Analyze
      * Detects only QR-codes
      */
     private fun getOptions() = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-            .build()
+        .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+        .build()
 
     private fun getScanner(options: BarcodeScannerOptions) = BarcodeScanning.getClient(options)
 }

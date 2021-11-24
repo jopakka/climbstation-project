@@ -10,34 +10,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.common.util.concurrent.ListenableFuture
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentQrBinding
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 /**
  * Camera codes: https://developer.android.com/codelabs/camerax-getting-started
  */
 class QrFragment : Fragment() {
     companion object {
-        private const val TAG = "QR"
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSION = Manifest.permission.CAMERA
+        private const val TAG = "QrFragment"
+        private const val CAMERA_PERMISSION = Manifest.permission.CAMERA
     }
 
-    private var imageCapture: ImageCapture? = null
-
-    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
-    private lateinit var cameraExecutor: ExecutorService
     private lateinit var binding: FragmentQrBinding
+    private lateinit var qrCamera: QrCamera
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,75 +35,59 @@ class QrFragment : Fragment() {
         binding = FragmentQrBinding.inflate(layoutInflater)
 
         askPermissions()
-        cameraExecutor = Executors.newSingleThreadExecutor()
 
         return binding.root
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        cameraExecutor.shutdown()
-    }
-
-    private fun startCamera() {
-        context?.let { con ->
-            cameraProviderFuture = ProcessCameraProvider.getInstance(con)
-            cameraProviderFuture.addListener({
-                val cameraProvider = cameraProviderFuture.get()
-                val preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-                }
-                imageCapture = ImageCapture.Builder().build()
-                val imageAnalyzer = ImageAnalysis.Builder()
-                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                    .build().also {
-                        it.setAnalyzer(cameraExecutor, QrAnalyzer { s ->
-                            Log.d(TAG, "QR: $s")
-                        })
-                    }
-                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-                try {
-                    cameraProvider.apply {
-                        unbindAll()
-                        bindToLifecycle(
-                            viewLifecycleOwner,
-                            cameraSelector,
-                            preview,
-                            imageCapture,
-                            imageAnalyzer
-                        )
-                    }
-                } catch (e: Exception) {
-                    Log.e(TAG, "Use case binding failed", e)
-                }
-
-            }, ContextCompat.getMainExecutor(con))
+        if (this::qrCamera.isInitialized) {
+            qrCamera.closeCamera()
         }
     }
 
+    /**
+     * Opens camera
+     */
+    private fun startCamera() {
+        context?.let {
+            val qrCamera = QrCamera(it, binding.viewFinder, viewLifecycleOwner)
+            qrCamera.startCamera { qr ->
+                Log.d(TAG, "QR-code: $qr")
+            }
+        }
+    }
+
+    /**
+     * Asks permissions if not already given
+     */
     private fun askPermissions() {
         if (allPermissionsGranted()) {
             startCamera()
         } else {
-            cameraPermissionResult.launch(REQUIRED_PERMISSION)
+            cameraPermissionResult.launch(CAMERA_PERMISSION)
         }
-
     }
 
+    /**
+     * Checks if [CAMERA_PERMISSION] is granted
+     */
     private fun allPermissionsGranted(): Boolean {
         val context = context ?: return false
         return ContextCompat.checkSelfPermission(
-            context, REQUIRED_PERMISSION
+            context, CAMERA_PERMISSION
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    /**
+     * ActivityResult which handles permission result
+     */
     private val cameraPermissionResult =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
                 startCamera()
             } else {
-                if(shouldShowRequestPermissionRationale(REQUIRED_PERMISSION)) {
+                if (shouldShowRequestPermissionRationale(CAMERA_PERMISSION)) {
                     showCameraAlertDialog()
                 } else {
                     Toast.makeText(
@@ -127,6 +99,9 @@ class QrFragment : Fragment() {
             }
         }
 
+    /**
+     * Shows informative AlertDialog to user why app asks camera permission
+     */
     private fun showCameraAlertDialog() {
         val context = context ?: return
         val builder = AlertDialog.Builder(context)
