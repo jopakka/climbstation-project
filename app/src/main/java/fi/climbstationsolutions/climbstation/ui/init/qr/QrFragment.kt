@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
@@ -28,7 +29,7 @@ class QrFragment : Fragment() {
     companion object {
         private const val TAG = "QR"
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private val REQUIRED_PERMISSION = Manifest.permission.CAMERA
     }
 
     private var imageCapture: ImageCapture? = null
@@ -53,23 +54,6 @@ class QrFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
-    ) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
     }
 
     private fun startCamera() {
@@ -104,24 +88,30 @@ class QrFragment : Fragment() {
     }
 
     private fun askPermissions() {
-        // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
         } else {
-            val activity = activity ?: return
-            ActivityCompat.requestPermissions(
-                activity, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
-            )
+            cameraPermissionResult.launch(REQUIRED_PERMISSION)
         }
 
     }
 
     private fun allPermissionsGranted(): Boolean {
         val context = context ?: return false
-        return REQUIRED_PERMISSIONS.all {
-            ContextCompat.checkSelfPermission(
-                context, it
-            ) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            context, REQUIRED_PERMISSION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private val cameraPermissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        if (it) {
+            startCamera()
+        } else {
+            Toast.makeText(
+                context,
+                "Permissions not granted by the user.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
