@@ -21,33 +21,4 @@ class SerialFragmentTests {
         launchFragmentInContainer<SerialFragment>()
         onView(withId(R.id.btnContinue)).check(matches(isDisplayed()))
     }
-
-    @Test
-    fun continueIsVisible() {
-        launchFragmentInContainer<SerialFragment>()
-        onView(withId(R.id.etSerialNo)).perform(
-            typeText("1231313"),
-            closeSoftKeyboard()
-        )
-        onView(withId(R.id.etSerialNo)).check(matches(isEnabled()))
-    }
-
-    @Test
-    fun useIncorrectTestSerialNumber() {
-        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-
-        val scenario = launchFragmentInContainer<SerialFragment>()
-        scenario.onFragment {
-            navController.setGraph(R.navigation.init_nav_graph)
-
-            Navigation.setViewNavController(it.requireView(), navController)
-        }
-
-        onView(withId(R.id.etSerialNo)).perform(
-            typeText("123"),
-            closeSoftKeyboard()
-        )
-        onView(withId(R.id.btnContinue)).perform(click())
-        onView(withId(R.id.btnContinue)).check(matches(isDisplayed()))
-    }
 }
