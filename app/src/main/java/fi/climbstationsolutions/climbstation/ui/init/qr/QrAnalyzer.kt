@@ -11,7 +11,9 @@ class QrAnalyzer(private val listener: (String) -> Unit) : ImageAnalysis.Analyze
 
     /**
      * Analyzes [imageProxy] and checks is it [Int].
-     * Then sends it to [listener]
+     * Then sends it to [listener].
+     *
+     * Example of working QR: climbstation:20110001
      */
     override fun analyze(imageProxy: ImageProxy) {
         val scanner = getScanner(getOptions())
@@ -19,9 +21,16 @@ class QrAnalyzer(private val listener: (String) -> Unit) : ImageAnalysis.Analyze
             .addOnSuccessListener { barcodes ->
                 barcodes.forEach {
                     val serial = it.rawValue
-                    if (!serial.isNullOrEmpty() && serial.toIntOrNull() != null) {
-                        listener(serial)
+                    val split = serial?.split(':')
+                    val filtered = split?.filter { s ->
+                        s.isNotBlank()
                     }
+                    if (filtered.isNullOrEmpty()
+                        || filtered.first() != "climbstation"
+                        || filtered.size < 2
+                    ) return@forEach
+
+                    listener(filtered[1])
                 }
             }
 
