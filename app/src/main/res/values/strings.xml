@@ -144,4 +144,9 @@
     <string name="camera_alert_title">Camera permission</string>
     <string name="camera_alert_message">App needs camera permission only for reading QR-codes from ClimbStation.\n\nDo you want to grant permission?</string>
     <string name="camera_alert_positive">Grant permission</string>
+    <string name="camera_permission_not_granted">Camera permissions not granted</string>
+
+    <!-- QR fragment -->
+    <string name="read_qr">Read QR-code from ClimbStation</string>
+    <string name="click_here_to_enter_serial">Or click here to enter serial number here</string>
 </resources>

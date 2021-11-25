@@ -11,6 +11,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import com.google.common.util.concurrent.ListenableFuture
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class QrCamera(
@@ -22,11 +23,12 @@ class QrCamera(
         private const val TAG = "QrCamera"
     }
 
-    private val cameraExecutor = Executors.newSingleThreadExecutor()
+    private lateinit var cameraExecutor: ExecutorService
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
 
     fun startCamera(listener: (String) -> Unit) {
+        cameraExecutor = Executors.newSingleThreadExecutor()
         cameraProviderFuture = ProcessCameraProvider.getInstance(context)
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
@@ -54,7 +56,7 @@ class QrCamera(
     }
 
     fun closeCamera() {
-        cameraExecutor.shutdown()
+        if (this::cameraExecutor.isInitialized) cameraExecutor.shutdown()
     }
 
     private fun getPreview() = Preview.Builder().build().also {
