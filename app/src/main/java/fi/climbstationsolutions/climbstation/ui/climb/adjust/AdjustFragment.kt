@@ -2,16 +2,14 @@ package fi.climbstationsolutions.climbstation.ui.climb.adjust
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
@@ -19,8 +17,6 @@ import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdap
 import fi.climbstationsolutions.climbstation.adapters.HorizontalStringPickerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentAdjustBinding
 import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
-import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalNumberPickerViewModel
-import fi.climbstationsolutions.climbstation.ui.viewmodels.HorizontalStringPickerViewModel
 
 class
 AdjustFragment : Fragment(R.layout.fragment_adjust) {
