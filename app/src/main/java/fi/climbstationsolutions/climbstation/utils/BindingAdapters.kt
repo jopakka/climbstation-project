@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.utils
 
+import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import fi.climbstationsolutions.climbstation.R
@@ -158,4 +159,36 @@ fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
 @BindingAdapter("allTimeDistance")
 fun bindAllTimeDistance(view: TextView, distance: Int) {
     view.text = view.context.getString(R.string.distanceShort, distance.div(1000f))
+}
+
+@BindingAdapter("infoPopupTitle")
+fun bindInfoPopupTitle(view: TextView, title: String) {
+    when (title) {
+        "How to climb" -> {
+            view.text = view.context.getString(R.string.info_popup_title_climb)
+        }
+        "How to connect to ClimbStation machine" -> {
+            view.text = view.context.getString(R.string.info_popup_title_connect)
+        }
+        else -> {
+        view.text = "error"
+            Log.d("bindInfoPopupTitle","no such title: $title")
+        }
+    }
+}
+
+@BindingAdapter("infoPopupInstructions")
+fun bindInfoPopupInstructions(view: TextView, title: String) {
+    when (title) {
+        "How to climb" -> {
+            view.text = view.context.getString(R.string.info_popup_instructions_climb)
+        }
+        "How to connect to ClimbStation machine" -> {
+            view.text = view.context.getString(R.string.info_popup_instructions_connect)
+        }
+        else -> {
+            view.text = "error"
+            Log.d("bindInfoPopupTitle","no such instructions: $title")
+        }
+    }
 }

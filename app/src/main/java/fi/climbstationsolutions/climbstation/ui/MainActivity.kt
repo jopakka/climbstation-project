@@ -1,10 +1,13 @@
 package fi.climbstationsolutions.climbstation.ui
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.ExpandableListAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,12 +18,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
+import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.init.InitActivity
+import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
 import fi.climbstationsolutions.climbstation.utils.ExpandableListData.data
@@ -43,6 +48,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val viewModel: MainActivityViewModel by viewModels {
         MainActivityViewModelFactory(this)
     }
+    private val infoViewModel: InfoPopupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ClimbStation)
@@ -160,30 +166,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             binding.expendableList.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
                 val childItem =
                     listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
+
+                val groupKey = (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(0)
+
                 Log.d("MainActivity_menuChildClick", "childItem: $childItem")
-                val myContext = this
+                Log.d("MainActivity_menuChildClick", "groupKey: $groupKey")
+
                 if (childItem == "Bodyweight") {
-                    try {
-                        var result = false
-                        mainScope.launch {
-                            val test = async {
-                                MenuActions().updateUserWeight(
-                                    applicationContext,
-                                    myContext,
-                                    viewModel
-                                )
-                            }
-                            result = test.await()
-                            if (result) {
-                                Log.d("MainActivity_menuChildClick", "result true")
-                                (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
-                            } else {
-                                Log.d("MainActivity_menuChildClick", "result false")
-                            }
+                    MenuActions().updateUserWeight(this) {
+                        val weight = it.toFloatOrNull()
+                        viewModel.setWeight(weight) {
+                            (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
                         }
-                    } catch (e: IOException) {
-                        Log.d("MainActivity_menuChildClick", "error while updating user weight: $e")
                     }
+                }
+                if (groupKey == "Info") {
+                    MenuActions().showInfoPopup(childItem, this, infoViewModel)
+
                 } else {
                     Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
                 }

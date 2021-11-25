@@ -7,6 +7,13 @@
     <!--Menu strings-->
     <string name="child_item_title">%s: %.1f kg</string>
 
+    <!--Info popup strings-->
+    <string name="info_popup_title_climb">How to climb</string>
+    <string name="info_popup_title_connect">How to connect to ClimbStation</string>
+
+    <string name="info_popup_instructions_climb">First you must navigate to the \"Climb\" view from the bottom navigation menu. You will then see a screen with multiple items.\n\nOn the top left there is a graph which previews all the changes in the ClimbStation machine angles. On the top right you can see a preview of the difficulty level and its components. under the components there is a \"start\" button which starts the ClimbStation machine.\n\nMake sure you are connected to the ClimbStation machine first before starting the session.\n\nAt the bottom middle of the screen you can select difficulty profiles.\n\nIf you swipe left there is also another screen in which you can set a static angle, distance and timer for the climbing session in case you do not want the ClimbStation machine to change the angle during your session.\n\nThat is all, happy climbing!</string>
+    <string name="info_popup_instructions_connect">In this menu there is a \"Connect\" section. Click it and it will take you to a view in which the device connection is handled.\n\nFirst make sure you have an internet connection. Then you either input the device serial number in the input field and click next or scan the QR code on the side of the ClimbStation machine.\n\nOnce you are connected, you will be taken to the \"Climb\" view in which you can start your climbing session. </string>
+
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
     <string name="bottom_nav_statistics">Statistics</string>

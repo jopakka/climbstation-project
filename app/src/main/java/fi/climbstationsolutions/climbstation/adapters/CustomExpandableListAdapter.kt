@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class CustomExpandableListAdapter(
     private var context: Context,
     private var listTitles: List<String>,
-    private var listItems: HashMap<String, List<String>>,
+    private var listItems: LinkedHashMap<String, List<String>>,
     private var viewModel: MainActivityViewModel
 ) : BaseExpandableListAdapter() {
 

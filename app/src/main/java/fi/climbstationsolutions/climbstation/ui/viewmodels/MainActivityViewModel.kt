@@ -16,7 +16,7 @@ class MainActivityViewModel(context: Context) : ViewModel() {
     private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
     private var userBodyWeightDefault: Float = 70.00F
 
-    fun setWeight(inputWeight: Float? = null) {
+    fun setWeight(inputWeight: Float? = null, callBack: () -> Unit = {}) {
         ioScope.launch {
             val userWeight = settingsDao.getBodyWeightById(1)
             if (userWeight == null) {
@@ -26,6 +26,9 @@ class MainActivityViewModel(context: Context) : ViewModel() {
                 if(userWeight != null) {
                     settingsDao.updateUserBodyWeight(inputWeight)
                 }
+            }
+            withContext(Dispatchers.Main) {
+                callBack()
             }
         }
     }
