@@ -61,6 +61,11 @@ class ClimbFragment : Fragment(), CellClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkServiceStatus()
+    }
+
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
@@ -68,6 +73,13 @@ class ClimbFragment : Fragment(), CellClickListener {
 
     override fun onCellClickListener(profile: ClimbProfileWithSteps) {
         setProfile(profile)
+    }
+
+    private fun checkServiceStatus() {
+        if(ClimbStationService.SERVICE_RUNNING) {
+            val direction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
+            findNavController().navigate(direction)
+        }
     }
 
     private fun setProfilesToRecyclerView() {
@@ -120,8 +132,6 @@ class ClimbFragment : Fragment(), CellClickListener {
                 viewModel.profileWithSteps.value?.let {
                     val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
                     findNavController().navigate(startAction)
-                } ?: run {
-                    showAlertDialog(getString(R.string.error_no_profile_selected))
                 }
             }
         }
@@ -147,9 +157,6 @@ class ClimbFragment : Fragment(), CellClickListener {
                 Log.d("STARTBTN", "Works")
                 viewModel.setLoading(true)
                 startClimbing()
-//                val profile = viewModel.profileWithSteps.value ?: return@OnClickListener
-//                val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(profile)
-//                this.findNavController().navigate(startAction)
             }
         }
     }

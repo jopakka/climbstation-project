@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavDeepLinkBuilder
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.*
@@ -141,13 +142,11 @@ class ClimbStationService : Service() {
      * Creates notification for service
      */
     private fun createNotification() {
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent = NavDeepLinkBuilder(this)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.navigation_main)
+            .setDestination(R.id.climbOnFragment)
+            .createPendingIntent()
 
         if (nm == null)
             nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
