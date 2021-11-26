@@ -19,9 +19,6 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
-import fi.climbstationsolutions.climbstation.services.Tts
-import java.util.concurrent.TimeUnit
-import kotlin.math.floor
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
@@ -63,8 +60,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         LocalBroadcastManager.getInstance(requireContext())
             .unregisterReceiver(errorBroadcastReceiver)
     }
-
-
 
     private fun setupPager() {
         binding.climbOnPager.adapter = TabPagerAdapter(this)

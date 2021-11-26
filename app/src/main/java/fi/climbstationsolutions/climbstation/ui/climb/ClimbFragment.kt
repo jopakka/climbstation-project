@@ -76,7 +76,7 @@ class ClimbFragment : Fragment(), CellClickListener {
     }
 
     private fun checkServiceStatus() {
-        if(ClimbStationService.SERVICE_RUNNING) {
+        if (ClimbStationService.SERVICE_RUNNING) {
             val direction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
             findNavController().navigate(direction)
         }
