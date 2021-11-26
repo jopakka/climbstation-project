@@ -19,27 +19,16 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
-import fi.climbstationsolutions.climbstation.services.TtsListener
+import fi.climbstationsolutions.climbstation.services.Tts
+import java.util.concurrent.TimeUnit
 import kotlin.math.floor
-import kotlin.math.roundToInt
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
-    private var ttsListener: TtsListener? = null
     private lateinit var broadcastManager: LocalBroadcastManager
-    private val distanceNotifyRange = 5
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            ttsListener = context as TtsListener
-        } catch (e: ClassCastException) {
-            // Activity does not have listener implemented
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +40,10 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.viewModel = viewModel
 
         broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(errorBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB))
+            registerReceiver(
+                errorBroadcastReceiver,
+                IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
+            )
         }
 
         binding.btnStop.setOnClickListener {
@@ -59,8 +51,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         }
 
         viewModel.startTimer()
-
-        distanceNotifier()
 
         setBackButtonAction()
         setupPager()
@@ -70,13 +60,16 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(errorBroadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(errorBroadcastReceiver)
     }
+
+
 
     private fun setupPager() {
         binding.climbOnPager.adapter = TabPagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.climbOnPager) { tab, pos ->
-            tab.text = when(pos) {
+            tab.text = when (pos) {
                 0 -> getString(R.string.wall)
                 1 -> getString(R.string.stats)
                 else -> null
@@ -88,7 +81,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         activity?.let {
             it.onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
                 showYesNoDialog {
-                    if(isEnabled) {
+                    if (isEnabled) {
                         isEnabled = false
                         viewModel.stopTimer()
                         stopClimbing()
@@ -150,20 +143,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             id?.let { ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(it) }
         if (action != null) {
             this.findNavController().navigate(action)
-        }
-    }
-
-    private fun distanceNotifier() {
-        viewModel.apply {
-            nextDistanceToNotify = distanceNotifyRange
-            sessionWithData.observe(viewLifecycleOwner) {
-                val last = it?.data?.lastOrNull()?.totalDistance ?: return@observe
-                val floorLast = floor(last / 1000f).toInt()
-                if(last >= nextDistanceToNotify * distanceNotifyRange) {
-                    nextDistanceToNotify = floorLast
-                    ttsListener?.speak(getString(R.string.speech_distance_climbed, last))
-                }
-            }
         }
     }
 }

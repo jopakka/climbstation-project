@@ -8,14 +8,6 @@ import java.util.*
 class Tts(context: Context) {
     private lateinit var textToSpeech: TextToSpeech
     private val locale = Locale.ENGLISH
-    var volume = 1f
-        set(value) {
-            field = when {
-                value < 0f -> 0f
-                value > 1f -> 1f
-                else -> value
-            }
-        }
 
     private val ttsInitListener = TextToSpeech.OnInitListener {
         if(it == TextToSpeech.SUCCESS) {

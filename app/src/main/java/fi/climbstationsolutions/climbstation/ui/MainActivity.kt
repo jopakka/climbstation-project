@@ -2,7 +2,6 @@ package fi.climbstationsolutions.climbstation.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -17,8 +16,6 @@ import com.google.android.material.navigation.NavigationView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
-import fi.climbstationsolutions.climbstation.services.Tts
-import fi.climbstationsolutions.climbstation.services.TtsListener
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
@@ -29,17 +26,11 @@ import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
 import fi.climbstationsolutions.climbstation.utils.ExpandableListData.data
 import fi.climbstationsolutions.climbstation.utils.MenuActions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import java.util.*
-import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, TtsListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var tts: Tts
 
     // for drawer menu
     private var adapter: ExpandableListAdapter? = null
@@ -74,7 +65,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             setContentView(binding.root)
 
             initNavigation()
-            initTts()
             viewModel.setWeight()
 
             binding.topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -95,19 +85,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        tts.destroy()
-    }
-
-    override fun speak(text: String) {
-        tts.speak(text)
-    }
-
-    private fun initTts() {
-        tts = Tts(this)
     }
 
     private fun initNavigation() {
@@ -181,7 +158,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val childItem =
                     listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
 
-                val groupKey = (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(0)
+                val groupKey =
+                    (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(
+                        0
+                    )
 
                 Log.d("MainActivity_menuChildClick", "childItem: $childItem")
                 Log.d("MainActivity_menuChildClick", "groupKey: $groupKey")

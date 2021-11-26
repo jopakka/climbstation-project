@@ -35,8 +35,6 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
         }
     }
 
-    var nextDistanceToNotify = 1
-
     private val mTimer: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
     }

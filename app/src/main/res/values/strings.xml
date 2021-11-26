@@ -158,5 +158,12 @@
     <string name="click_here_to_enter_serial">Or click here to enter serial number here</string>
 
     <!-- Speech -->
-    <string name="speech_distance_climbed">You have climbed %d meters</string>
+    <plurals name="speech_time_climbed_plural">
+        <item quantity="one">You have climbed %d minute</item>
+        <item quantity="other">You have climbed %d minutes</item>
+    </plurals>
+    <plurals name="speech_distance_climbed_plural">
+        <item quantity="one">You have climbed %d meter</item>
+        <item quantity="other">You have climbed %d meters</item>
+    </plurals>
 </resources>
