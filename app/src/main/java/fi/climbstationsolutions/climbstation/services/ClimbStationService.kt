@@ -203,7 +203,6 @@ class ClimbStationService : Service() {
                         profileWithSteps.profile.id
                     )
                 )
-//                Log.d(TAG, "sessionID: $sessionID")
 
                 val started = operateClimbStation("start")
                 if (started)
@@ -278,7 +277,6 @@ class ClimbStationService : Service() {
     private suspend fun getInfo(sessionID: Long) {
         // Get ClimbStation info
         val info = ClimbStationRepository.deviceInfo(climbStationSerialNo, clientKey)
-//        Log.d(TAG, "Info: $info")
 
         val speed = info.speedNow.toInt()
         val angle = info.angleNow.toInt()
@@ -289,8 +287,7 @@ class ClimbStationService : Service() {
         timeNotifier(time - startTime)
 
         // Save info to database
-        val dID = sessionDao.insertData(Data(0, sessionID, speed, angle, length))
-//        Log.d(TAG, "dataID: $dID")
+        sessionDao.insertData(Data(0, sessionID, speed, angle, length))
 
         adjustToProfile(info.length.toInt())
     }
@@ -319,8 +316,7 @@ class ClimbStationService : Service() {
 
     private suspend fun setAngle(angle: Int) {
         try {
-            val response = ClimbStationRepository.setAngle(climbStationSerialNo, clientKey, angle)
-//            Log.d(TAG, "SetAngle: $response")
+            ClimbStationRepository.setAngle(climbStationSerialNo, clientKey, angle)
         } catch (e: Exception) {
             Log.e(TAG, "SetAngle error: ${e.localizedMessage}")
         }
@@ -328,8 +324,7 @@ class ClimbStationService : Service() {
 
     private suspend fun setSpeed(speed: Int) {
         try {
-            val response = ClimbStationRepository.setSpeed(climbStationSerialNo, clientKey, speed)
-//            Log.d(TAG, "SetSpeed: $response")
+            ClimbStationRepository.setSpeed(climbStationSerialNo, clientKey, speed)
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
         }
@@ -341,8 +336,7 @@ class ClimbStationService : Service() {
     private fun logoutFromClimbStation() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val logout = ClimbStationRepository.logout(climbStationSerialNo, clientKey)
-//                Log.d(TAG, "Logout: $logout")
+                ClimbStationRepository.logout(climbStationSerialNo, clientKey)
             } catch (e: Exception) {
                 Log.e(TAG, "Logout error: ${e.localizedMessage}")
             }
