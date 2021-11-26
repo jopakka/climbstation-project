@@ -35,6 +35,8 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
         }
     }
 
+    var nextDistanceToNotify = 1
+
     private val mTimer: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>()
     }
@@ -52,7 +54,6 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
                 val result = startTime?.let {
                     Calendar.getInstance().timeInMillis - startTime
                 }
-                Log.d("Result", result.toString())
                 mTimer.postValue(result)
                 delay(1000)
             }

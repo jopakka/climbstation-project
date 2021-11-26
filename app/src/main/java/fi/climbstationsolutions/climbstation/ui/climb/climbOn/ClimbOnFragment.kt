@@ -19,14 +19,27 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
+import fi.climbstationsolutions.climbstation.services.TtsListener
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
-
+    private var ttsListener: TtsListener? = null
     private lateinit var broadcastManager: LocalBroadcastManager
+    private val distanceNotifyRange = 5
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            ttsListener = context as TtsListener
+        } catch (e: ClassCastException) {
+            // Activity does not have listener implemented
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +59,8 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         }
 
         viewModel.startTimer()
+
+        distanceNotifier()
 
         setBackButtonAction()
         setupPager()
@@ -135,6 +150,20 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             id?.let { ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(it) }
         if (action != null) {
             this.findNavController().navigate(action)
+        }
+    }
+
+    private fun distanceNotifier() {
+        viewModel.apply {
+            nextDistanceToNotify = distanceNotifyRange
+            sessionWithData.observe(viewLifecycleOwner) {
+                val last = it?.data?.lastOrNull()?.totalDistance ?: return@observe
+                val floorLast = floor(last / 1000f).toInt()
+                if(last >= nextDistanceToNotify * distanceNotifyRange) {
+                    nextDistanceToNotify = floorLast
+                    ttsListener?.speak(getString(R.string.speech_distance_climbed, last))
+                }
+            }
         }
     }
 }

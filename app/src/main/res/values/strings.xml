@@ -156,4 +156,7 @@
     <!-- QR fragment -->
     <string name="read_qr">Read QR-code from ClimbStation</string>
     <string name="click_here_to_enter_serial">Or click here to enter serial number here</string>
+
+    <!-- Speech -->
+    <string name="speech_distance_climbed">You have climbed %d meters</string>
 </resources>
