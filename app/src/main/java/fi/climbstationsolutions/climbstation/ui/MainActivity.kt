@@ -15,6 +15,7 @@ import com.google.android.material.navigation.NavigationView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
+import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
@@ -51,7 +52,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             layoutInflater.inflate(R.layout.overflow_menu_header_layout, null, false)
         binding.expendableList.addHeaderView(listHeaderView)
 
-        getSerialNumber.launch(null)
+        if(!ClimbStationService.SERVICE_RUNNING) {
+            getSerialNumber.launch(null)
+        }
 
         setContentView(binding.root)
 
