@@ -1,7 +1,9 @@
 package fi.climbstationsolutions.climbstation.ui.init
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
@@ -34,9 +36,10 @@ import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.init.qr.QrCamera
 import kotlinx.coroutines.launch
 
-class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
+class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener, View.OnClickListener {
     companion object {
         private const val CAMERA_PERMISSION = Manifest.permission.CAMERA
+        const val EXTRA_SERIAL = "Climbstation.serial"
     }
 
     private lateinit var binding: FragmentSerialBinding
@@ -57,8 +60,6 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
 
         initUI()
         setBottomSheetVisibility(false)
-
-//        askPermissions()
 
         return binding.root
     }
@@ -82,6 +83,12 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
         bottomSheetBehavior.peekHeight = hidden.top
     }
 
+    private fun submitSerial(serial: String) {
+        val result = Intent().putExtra(EXTRA_SERIAL, serial)
+        activity?.setResult(Activity.RESULT_OK, result)
+        activity?.finish()
+    }
+
     /**
      * Initializes UI elements and observers
      */
@@ -91,9 +98,16 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
             etSerialNo.setOnEditorActionListener(keyboardActionListener)
             btnContinue.setOnClickListener(btnClickListener)
             sheetLayout.viewTreeObserver.addOnGlobalLayoutListener(this@SerialFragment)
+            sheetLayout.setOnClickListener(this@SerialFragment)
         }
         viewModel.loading.observe(viewLifecycleOwner, loadingObserver)
         viewModel.serial.observe(viewLifecycleOwner, serialObserver)
+    }
+
+    override fun onClick(view: View?) {
+        when(view) {
+            binding.sheetLayout -> setBottomSheetVisibility(true)
+        }
     }
 
     private val keyboardActionListener = TextView.OnEditorActionListener { textView, actionId, _ ->
@@ -151,27 +165,17 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
 
     private val serialObserver = Observer<String> {
         if (it == null) return@Observer
-
-        context?.let { con ->
-            PreferenceHelper.customPrefs(con, PREF_NAME)[SERIAL_NO_PREF_NAME] = it
-            val direction = SerialFragmentDirections.actionGlobalMainActivity()
-            findNavController().navigate(direction)
-            activity?.finish()
-        }
+        submitSerial(it)
     }
 
     private val textOnChange = object : TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            // Nothing to do here
-        }
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
         override fun onTextChanged(cs: CharSequence, p1: Int, p2: Int, p3: Int) {
             binding.btnContinue.isEnabled = cs.trim().isNotEmpty()
         }
 
-        override fun afterTextChanged(p0: Editable?) {
-            // Nothing to do here
-        }
+        override fun afterTextChanged(p0: Editable?) {}
     }
 
     /**
@@ -183,7 +187,6 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
             qrCamera.startCamera { qr ->
                 testSerial(qr)
                 qrCamera.closeCamera()
-                Log.d("QR", "test")
             }
         }
     }
