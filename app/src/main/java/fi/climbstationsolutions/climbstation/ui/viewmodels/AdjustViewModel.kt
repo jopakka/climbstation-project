@@ -30,6 +30,12 @@ class AdjustViewModel: ViewModel() {
             return numbersMutableList
         }
 
+    private val mLoading: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().also { it.value = false }
+    }
+    val loading: LiveData<Boolean>
+        get() = mLoading
+
     fun setMinute(minute: Int) {
         mAdjustMutableLiveData.value?.minute = minute
         Log.d("setMinute","value: ${mAdjustMutableLiveData.value}")
@@ -53,6 +59,10 @@ class AdjustViewModel: ViewModel() {
     fun getValues(): AdjustData? {
         Log.d("AdjustData", "data: ${mAdjustMutableLiveData.value}")
         return mAdjustMutableLiveData.value
+    }
+
+    fun setLoading(value: Boolean) {
+        mLoading.value = value
     }
 }
 

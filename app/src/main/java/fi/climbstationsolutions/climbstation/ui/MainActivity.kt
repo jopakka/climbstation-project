@@ -174,11 +174,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         }
                     }
                 }
-                if (groupKey == "Info") {
-                    MenuActions().showInfoPopup(childItem, this, infoViewModel)
-
-                } else {
-                    Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
+                when (groupKey) {
+                    "Info" -> {
+                        MenuActions().showInfoPopup(childItem, this, infoViewModel)
+                    }
+                    "Connect" -> {
+                        //TODO("add navigation to initActivity")
+                    }
+                    else -> {
+                        Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
+                    }
                 }
                 false
             }

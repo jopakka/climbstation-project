@@ -9,11 +9,14 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentAdjustBinding
+import fi.climbstationsolutions.climbstation.services.ClimbStationService
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
 
 class
@@ -374,6 +377,24 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
             else -> {
                 Log.d("NumberPicker_onValueChange", "no NumberPicker with tag: $tag found")
             }
+        }
+    }
+
+    private fun checkServiceStatus() {
+        if (ClimbStationService.SERVICE_RUNNING) {
+            val direction = AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment()
+            findNavController().navigate(direction)
+        }
+    }
+
+    private val clickListener = View.OnClickListener {
+        when (it) {
+            binding.adjustFragmentStartBtn -> {
+                Log.d("STARTBTN", "Works")
+                viewModel.setLoading(true)
+//                startClimbing()
+            }
+
         }
     }
 }
