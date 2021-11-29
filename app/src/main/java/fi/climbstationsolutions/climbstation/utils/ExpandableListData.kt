@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation.utils
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 internal object ExpandableListData {
     val data: LinkedHashMap<String, List<String>>
@@ -11,6 +12,7 @@ internal object ExpandableListData {
                 ArrayList()
             val infoItems: MutableList<String> = ArrayList()
 
+            expandableListDetail["Connect"] = listOf()
             settingsItems.add("Bodyweight")
             expandableListDetail["Settings"] = settingsItems
 

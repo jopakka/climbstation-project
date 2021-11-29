@@ -27,6 +27,7 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
+import fi.climbstationsolutions.climbstation.ui.init.WifiInfoFragmentDirections
 
 class ClimbFragment : Fragment(), CellClickListener {
     private lateinit var binding: FragmentClimbBinding
@@ -52,6 +53,7 @@ class ClimbFragment : Fragment(), CellClickListener {
         setProfilesToRecyclerView()
 
         binding.startBtn.setOnClickListener(clickListener)
+        binding.adjustBtn.setOnClickListener(clickListener)
 
         return binding.root
     }
@@ -152,6 +154,13 @@ class ClimbFragment : Fragment(), CellClickListener {
                 viewModel.setLoading(true)
                 startClimbing()
             }
+            binding.adjustBtn -> {
+                Log.d("adjustnav","here")
+                val direction = ClimbFragmentDirections.actionClimbToAdjustFragment()
+                findNavController().navigate(direction)
+            }
         }
     }
+
+
 }
