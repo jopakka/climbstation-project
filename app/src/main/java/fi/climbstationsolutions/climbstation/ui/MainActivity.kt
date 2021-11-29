@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             layoutInflater.inflate(R.layout.overflow_menu_header_layout, null, false)
         binding.expendableList.addHeaderView(listHeaderView)
 
-        if(!ClimbStationService.SERVICE_RUNNING) {
+        if(!ClimbStationService.SERVICE_RUNNING && !hasSerialNo()) {
             getSerialNumber.launch(null)
         }
 
@@ -114,15 +114,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.bottomNavigation.visibility = View.GONE
     }
 
-//    /**
-//     * Checks does serialNo exists in shared preferences
-//     * @return [Boolean]
-//     */
-//    private fun hasSerialNo(): Boolean {
-//        val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
-//        val serialNo = prefs[SERIAL_NO_PREF_NAME, ""]
-//        return serialNo != ""
-//    }
+    /**
+     * Checks does serialNo exists in shared preferences
+     * @return [Boolean]
+     */
+    private fun hasSerialNo(): Boolean {
+        val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
+        val serialNo = prefs[SERIAL_NO_PREF_NAME, ""]
+        return serialNo != ""
+    }
 
     private fun saveSerialNo(serial: String) {
         val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
