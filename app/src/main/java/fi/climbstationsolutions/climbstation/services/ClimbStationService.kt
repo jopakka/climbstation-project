@@ -189,12 +189,12 @@ class ClimbStationService : Service() {
         serviceScope.launch {
             try {
                 val serialNo = climbStationSerialNo
-                if(serialNo == null || serialNo == "") {
+                if (serialNo == null || serialNo == "") {
                     throw NoSuchFieldException(getString(R.string.error_no_serial))
                 }
                 // Get clientKey from ClimbStation
                 clientKey = ClimbStationRepository.login(
-                    climbStationSerialNo!!,
+                    serialNo,
                     BuildConfig.USERNAME,
                     BuildConfig.PASSWORD
                 )
