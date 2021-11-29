@@ -107,6 +107,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
+            tools:visibility="gone"
             android:id="@+id/loadingSpinner"
             layout="@layout/loading_layout"
             app:isVisible="@{viewModel.loading}"

@@ -36,7 +36,7 @@ import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.init.qr.QrCamera
 import kotlinx.coroutines.launch
 
-class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
+class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener, View.OnClickListener {
     companion object {
         private const val CAMERA_PERMISSION = Manifest.permission.CAMERA
         const val EXTRA_SERIAL = "Climbstation.serial"
@@ -98,9 +98,16 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener {
             etSerialNo.setOnEditorActionListener(keyboardActionListener)
             btnContinue.setOnClickListener(btnClickListener)
             sheetLayout.viewTreeObserver.addOnGlobalLayoutListener(this@SerialFragment)
+            sheetLayout.setOnClickListener(this@SerialFragment)
         }
         viewModel.loading.observe(viewLifecycleOwner, loadingObserver)
         viewModel.serial.observe(viewLifecycleOwner, serialObserver)
+    }
+
+    override fun onClick(view: View?) {
+        when(view) {
+            binding.sheetLayout -> setBottomSheetVisibility(true)
+        }
     }
 
     private val keyboardActionListener = TextView.OnEditorActionListener { textView, actionId, _ ->

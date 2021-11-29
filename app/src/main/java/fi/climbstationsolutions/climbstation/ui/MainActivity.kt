@@ -1,6 +1,5 @@
 package fi.climbstationsolutions.climbstation.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -19,8 +18,9 @@ import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.init.InitActivity
+import fi.climbstationsolutions.climbstation.ui.init.GetSerial
 import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
@@ -46,45 +46,41 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-//        binding.overflowNavView.setNavigationItemSelectedListener(this)
-
         // sets ClimbStation drawer menu logo to expandableListView
         val listHeaderView =
             layoutInflater.inflate(R.layout.overflow_menu_header_layout, null, false)
         binding.expendableList.addHeaderView(listHeaderView)
 
-        /*
-            If no serialNo found, then start InitActivity
-            else continue with MainActivity
-         */
-        if (!hasSerialNo()) {
-            val initIntent = Intent(this, InitActivity::class.java)
-            startActivity(initIntent)
-            finish()
-        } else {
-            setContentView(binding.root)
+        getSerialNumber.launch(null)
 
-            initNavigation()
-            viewModel.setWeight()
+        setContentView(binding.root)
 
-            binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-                Log.d("topAppBar", "menu clicked")
-                when (menuItem.itemId) {
-                    R.id.more -> {
-                        if (binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-                            binding.overflowDrawerLayout.closeDrawer(GravityCompat.END)
-                        } else if (!binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-                            binding.overflowDrawerLayout.openDrawer(GravityCompat.END)
-                            setupCustomExpandableList()
-                        }
-                        true
+        initNavigation()
+        viewModel.setWeight()
+
+        binding.topAppBar.setOnMenuItemClickListener { menuItem ->
+            Log.d("topAppBar", "menu clicked")
+            when (menuItem.itemId) {
+                R.id.more -> {
+                    if (binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+                        binding.overflowDrawerLayout.closeDrawer(GravityCompat.END)
+                    } else if (!binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+                        binding.overflowDrawerLayout.openDrawer(GravityCompat.END)
+                        setupCustomExpandableList()
                     }
-                    else -> {
-                        false
-                    }
+                    true
+                }
+                else -> {
+                    false
                 }
             }
         }
+    }
+
+    private val getSerialNumber = registerForActivityResult(GetSerial()) {
+        it ?: return@registerForActivityResult
+
+        saveSerialNo(it)
     }
 
     private fun initNavigation() {
@@ -115,14 +111,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.bottomNavigation.visibility = View.GONE
     }
 
-    /**
-     * Checks does serialNo exists in shared preferences
-     * @return [Boolean]
-     */
-    private fun hasSerialNo(): Boolean {
+//    /**
+//     * Checks does serialNo exists in shared preferences
+//     * @return [Boolean]
+//     */
+//    private fun hasSerialNo(): Boolean {
+//        val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
+//        val serialNo = prefs[SERIAL_NO_PREF_NAME, ""]
+//        return serialNo != ""
+//    }
+
+    private fun saveSerialNo(serial: String) {
         val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
-        val serialNo = prefs[SERIAL_NO_PREF_NAME, ""]
-        return serialNo != ""
+        prefs[SERIAL_NO_PREF_NAME] = serial
     }
 
     // For top app bar overflow menu items
