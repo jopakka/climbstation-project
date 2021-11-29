@@ -19,6 +19,6 @@ class SerialFragmentTests {
     @Test
     fun serialFragmentVisible() {
         launchFragmentInContainer<SerialFragment>()
-        onView(withId(R.id.btnContinue)).check(matches(isDisplayed()))
+        onView(withId(R.id.viewFinder)).check(matches(isDisplayed()))
     }
 }
