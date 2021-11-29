@@ -98,10 +98,12 @@
     <string name="warning">Warning</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="skip">Skip</string>
 
     <string name="error_while_connecting">We have troubles to connect ClimbStation. Please try again.</string>
     <string name="error_no_profile_selected">No profile selected.</string>
     <string name="error_while_getting_info">We have troubles to get info from ClimbStation.</string>
+    <string name="error_no_serial">No serial number set</string>
 
     <string name="prompt_quit_session">Do you want to quit the session?</string>
 

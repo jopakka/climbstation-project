@@ -53,33 +53,27 @@ class ClimbFragment : Fragment(), CellClickListener {
 
         binding.startBtn.setOnClickListener(clickListener)
 
-        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_ID_NAME))
-            registerReceiver(errorsBroadcastReceiver, IntentFilter(BROADCAST_ERROR))
-        }
-
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        checkServiceStatus()
+    override fun onResume() {
+        super.onResume()
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_ID_NAME))
+                registerReceiver(errorsBroadcastReceiver, IntentFilter(BROADCAST_ERROR))
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        broadcastManager.unregisterReceiver(broadcastReceiver)
+        broadcastManager.unregisterReceiver(errorsBroadcastReceiver)
     }
 
     override fun onCellClickListener(profile: ClimbProfileWithSteps) {
         setProfile(profile)
-    }
-
-    private fun checkServiceStatus() {
-        if (ClimbStationService.SERVICE_RUNNING) {
-            val direction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
-            findNavController().navigate(direction)
-        }
     }
 
     private fun setProfilesToRecyclerView() {
