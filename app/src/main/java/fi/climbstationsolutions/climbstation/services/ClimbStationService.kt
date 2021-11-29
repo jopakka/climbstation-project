@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavDeepLinkBuilder
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.*
@@ -13,6 +14,8 @@ import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
 import fi.climbstationsolutions.climbstation.ui.MainActivity
 import kotlinx.coroutines.*
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.floor
 
 class ClimbStationService : Service() {
     companion object {
@@ -42,6 +45,13 @@ class ClimbStationService : Service() {
 
     private var nm: NotificationManager? = null
     private var currentStep = 0
+    private var startTime: Long = 0L
+
+    private var tts: Tts? = null
+    private var nextDistanceToNotify = 0
+    private var nextTimeToNotify = 0
+    private val distanceNotifyRange = 5 // by meters
+    private val timeNotifyRange = 5 // by minutes
 
     private lateinit var climbStationSerialNo: String
     private lateinit var clientKey: String
@@ -57,6 +67,7 @@ class ClimbStationService : Service() {
             stopService()
         } else {
             intent?.extras?.let {
+                initTts()
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, ""),
                     it.getParcelable(PROFILE_EXTRA)
@@ -89,11 +100,18 @@ class ClimbStationService : Service() {
         sessionDao = AppDatabase.get(this).sessionDao()
     }
 
+    private fun initTts() {
+        tts = Tts(this)
+        nextDistanceToNotify = distanceNotifyRange
+        nextTimeToNotify = timeNotifyRange
+    }
+
     /**
      * Stops session and log user out of ClimbStation machine. Sets [SERVICE_RUNNING] to false
      */
     private fun stopService() {
         SERVICE_RUNNING = false
+        tts?.destroy()
         stopClimbStationAndLogout()
         stopForeground(true)
         stopSelf()
@@ -124,13 +142,11 @@ class ClimbStationService : Service() {
      * Creates notification for service
      */
     private fun createNotification() {
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent = NavDeepLinkBuilder(this)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.navigation_main)
+            .setDestination(R.id.climbOnFragment)
+            .createPendingIntent()
 
         if (nm == null)
             nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -186,7 +202,6 @@ class ClimbStationService : Service() {
                         profileWithSteps.profile.id
                     )
                 )
-//                Log.d(TAG, "sessionID: $sessionID")
 
                 val started = operateClimbStation("start")
                 if (started)
@@ -237,6 +252,7 @@ class ClimbStationService : Service() {
      */
     private suspend fun getInfoFromClimbStation(sessionID: Long) {
         try {
+            startTime = Calendar.getInstance().timeInMillis
             setAngle(profileWithSteps.steps[0].angle)
             broadcastId(sessionID)
 
@@ -260,15 +276,17 @@ class ClimbStationService : Service() {
     private suspend fun getInfo(sessionID: Long) {
         // Get ClimbStation info
         val info = ClimbStationRepository.deviceInfo(climbStationSerialNo, clientKey)
-//        Log.d(TAG, "Info: $info")
 
         val speed = info.speedNow.toInt()
         val angle = info.angleNow.toInt()
         val length = info.length.toInt()
 
+        distanceNotifier(length)
+        val time = Calendar.getInstance().timeInMillis
+        timeNotifier(time - startTime)
+
         // Save info to database
-        val dID = sessionDao.insertData(Data(0, sessionID, speed, angle, length))
-//        Log.d(TAG, "dataID: $dID")
+        sessionDao.insertData(Data(0, sessionID, speed, angle, length))
 
         adjustToProfile(info.length.toInt())
     }
@@ -297,8 +315,7 @@ class ClimbStationService : Service() {
 
     private suspend fun setAngle(angle: Int) {
         try {
-            val response = ClimbStationRepository.setAngle(climbStationSerialNo, clientKey, angle)
-//            Log.d(TAG, "SetAngle: $response")
+            ClimbStationRepository.setAngle(climbStationSerialNo, clientKey, angle)
         } catch (e: Exception) {
             Log.e(TAG, "SetAngle error: ${e.localizedMessage}")
         }
@@ -306,8 +323,7 @@ class ClimbStationService : Service() {
 
     private suspend fun setSpeed(speed: Int) {
         try {
-            val response = ClimbStationRepository.setSpeed(climbStationSerialNo, clientKey, speed)
-//            Log.d(TAG, "SetSpeed: $response")
+            ClimbStationRepository.setSpeed(climbStationSerialNo, clientKey, speed)
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
         }
@@ -319,8 +335,7 @@ class ClimbStationService : Service() {
     private fun logoutFromClimbStation() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val logout = ClimbStationRepository.logout(climbStationSerialNo, clientKey)
-//                Log.d(TAG, "Logout: $logout")
+                ClimbStationRepository.logout(climbStationSerialNo, clientKey)
             } catch (e: Exception) {
                 Log.e(TAG, "Logout error: ${e.localizedMessage}")
             }
@@ -330,6 +345,32 @@ class ClimbStationService : Service() {
     private suspend fun setEndTimeForSession(sessionID: Long?) {
         sessionID?.let {
             sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
+        }
+    }
+
+    private fun distanceNotifier(distance: Int) {
+        val meters = floor(distance / 1000f).toInt()
+        if (meters >= nextDistanceToNotify) {
+            nextDistanceToNotify = meters + distanceNotifyRange
+            tts?.speak(
+                resources.getQuantityString(
+                    R.plurals.speech_time_climbed_plural,
+                    meters, meters
+                )
+            )
+        }
+    }
+
+    private fun timeNotifier(time: Long) {
+        val minutes = (TimeUnit.MILLISECONDS.toMinutes(time) % TimeUnit.HOURS.toMinutes(1)).toInt()
+        if (minutes >= nextTimeToNotify) {
+            nextTimeToNotify = (minutes + timeNotifyRange)
+            tts?.speak(
+                resources.getQuantityString(
+                    R.plurals.speech_time_climbed_plural,
+                    minutes, minutes
+                )
+            )
         }
     }
 }

@@ -25,7 +25,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
-
     private lateinit var broadcastManager: LocalBroadcastManager
 
     override fun onCreateView(
@@ -38,7 +37,10 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.viewModel = viewModel
 
         broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(errorBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB))
+            registerReceiver(
+                errorBroadcastReceiver,
+                IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
+            )
         }
 
         binding.btnStop.setOnClickListener {
@@ -55,13 +57,14 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(errorBroadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext())
+            .unregisterReceiver(errorBroadcastReceiver)
     }
 
     private fun setupPager() {
         binding.climbOnPager.adapter = TabPagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.climbOnPager) { tab, pos ->
-            tab.text = when(pos) {
+            tab.text = when (pos) {
                 0 -> getString(R.string.wall)
                 1 -> getString(R.string.stats)
                 else -> null
@@ -73,7 +76,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         activity?.let {
             it.onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
                 showYesNoDialog {
-                    if(isEnabled) {
+                    if (isEnabled) {
                         isEnabled = false
                         viewModel.stopTimer()
                         stopClimbing()

@@ -26,17 +26,11 @@ import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
 import fi.climbstationsolutions.climbstation.utils.ExpandableListData.data
 import fi.climbstationsolutions.climbstation.utils.MenuActions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private val parentJob = Job()
-    private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
-    private val mainScope = CoroutineScope(Dispatchers.Main + parentJob)
 
     // for drawer menu
     private var adapter: ExpandableListAdapter? = null
@@ -164,7 +158,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val childItem =
                     listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
 
-                val groupKey = (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(0)
+                val groupKey =
+                    (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(
+                        0
+                    )
 
                 Log.d("MainActivity_menuChildClick", "childItem: $childItem")
                 Log.d("MainActivity_menuChildClick", "groupKey: $groupKey")
