@@ -52,6 +52,8 @@
     <string name="fragment_adjust_speed">Speed: %d m / min</string>
     <string name="fragment_adjust_mode">Mode:</string>
     <string name="fragment_adjust_start">Start</string>
+    <string name="fragment_adjust_duration">Duration</string>
+    <string name="fragment_adjust_angle">Angle</string>
 
     <!--statistics_session_history_item strings-->
     <string name="stat_sess_history_item_date">5.11.2021</string>
