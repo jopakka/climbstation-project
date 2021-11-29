@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ExpandableListAdapter
+import android.widget.ExpandableListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             layoutInflater.inflate(R.layout.overflow_menu_header_layout, null, false)
         binding.expendableList.addHeaderView(listHeaderView)
 
-        if(!ClimbStationService.SERVICE_RUNNING && !hasSerialNo()) {
+        if (!ClimbStationService.SERVICE_RUNNING && !hasSerialNo()) {
             getSerialNumber.launch(null)
         }
 
@@ -158,6 +159,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             )
             binding.expendableList.setAdapter(adapter)
 
+            binding.expendableList.setOnGroupClickListener { expandableListView: ExpandableListView, view1: View, i: Int, l: Long ->
+                Log.d("groupclick", "1: $expandableListView, 2: $view1, 3: $i, 4: $l")
+                if (l == 0L) {
+                    Log.d("groupclick", "done")
+                    getSerialNumber.launch(null)
+                }
+                false
+            }
+
             binding.expendableList.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
                 val childItem =
                     listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
@@ -181,9 +191,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 when (groupKey) {
                     "Info" -> {
                         MenuActions().showInfoPopup(childItem, this, infoViewModel)
-                    }
-                    "Connect" -> {
-                        //TODO("add navigation to initActivity")
                     }
                     else -> {
                         Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
