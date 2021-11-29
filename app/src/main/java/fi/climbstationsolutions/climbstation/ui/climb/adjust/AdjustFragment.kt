@@ -64,96 +64,6 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
 
         Log.d("SF1", "selected values: ${viewModel.getValues()}")
 
-        // This checks that scrolling has stopped, checks that the position we stopped on is valid,
-        // and adjusts the selected number accordingly
-        binding.adjustFragmentLengthList.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-                    val offset =
-                        (binding.adjustFragmentLengthList.width / lengthListWidth!! - 1) / 2
-                    val position =
-                        lengthLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
-                    if (position in viewModel.lengthNumbers.indices &&
-                        viewModel.lengthNumbers[position] != viewModel.getValues()?.length
-                    ) {
-                        when (position) {
-                            0 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[0]
-                                )
-                                scrollToNumber(viewModel.lengthNumbers[0])
-                            }
-                            viewModel.lengthNumbers.size - 1 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 5]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
-                            }
-                            viewModel.lengthNumbers.size - 2 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 4]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
-                            }
-                            viewModel.lengthNumbers.size - 3 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 3]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
-                            }
-                            viewModel.lengthNumbers.size - 4 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 2]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
-                            }
-                            viewModel.lengthNumbers.size - 5 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 1]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
-                            }
-                            else -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-                                scrollToNumber(
-                                    viewModel.lengthNumbers[position],
-                                    position
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
         binding.adjustFragmentAngleList.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -170,7 +80,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
                                 viewModel.setAngle(
                                     viewModel.angleNumbers[0]
                                 )
-                                scrollToNumber(viewModel.angleNumbers[0])
+                                scrollToLength(viewModel.angleNumbers[0])
                             }
                             viewModel.angleNumbers.size - 1 -> {
                                 viewModel.setAngle(
@@ -230,7 +140,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
                                     "SF1",
                                     "selected angle: ${viewModel.getValues()?.angle}"
                                 )
-                                scrollToNumber(
+                                scrollToAngle(
                                     viewModel.angleNumbers[position],
                                     position
                                 )
@@ -241,50 +151,95 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
             }
         })
 
-//        binding.adjustFragmentAngleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-//                    val offset = (binding.adjustFragmentAngleList.width / angleListWidth!! - 1) / 2
-//                    val position = angleLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
-//                    if (position in viewModel.angleNumbers.indices &&
-//                        viewModel.angleNumbers[position] != viewModel.getValues()?.angle
-//                    ) {
-//                        when (position) {
-//                            0 -> {
-//                                viewModel.setAngle(
-//                                    viewModel.angleNumbers[0]
-//                                )
-//                                scrollToString(viewModel.strings[0])
-//                            }
-//                            viewModel.strings.size - 1 -> {
-//                                viewModel.setSelectedMode(
-//                                    viewModel.strings[position - 1]
-//                                )
-//                                Log.d(
-//                                    "SF2",
-//                                    "selected string: ${viewModel.selectedMode.value}"
-//                                )
-////                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
-//                            }
-//                            else -> {
-//                                viewModel.setSelectedMode(
-//                                    viewModel.strings[position]
-//                                )
-//                                Log.d(
-//                                    "SF2",
-//                                    "selected string: ${viewModel.selectedMode.value}"
-//                                )
-//                                scrollToString(
-//                                    viewModel.strings[position],
-//                                    position
-//                                )
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        })
+        // This checks that scrolling has stopped, checks that the position we stopped on is valid,
+        // and adjusts the selected number accordingly
+        binding.adjustFragmentLengthList.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val offset =
+                        (binding.adjustFragmentLengthList.width / lengthListWidth!! - 1) / 2
+                    val position =
+                        lengthLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
+                    if (position in viewModel.lengthNumbers.indices &&
+                        viewModel.lengthNumbers[position] != viewModel.getValues()?.length
+                    ) {
+                        when (position) {
+                            0 -> {
+                                viewModel.setLength(
+                                    viewModel.lengthNumbers[0]
+                                )
+                                scrollToLength(viewModel.lengthNumbers[0])
+                            }
+                            viewModel.lengthNumbers.size - 1 -> {
+                                viewModel.setLength(
+                                    viewModel.lengthNumbers[position - 5]
+                                )
+                                Log.d(
+                                    "SF1",
+                                    "selected length: ${viewModel.getValues()?.length}"
+                                )
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            viewModel.lengthNumbers.size - 2 -> {
+                                viewModel.setLength(
+                                    viewModel.lengthNumbers[position - 4]
+                                )
+                                Log.d(
+                                    "SF1",
+                                    "selected length: ${viewModel.getValues()?.length}"
+                                )
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            viewModel.lengthNumbers.size - 3 -> {
+                                viewModel.setLength(
+                                    viewModel.lengthNumbers[position - 3]
+                                )
+                                Log.d(
+                                    "SF1",
+                                    "selected length: ${viewModel.getValues()?.length}"
+                                )
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            viewModel.lengthNumbers.size - 4 -> {
+                                viewModel.setLength(
+                                    viewModel.lengthNumbers[position - 2]
+                                )
+                                Log.d(
+                                    "SF1",
+                                    "selected length: ${viewModel.getValues()?.length}"
+                                )
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            viewModel.lengthNumbers.size - 5 -> {
+                                viewModel.setLength(
+                                    viewModel.lengthNumbers[position - 1]
+                                )
+                                Log.d(
+                                    "SF1",
+                                    "selected length: ${viewModel.getValues()?.length}"
+                                )
+//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
+                            }
+                            else -> {
+                                viewModel.setLength(
+                                    viewModel.lengthNumbers[position]
+                                )
+                                Log.d(
+                                    "SF1",
+                                    "selected length: ${viewModel.getValues()?.length}"
+                                )
+                                scrollToLength(
+                                    viewModel.lengthNumbers[position],
+                                    position
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun initializeSelectedAngle() {
@@ -301,7 +256,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
             // currently manually set. Eventually will be set to the predetermined number
             val currentLength = viewModel.lengthNumbers[10]
             viewModel.setLength(currentLength)
-            scrollToNumber(currentLength, currentLength - 1)
+            scrollToLength(currentLength, currentLength - 1)
         }
     }
 
@@ -337,7 +292,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
         }
     }
 
-    private fun scrollToNumber(length: Int, position: Int = 0) {
+    private fun scrollToLength(length: Int, position: Int = 0) {
         var width = binding.adjustFragmentLengthList.width
         if (width > 0) {
             lengthLayoutManager.scrollToPosition(
@@ -409,19 +364,11 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
     }
 
     override fun onValueChange(p0: NumberPicker?, p1: Int, p2: Int) {
-        val tag = p0?.tag
-        Log.d("NumberPicker_onValueChange", "numberPicker: $p1, $p2")
-        Log.d("NumberPicker_onValueChange", "numberPicker id: $tag")
-
-        when (tag) {
+        when (val tag = p0?.tag) {
             "minute" -> {
-                Log.d("NumberPicker_onValueChange", "rolled minute")
-                binding.numberValue.text = p2.toString()
                 viewModel.setMinute(p2)
             }
             "second" -> {
-                Log.d("NumberPicker_onValueChange", "rolled second")
-                binding.numberValue.text = p2.toString()
                 viewModel.setSecond(p2)
             }
             else -> {
