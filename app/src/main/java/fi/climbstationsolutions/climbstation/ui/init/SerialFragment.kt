@@ -64,8 +64,8 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener, View
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         if (this::qrCamera.isInitialized) {
             qrCamera.closeCamera()
         }
@@ -183,7 +183,7 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener, View
      */
     private fun startCamera() {
         context?.let {
-            val qrCamera = QrCamera(it, binding.viewFinder, viewLifecycleOwner)
+            qrCamera = QrCamera(it, binding.viewFinder, viewLifecycleOwner)
             qrCamera.startCamera { qr ->
                 testSerial(qr)
                 qrCamera.closeCamera()
