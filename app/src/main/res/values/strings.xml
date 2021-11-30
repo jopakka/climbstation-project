@@ -170,4 +170,11 @@
         <item quantity="one">You have climbed %d meter</item>
         <item quantity="other">You have climbed %d meters</item>
     </plurals>
+
+    <string name="session_list_year_month">%s %d</string>
+
+    <plurals name="session_list_session_count">
+        <item quantity="one">%d Session</item>
+        <item quantity="other">%d Sessions</item>
+    </plurals>
 </resources>
