@@ -35,9 +35,10 @@ class StatisticsAdapter(
                     val headerPositions = mutableListOf<Pair<Int, YearMonth?>>()
                     var latestYearMonth: YearMonth? = null
                     val mList: MutableList<DataItem> = list.mapIndexed { i, session ->
-                        val dateTime = session.session.createdAt.toInstant().atZone(TimeZone.getDefault().toZoneId())
+                        val dateTime = session.session.createdAt.toInstant()
+                            .atZone(TimeZone.getDefault().toZoneId())
                         val yearMonth = YearMonth.from(dateTime)
-                        if(latestYearMonth == null || yearMonth.isBefore(latestYearMonth)) {
+                        if (latestYearMonth == null || yearMonth.isBefore(latestYearMonth)) {
                             latestYearMonth = yearMonth
                             headerPositions.add(i to yearMonth)
                         }
@@ -66,7 +67,8 @@ class StatisticsAdapter(
         }
     }
 
-    class HeaderViewHolder(private val binding: SessionListHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+    class HeaderViewHolder(private val binding: SessionListHeaderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         companion object {
             fun from(parent: ViewGroup): HeaderViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
