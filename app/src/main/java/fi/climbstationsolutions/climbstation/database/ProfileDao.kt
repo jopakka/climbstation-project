@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface ProfileDao {
@@ -24,4 +25,16 @@ interface ProfileDao {
 
     @Query("SELECT * FROM ClimbProfile WHERE id = :id")
     suspend fun getProfileWithSteps(id: Long): ClimbProfileWithSteps
+
+    @Query("SELECT * FROM ClimbProfile WHERE id = :id")
+    fun getCustomProfileWithSteps(id: Long): LiveData<ClimbProfileWithSteps>
+
+    @Query("SELECT * FROM ClimbProfile WHERE isDefault = 0")
+    fun getAllCustomProfiles(): LiveData<List<ClimbProfileWithSteps>>
+
+    @Query("UPDATE ClimbStep SET distance = :distance WHERE id = :id")
+    suspend fun updateCustomStepDistance(distance: Int, id: Long)
+
+    @Query("UPDATE ClimbStep SET angle = :angle WHERE id = :id")
+    suspend fun updateCustomStepAngle(angle: Int, id: Long)
 }

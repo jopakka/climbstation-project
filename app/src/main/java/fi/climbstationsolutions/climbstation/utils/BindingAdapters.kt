@@ -1,7 +1,10 @@
 package fi.climbstationsolutions.climbstation.utils
 
+import android.text.Editable
+import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.google.android.material.textfield.TextInputEditText
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.database.Session
@@ -158,4 +161,25 @@ fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
 @BindingAdapter("allTimeDistance")
 fun bindAllTimeDistance(view: TextView, distance: Int) {
     view.text = view.context.getString(R.string.distanceShort, distance.div(1000f))
+}
+
+@BindingAdapter("stepsCount")
+fun bindStepsCount(view: TextView, steps: List<ClimbStep>?) {
+    if (steps != null) {
+        view.text = "${steps.count()}"
+    }
+}
+
+@BindingAdapter("stepNumber")
+fun bindStepNumber(view: TextView, step: ClimbStep) {
+    view.text = "${step.id}"
+}
+
+@BindingAdapter("stepDistance")
+fun bindStepDistance(view: TextInputEditText, step: ClimbStep?) {
+    view.text = Editable.Factory.getInstance().newEditable((step?.distance ?: 0).toString())
+}
+@BindingAdapter("stepAngle")
+fun bindStepAngle(view: TextInputEditText, step: ClimbStep?) {
+    view.text = Editable.Factory.getInstance().newEditable((step?.angle ?: 0).toString())
 }
