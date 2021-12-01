@@ -32,7 +32,7 @@ class StatisticsAdapter(
 
     fun addHeaderAndSubmitList(list: List<SessionWithData>?) {
         adapterScope.launch {
-            val items = when (list?.isEmpty()) {
+            val items = when (list?.isNullOrEmpty()) {
                 null, true -> listOf(DataItem.EmptyListItem)
                 else -> {
                     val headerPositions = mutableListOf<Pair<Int, YearMonth?>>()
