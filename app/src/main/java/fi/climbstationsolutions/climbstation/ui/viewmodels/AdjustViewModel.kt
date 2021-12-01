@@ -18,15 +18,8 @@ class AdjustViewModel : ViewModel() {
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
 
-    private val mClimbProfile: ClimbProfile = ClimbProfile(profileId, "Adjusted", 10, false)
-
-    val climbProfile: ClimbProfile
-        get() = mClimbProfile
-
-    private val mClimbSteps: List<ClimbStep> = listOf(ClimbStep(1, profileId, 0, 0))
-
-    val climbSteps: List<ClimbStep>
-        get() = mClimbSteps
+    private var climbAngle = 0
+    private var climbLength = 0
 
     // amount of numbers in angle picker
     private val angleAmount = 45
@@ -68,18 +61,16 @@ class AdjustViewModel : ViewModel() {
     }
 
     fun setAngle(angle: Int) {
-        mClimbSteps[0].angle = angle
-        Log.d("setAngle", "value: ${mClimbSteps}")
+        climbAngle = angle
+        Log.d("setAngle", "angle: $climbAngle ")
     }
 
     fun setLength(distance: Int) {
-        mClimbSteps[0].distance = distance
-        Log.d("setLength", "value: ${mClimbSteps}")
+        climbLength = distance
+        Log.d("setLength", "length: $climbLength ")
     }
 
-    fun getValues(): ClimbProfileWithSteps? {
-        Log.d("Timer", "data: ${mAdjustMutableLiveData.value}")
-        Log.d("ClimbSteps", "data: ${mClimbSteps}")
+    fun getClimbProfileWithSteps(): ClimbProfileWithSteps? {
         return profileWithSteps.value
     }
 
@@ -90,7 +81,10 @@ class AdjustViewModel : ViewModel() {
     fun setClimbProfileWithSteps() {
         val testProfile = ClimbProfile(profileId, "Adjusted", 10, false)
         val testSteps = listOf(ClimbStep(1, profileId, 0, 0))
-        mProfileWithSteps.value = ClimbProfileWithSteps(climbProfile, climbSteps)
+        mProfileWithSteps.value = ClimbProfileWithSteps(
+            ClimbProfile(profileId, "Adjusted", 10, false),
+            listOf(ClimbStep(1, profileId, climbLength, climbAngle))
+        )
         Log.d("setClimbProfileWithSteps", "value: ${profileWithSteps.value}")
     }
 

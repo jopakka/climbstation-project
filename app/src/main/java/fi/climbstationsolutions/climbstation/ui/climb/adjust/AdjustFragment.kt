@@ -10,39 +10,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentAdjustBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
+import me.angrybyte.numberpicker.listener.OnValueChangeListener
 
 class
-AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener {
+AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
     private lateinit var binding: FragmentAdjustBinding
     private lateinit var broadcastManager: LocalBroadcastManager
+    private val TAG: String = AdjustFragment::class.java.simpleName
 
     private val viewModel: AdjustViewModel by viewModels()
 
-    private lateinit var angleLayoutManager: LinearLayoutManager
-    private lateinit var lengthLayoutManager: LinearLayoutManager
-
     private var angleListWidth: Int? = null
     private var lengthListWidth: Int? = null
-    private var horizontalAnglePickerAdapter: HorizontalNumberPickerAdapter? = null
-    private var horizontalLengthPickerAdapter: HorizontalNumberPickerAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,14 +50,6 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener {
         binding.adjustFragmentTimepickerSecond.minValue = 0
         binding.adjustFragmentTimepickerMinute.maxValue = 60
         binding.adjustFragmentTimepickerSecond.maxValue = 60
-
-        angleLayoutManager = LinearLayoutManager(context)
-        angleLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        angleLayoutManager.isSmoothScrollbarEnabled = true
-
-        lengthLayoutManager = LinearLayoutManager(context)
-        lengthLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        lengthLayoutManager.isSmoothScrollbarEnabled = true
 
         return binding.root
     }
@@ -136,207 +120,24 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener {
         initializeSelectedLength()
         initializeSelectedAngle()
 
-        Log.d("SF1", "selected values: ${viewModel.getValues()}")
+        Log.d("SF1", "selected values: ${viewModel.getClimbProfileWithSteps()}")
 
-        binding.adjustFragmentAngleList.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-                    val offset = (binding.adjustFragmentAngleList.width / angleListWidth!! - 1) / 2
-                    val position =
-                        angleLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
-                    if (position in viewModel.angleNumbers.indices &&
-                        viewModel.angleNumbers[position] != viewModel.getValues()?.steps?.get(0)?.angle
-                    ) {
-                        when (position) {
-                            0 -> {
-                                viewModel.setAngle(
-                                    viewModel.angleNumbers[0]
-                                )
-                                scrollToLength(viewModel.angleNumbers[0])
-                            }
-                            viewModel.angleNumbers.size - 1 -> {
-                                viewModel.setAngle(
-                                    viewModel.angleNumbers[position - 5]
-                                )
-                            }
-                            viewModel.angleNumbers.size - 2 -> {
-                                viewModel.setAngle(
-                                    viewModel.angleNumbers[position - 4]
-                                )
-                            }
-                            viewModel.angleNumbers.size - 3 -> {
-                                viewModel.setAngle(
-                                    viewModel.angleNumbers[position - 3]
-                                )
-                            }
-                            viewModel.angleNumbers.size - 4 -> {
-                                viewModel.setAngle(
-                                    viewModel.angleNumbers[position - 2]
-                                )
-                            }
-                            viewModel.angleNumbers.size - 5 -> {
-                                viewModel.setAngle(
-                                    viewModel.angleNumbers[position - 1]
-                                )
-                            }
-                            else -> {
-                                viewModel.setAngle(
-                                    viewModel.angleNumbers[position]
-                                )
-                                scrollToAngle(
-                                    viewModel.angleNumbers[position],
-                                    position
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        // This checks that scrolling has stopped, checks that the position we stopped on is valid,
-        // and adjusts the selected number accordingly
-        binding.adjustFragmentLengthList.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_IDLE) {
-                    val offset =
-                        (binding.adjustFragmentLengthList.width / lengthListWidth!! - 1) / 2
-                    val position =
-                        lengthLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
-                    if (position in viewModel.lengthNumbers.indices &&
-                        viewModel.lengthNumbers[position] != viewModel.getValues()?.steps?.get(0)?.distance
-                    ) {
-                        when (position) {
-                            0 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[0]
-                                )
-                                scrollToLength(viewModel.lengthNumbers[0])
-                            }
-                            viewModel.lengthNumbers.size - 1 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 5]
-                                )
-                            }
-                            viewModel.lengthNumbers.size - 2 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 4]
-                                )
-                            }
-                            viewModel.lengthNumbers.size - 3 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 3]
-                                )
-                            }
-                            viewModel.lengthNumbers.size - 4 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 2]
-                                )
-                            }
-                            viewModel.lengthNumbers.size - 5 -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position - 1]
-                                )
-                            }
-                            else -> {
-                                viewModel.setLength(
-                                    viewModel.lengthNumbers[position]
-                                )
-                                scrollToLength(
-                                    viewModel.lengthNumbers[position],
-                                    position
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
+        binding.adjustFragmentAnglePicker.setListener(this)
+        binding.adjustFragmentLengthPicker.setListener(this)
         binding.adjustFragmentStartBtn.setOnClickListener(clickListener)
     }
 
     private fun initializeSelectedAngle() {
-        if (viewModel.getValues()?.steps?.get(0)?.angle == null) {
+        if (viewModel.getClimbProfileWithSteps()?.steps?.get(0)?.angle == null) {
             val currentAngle = viewModel.angleNumbers[1]
             viewModel.setAngle(currentAngle)
-            scrollToAngle(currentAngle, viewModel.angleNumbers.indexOf(currentAngle))
         }
     }
 
     private fun initializeSelectedLength() {
-        if (viewModel.getValues()?.steps?.get(0)?.distance == null) {
+        if (viewModel.getClimbProfileWithSteps()?.steps?.get(0)?.distance == null) {
             val currentLength = viewModel.lengthNumbers[10]
             viewModel.setLength(currentLength)
-            scrollToLength(currentLength, currentLength - 1)
-        }
-    }
-
-    private fun scrollToAngle(angle: Int, position: Int = 0) {
-        var width = binding.adjustFragmentAngleList.width
-        if (width > 0) {
-            angleLayoutManager.scrollToPosition(
-                viewModel.angleNumbers.indexOf(
-                    angle
-                )
-            )
-            horizontalAnglePickerAdapter?.setTextSize(30F, position)
-
-        } else {
-            // waits for layout to finish loading, then scrolls
-            val vto = binding.adjustFragmentAngleList.viewTreeObserver
-            vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    binding.adjustFragmentAngleList.viewTreeObserver.removeOnGlobalLayoutListener(
-                        this
-                    )
-                    width = binding.adjustFragmentAngleList.width
-                    angleListWidth?.let { angleWidth ->
-                        angleLayoutManager.scrollToPositionWithOffset(
-                            viewModel.angleNumbers.indexOf(
-                                angle
-                            ), width / 2 - angleWidth / 2
-                        )
-                    }
-                    horizontalAnglePickerAdapter?.setTextSize(30F, position + 1)
-                }
-            })
-        }
-    }
-
-    private fun scrollToLength(length: Int, position: Int = 0) {
-        var width = binding.adjustFragmentLengthList.width
-        if (width > 0) {
-            lengthLayoutManager.scrollToPosition(
-                viewModel.lengthNumbers.indexOf(
-                    length
-                )
-            )
-            horizontalLengthPickerAdapter?.setTextSize(30F, position)
-
-        } else {
-            // waits for layout to finish loading, then scrolls
-            val vto = binding.adjustFragmentLengthList.viewTreeObserver
-            vto.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    binding.adjustFragmentLengthList.viewTreeObserver.removeOnGlobalLayoutListener(
-                        this
-                    )
-                    width = binding.adjustFragmentLengthList.width
-                    lengthListWidth?.let { lengthWidth ->
-                        lengthLayoutManager.scrollToPositionWithOffset(
-                            viewModel.lengthNumbers.indexOf(
-                                length
-                            ), width / 2 - lengthWidth / 2
-                        )
-                    }
-                    horizontalLengthPickerAdapter?.setTextSize(30F, position + 1)
-                }
-            })
         }
     }
 
@@ -359,24 +160,6 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener {
             context?.resources?.getDimensionPixelSize(R.dimen.string_list_layout_width)
         lengthListWidth =
             context?.resources?.getDimensionPixelSize(R.dimen.number_list_layout_width)
-
-//        viewModel =
-//            ViewModelProviders.of(this).get(AdjustViewModel::class.java)
-
-        horizontalAnglePickerAdapter = HorizontalNumberPickerAdapter(
-            viewModel.angleNumbers,
-            context
-        ) { angle -> viewModel.setAngle(angle) }
-
-        horizontalLengthPickerAdapter = HorizontalNumberPickerAdapter(
-            viewModel.lengthNumbers,
-            context
-        ) { length -> viewModel.setLength(length) }
-
-        binding.adjustFragmentLengthList.adapter = horizontalLengthPickerAdapter
-        binding.adjustFragmentLengthList.layoutManager = lengthLayoutManager
-        binding.adjustFragmentAngleList.adapter = horizontalAnglePickerAdapter
-        binding.adjustFragmentAngleList.layoutManager = angleLayoutManager
     }
 
     override fun onValueChange(p0: NumberPicker?, p1: Int, p2: Int) {
@@ -417,7 +200,14 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener {
                 viewModel.getTime()
                 startClimbing()
             }
-
         }
+    }
+
+    override fun onValueChanged(oldValue: Int, newValue: Int) {
+        Log.d(TAG, "Currently the picker is at $newValue degrees. oldValue: $oldValue")
+        Log.d(TAG, "anglepicker value: ${binding.adjustFragmentAnglePicker.value}, newValue: $newValue")
+        Log.d(TAG, "lengthpicker value: ${binding.adjustFragmentLengthPicker.value}, newValue: $newValue")
+        viewModel.setAngle(binding.adjustFragmentAnglePicker.value)
+        viewModel.setLength(binding.adjustFragmentLengthPicker.value)
     }
 }
