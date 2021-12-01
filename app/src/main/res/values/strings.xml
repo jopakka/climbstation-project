@@ -151,6 +151,7 @@
     <string name="caloriesShort">%.3f kcal</string>
     <string name="angleShort">%.1f°</string>
     <string name="float_single_decimal">%.1f</string>
+    <string name="bottom_nav_create">Create</string>
 
     <!-- Camera permission -->
     <string name="camera_alert_title">Camera permission</string>
@@ -170,5 +171,12 @@
     <plurals name="speech_distance_climbed_plural">
         <item quantity="one">You have climbed %d meter</item>
         <item quantity="other">You have climbed %d meters</item>
+    </plurals>
+
+    <string name="session_list_year_month">%s %d</string>
+
+    <plurals name="session_list_session_count">
+        <item quantity="one">%d Session</item>
+        <item quantity="other">%d Sessions</item>
     </plurals>
 </resources>
