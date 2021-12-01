@@ -1,5 +1,10 @@
 package fi.climbstationsolutions.climbstation.ui.climb.adjust
 
+import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +14,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,12 +22,17 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.HorizontalNumberPickerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentAdjustBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
+import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
 
 class
-AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeListener {
+AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener {
     private lateinit var binding: FragmentAdjustBinding
+    private lateinit var broadcastManager: LocalBroadcastManager
 
     private val viewModel: AdjustViewModel by viewModels()
 
@@ -41,6 +52,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+        viewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
         binding.adjustFragmentTimepickerMinute.minValue = 0
         binding.adjustFragmentTimepickerSecond.minValue = 0
@@ -56,6 +68,65 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
         lengthLayoutManager.isSmoothScrollbarEnabled = true
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(
+                    broadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_ID_NAME)
+                )
+                registerReceiver(
+                    errorsBroadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_ERROR)
+                )
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        broadcastManager.unregisterReceiver(broadcastReceiver)
+        broadcastManager.unregisterReceiver(errorsBroadcastReceiver)
+    }
+
+    private val errorsBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val error = intent.getStringExtra(ClimbStationService.EXTRA_ERROR) ?: return
+            showAlertDialog(error)
+            viewModel.setLoading(false)
+        }
+    }
+
+    private val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val id = intent.getLongExtra("id", -1L)
+            viewModel.setLoading(false)
+            if (id != -1L) {
+                // Navigate to new fragment
+                viewModel.profileWithSteps.value?.let {
+                    val startAction =
+                        AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment()
+                    findNavController().navigate(startAction)
+                }
+            }
+        }
+    }
+
+    private fun showAlertDialog(message: String) {
+        activity?.let {
+            val builder = AlertDialog.Builder(it).apply {
+                setTitle(R.string.error)
+                setMessage(message)
+                setPositiveButton(android.R.string.ok) { d, _ ->
+                    d.cancel()
+                }
+            }
+            val dialog = builder.create()
+            dialog.show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,7 +147,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
                     val position =
                         angleLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
                     if (position in viewModel.angleNumbers.indices &&
-                        viewModel.angleNumbers[position] != viewModel.getValues()?.angle
+                        viewModel.angleNumbers[position] != viewModel.getValues()?.steps?.get(0)?.angle
                     ) {
                         when (position) {
                             0 -> {
@@ -89,59 +160,30 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
                                 viewModel.setAngle(
                                     viewModel.angleNumbers[position - 5]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected angle: ${viewModel.getValues()?.angle}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.angleNumbers.size - 2 -> {
                                 viewModel.setAngle(
                                     viewModel.angleNumbers[position - 4]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected angle: ${viewModel.getValues()?.angle}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.angleNumbers.size - 3 -> {
                                 viewModel.setAngle(
                                     viewModel.angleNumbers[position - 3]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected angle: ${viewModel.getValues()?.angle}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.angleNumbers.size - 4 -> {
                                 viewModel.setAngle(
                                     viewModel.angleNumbers[position - 2]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected angle: ${viewModel.getValues()?.angle}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.angleNumbers.size - 5 -> {
                                 viewModel.setAngle(
                                     viewModel.angleNumbers[position - 1]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected angle: ${viewModel.getValues()?.angle}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             else -> {
                                 viewModel.setAngle(
                                     viewModel.angleNumbers[position]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected angle: ${viewModel.getValues()?.angle}"
                                 )
                                 scrollToAngle(
                                     viewModel.angleNumbers[position],
@@ -166,7 +208,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
                     val position =
                         lengthLayoutManager.findFirstCompletelyVisibleItemPosition() + offset
                     if (position in viewModel.lengthNumbers.indices &&
-                        viewModel.lengthNumbers[position] != viewModel.getValues()?.length
+                        viewModel.lengthNumbers[position] != viewModel.getValues()?.steps?.get(0)?.distance
                     ) {
                         when (position) {
                             0 -> {
@@ -179,59 +221,30 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
                                 viewModel.setLength(
                                     viewModel.lengthNumbers[position - 5]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.lengthNumbers.size - 2 -> {
                                 viewModel.setLength(
                                     viewModel.lengthNumbers[position - 4]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.lengthNumbers.size - 3 -> {
                                 viewModel.setLength(
                                     viewModel.lengthNumbers[position - 3]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.lengthNumbers.size - 4 -> {
                                 viewModel.setLength(
                                     viewModel.lengthNumbers[position - 2]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             viewModel.lengthNumbers.size - 5 -> {
                                 viewModel.setLength(
                                     viewModel.lengthNumbers[position - 1]
                                 )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
-                                )
-//                                scrollToNumber(horizontalNumberPickerViewModel.numbers[position + 1], position)
                             }
                             else -> {
                                 viewModel.setLength(
                                     viewModel.lengthNumbers[position]
-                                )
-                                Log.d(
-                                    "SF1",
-                                    "selected length: ${viewModel.getValues()?.length}"
                                 )
                                 scrollToLength(
                                     viewModel.lengthNumbers[position],
@@ -243,11 +256,12 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
                 }
             }
         })
+
+        binding.adjustFragmentStartBtn.setOnClickListener(clickListener)
     }
 
     private fun initializeSelectedAngle() {
-        if (viewModel.getValues()?.angle == null) {
-            // currently manually set. Eventually will be set to the predetermined mode
+        if (viewModel.getValues()?.steps?.get(0)?.angle == null) {
             val currentAngle = viewModel.angleNumbers[1]
             viewModel.setAngle(currentAngle)
             scrollToAngle(currentAngle, viewModel.angleNumbers.indexOf(currentAngle))
@@ -255,8 +269,7 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
     }
 
     private fun initializeSelectedLength() {
-        if (viewModel.getValues()?.length == null) {
-            // currently manually set. Eventually will be set to the predetermined number
+        if (viewModel.getValues()?.steps?.get(0)?.distance == null) {
             val currentLength = viewModel.lengthNumbers[10]
             viewModel.setLength(currentLength)
             scrollToLength(currentLength, currentLength - 1)
@@ -380,10 +393,18 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
         }
     }
 
-    private fun checkServiceStatus() {
-        if (ClimbStationService.SERVICE_RUNNING) {
-            val direction = AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment()
-            findNavController().navigate(direction)
+    private fun startClimbing() {
+        val context = context ?: return
+        val activity = activity ?: return
+        val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
+        val profile = viewModel.profileWithSteps.value ?: return
+        val timer = viewModel.getTime()
+
+        Intent(context, ClimbStationService::class.java).also {
+            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
+            it.putExtra(ClimbStationService.PROFILE_EXTRA, profile)
+            it.putExtra(ClimbStationService.TIMER_EXTRA, timer)
+            activity.startForegroundService(it)
         }
     }
 
@@ -392,7 +413,9 @@ AdjustFragment : Fragment(R.layout.fragment_adjust), NumberPicker.OnValueChangeL
             binding.adjustFragmentStartBtn -> {
                 Log.d("STARTBTN", "Works")
                 viewModel.setLoading(true)
-//                startClimbing()
+                viewModel.setClimbProfileWithSteps()
+                viewModel.getTime()
+                startClimbing()
             }
 
         }

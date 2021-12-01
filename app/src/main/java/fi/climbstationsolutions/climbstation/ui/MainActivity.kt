@@ -159,10 +159,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             )
             binding.expendableList.setAdapter(adapter)
 
-            binding.expendableList.setOnGroupClickListener { expandableListView: ExpandableListView, view1: View, i: Int, l: Long ->
-                Log.d("groupclick", "1: $expandableListView, 2: $view1, 3: $i, 4: $l")
-                if (l == 0L) {
-                    Log.d("groupclick", "done")
+            binding.expendableList.setOnGroupClickListener { _, _, i: Int, _: Long ->
+                val groupKey =
+                    (listData.filterValues { it == listData[(titleList as ArrayList<String>)[i]]!! }.keys).elementAt(
+                        0
+                    )
+                if (groupKey == "Connect") {
                     getSerialNumber.launch(null)
                 }
                 false

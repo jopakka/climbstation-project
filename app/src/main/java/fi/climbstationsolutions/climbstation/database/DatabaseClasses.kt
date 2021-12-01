@@ -68,8 +68,8 @@ data class ClimbProfile(
 data class ClimbStep(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val profileId: Long,
-    val distance: Int,
-    val angle: Int
+    var distance: Int,
+    var angle: Int
 ) : Parcelable
 
 @Parcelize

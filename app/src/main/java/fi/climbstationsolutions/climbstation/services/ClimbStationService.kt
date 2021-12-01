@@ -28,6 +28,7 @@ class ClimbStationService : Service() {
         private const val NOTIFICATION_CHANNEL_GROUP_NAME = "Climbing group"
 
         const val PROFILE_EXTRA = "Profile"
+        const val TIMER_EXTRA = "Timer"
         const val EXTRA_ERROR = "ErrorMessage"
         const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
         const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
