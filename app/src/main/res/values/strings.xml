@@ -150,6 +150,7 @@
     <string name="caloriesShort">%.3f kcal</string>
     <string name="angleShort">%.1f°</string>
     <string name="float_single_decimal">%.1f</string>
+    <string name="bottom_nav_create">Create</string>
 
     <!-- Camera permission -->
     <string name="camera_alert_title">Camera permission</string>

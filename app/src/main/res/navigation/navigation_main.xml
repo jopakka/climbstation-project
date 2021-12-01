@@ -18,6 +18,16 @@
             app:destination="@id/climbOnFragment" />
     </fragment>
     <fragment
+        android:id="@+id/create"
+        android:name="fi.climbstationsolutions.climbstation.ui.create.CustomProfileFragment"
+        android:label="fragment_create"
+        tools:layout="@layout/fragment_custom_profile"
+        >
+        <action
+            android:id="@+id/action_create_to_customStepsFragment"
+            app:destination="@id/customStepsFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/statistic"
         android:name="fi.climbstationsolutions.climbstation.ui.statistics.StatisticsFragment"
         android:label="fragment_statistics"
@@ -80,6 +90,14 @@
         tools:layout="@layout/fragment_history">
         <argument
             android:name="sessionId"
+            app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/customStepsFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.create.CustomStepsFragment"
+        android:label="CustomStepsFragment" >
+        <argument
+            android:name="id"
             app:argType="long" />
     </fragment>
 </navigation>

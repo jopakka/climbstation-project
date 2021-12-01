@@ -1,8 +1,11 @@
 package fi.climbstationsolutions.climbstation.utils
 
+import android.text.Editable
+import android.widget.EditText
 import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.google.android.material.textfield.TextInputEditText
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.database.Session
@@ -209,4 +212,25 @@ fun bindSessionCount(view: TextView, sessionCount: Int?) {
     val count = sessionCount ?: 0
     val res = view.context.resources
     view.text = res.getQuantityString(R.plurals.session_list_session_count, count, count)
+}
+
+@BindingAdapter("stepsCount")
+fun bindStepsCount(view: TextView, steps: List<ClimbStep>?) {
+    if (steps != null) {
+        view.text = "${steps.count()}"
+    }
+}
+
+@BindingAdapter("stepNumber")
+fun bindStepNumber(view: TextView, step: ClimbStep) {
+    view.text = "${step.id}"
+}
+
+@BindingAdapter("stepDistance")
+fun bindStepDistance(view: TextInputEditText, step: ClimbStep?) {
+    view.text = Editable.Factory.getInstance().newEditable((step?.distance ?: 0).toString())
+}
+@BindingAdapter("stepAngle")
+fun bindStepAngle(view: TextInputEditText, step: ClimbStep?) {
+    view.text = Editable.Factory.getInstance().newEditable((step?.angle ?: 0).toString())
 }

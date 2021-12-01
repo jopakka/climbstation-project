@@ -7,6 +7,12 @@
         android:title="@string/bottom_nav_climb"/>
 
     <item
+        android:id="@+id/create"
+        android:enabled="true"
+        android:icon="@drawable/ic_edit_24"
+        android:title="@string/bottom_nav_create"/>
+
+    <item
         android:id="@+id/profile"
         android:enabled="true"
         android:icon="@drawable/ic_person_24"

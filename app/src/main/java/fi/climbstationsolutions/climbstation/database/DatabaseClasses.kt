@@ -51,6 +51,7 @@ data class ClimbProfile(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val name: String,
     val speed: Int = 10,
+    val createdAt: Date? = null,
     val isDefault: Boolean = false
 ) : Parcelable
 
