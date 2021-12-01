@@ -7,9 +7,6 @@ import androidx.fragment.app.DialogFragment
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.MonthYearDialogBinding
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Year
-import java.time.temporal.TemporalField
 import java.util.*
 
 class MonthYearDialog : DialogFragment() {

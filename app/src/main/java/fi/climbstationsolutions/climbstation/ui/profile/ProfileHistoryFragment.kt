@@ -9,8 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import fi.climbstationsolutions.climbstation.adapters.StatisticsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileHistoryBinding
 import java.time.LocalDateTime
