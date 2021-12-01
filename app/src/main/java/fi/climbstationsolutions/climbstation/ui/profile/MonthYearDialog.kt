@@ -52,11 +52,13 @@ class MonthYearDialog : DialogFragment() {
     private fun initMonthPicker() {
         val months = Calendar.getInstance(TimeZone.getDefault())
             .getDisplayNames(Calendar.MONTH, Calendar.LONG_STANDALONE, Locale.ENGLISH) ?: return
+        val currentMonth = LocalDate.now().monthValue - 1
 
         binding.pickerMonth.apply {
             minValue = 0
             maxValue = 11
             displayedValues = months.keys.toTypedArray()
+            value = currentMonth
         }
     }
 
