@@ -10,6 +10,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fi.climbstationsolutions.climbstation.adapters.StatisticsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileHistoryBinding
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.util.*
 
 class ProfileHistoryFragment : Fragment(), SessionClickListener {
     private lateinit var binding: FragmentProfileHistoryBinding
@@ -41,10 +44,24 @@ class ProfileHistoryFragment : Fragment(), SessionClickListener {
             this.adapter = adapter
         }
 
-        viewModel.allSessions.observe(viewLifecycleOwner) {
+        viewModel.filteredSessions.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.addHeaderAndSubmitList(it)
             }
         }
+
+        binding.fabFilter.setOnClickListener(filterAction)
+    }
+
+    private val filterAction = View.OnClickListener {
+        MonthYearDialog().apply {
+            setPositiveListener { m, y ->
+                val beginningOfMonth = LocalDateTime.of(y, m, 1, 0, 0)
+                val monthSelected = Date.from(beginningOfMonth.toInstant(ZoneOffset.UTC))
+                val nextMonth = Date.from(beginningOfMonth.plusMonths(1).toInstant(ZoneOffset.UTC))
+                viewModel.filterList(monthSelected, nextMonth)
+            }
+            setNegativeListener { viewModel.showAllSessions() }
+        }.show(childFragmentManager, MonthYearDialog.TAG)
     }
 }

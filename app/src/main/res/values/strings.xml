@@ -134,6 +134,12 @@
     <string name="climb_again">Climb again</string>
     <string name="finish">Finish</string>
 
+    <string name="filter_list">Filter list</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
+    <string name="filter">Filter</string>
+    <string name="clear">Clear</string>
+
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
     <!--units-->
