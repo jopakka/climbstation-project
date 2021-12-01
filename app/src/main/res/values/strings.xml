@@ -184,4 +184,5 @@
         <item quantity="one">%d Session</item>
         <item quantity="other">%d Sessions</item>
     </plurals>
+    <string name="sessions_list_empty">No Sessions</string>
 </resources>

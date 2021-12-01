@@ -1,10 +1,12 @@
 package fi.climbstationsolutions.climbstation.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.databinding.SessionListHeaderBinding
 import fi.climbstationsolutions.climbstation.databinding.StatisticsSessionHistoryItemBinding
@@ -23,14 +25,15 @@ class StatisticsAdapter(
     companion object {
         private const val ITEM_SESSION = 0
         private const val ITEM_HEADER = 1
+        private const val ITEM_LIST_EMPTY = 2
     }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addHeaderAndSubmitList(list: List<SessionWithData>?) {
         adapterScope.launch {
-            val items = when (list) {
-                null -> listOf(DataItem.HeaderItem(null))
+            val items = when (list?.isEmpty()) {
+                null, true -> listOf(DataItem.EmptyListItem)
                 else -> {
                     val headerPositions = mutableListOf<Pair<Int, YearMonth?>>()
                     var latestYearMonth: YearMonth? = null
@@ -63,6 +66,16 @@ class StatisticsAdapter(
             }
             withContext(Dispatchers.Main) {
                 submitList(items)
+            }
+        }
+    }
+
+    class EmptyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup): EmptyViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.session_list_empty, parent, false)
+                return EmptyViewHolder(view)
             }
         }
     }
@@ -105,6 +118,7 @@ class StatisticsAdapter(
         return when (viewType) {
             ITEM_HEADER -> HeaderViewHolder.from(parent)
             ITEM_SESSION -> ViewHolder.from(parent)
+            ITEM_LIST_EMPTY -> EmptyViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType $viewType")
         }
     }
@@ -129,6 +143,7 @@ class StatisticsAdapter(
         return when (getItem(position)) {
             is DataItem.HeaderItem -> ITEM_HEADER
             is DataItem.SessionItem -> ITEM_SESSION
+            is DataItem.EmptyListItem -> ITEM_LIST_EMPTY
         }
     }
 }
