@@ -19,7 +19,6 @@ class MonthYearDialog : DialogFragment() {
 
     private lateinit var binding: MonthYearDialogBinding
     private var positiveListener: ((month: Int, year: Int) -> Unit) = { _, _ -> }
-    private var negativeListener: (() -> Unit) = {}
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = MonthYearDialogBinding.inflate(layoutInflater)
@@ -31,9 +30,6 @@ class MonthYearDialog : DialogFragment() {
                 val (month, year) = getPickerValues()
                 positiveListener(month, year)
             }
-            .setNegativeButton(R.string.clear) { _, _ ->
-                negativeListener()
-            }
 
         initMonthPicker()
         initYearPicker()
@@ -43,10 +39,6 @@ class MonthYearDialog : DialogFragment() {
 
     fun setPositiveListener(listener: (Int, Int) -> Unit) {
         positiveListener = listener
-    }
-
-    fun setNegativeListener(listener: () -> Unit) {
-        negativeListener = listener
     }
 
     private fun initMonthPicker() {
