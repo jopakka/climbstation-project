@@ -51,13 +51,13 @@ class AdjustViewModel : ViewModel() {
 
     fun setMinute(minute: Int) {
         mAdjustMutableLiveData.value?.minute = minute
-        Log.d("setMinute", "value: ${mAdjustMutableLiveData.value}")
+//        Log.d("setMinute", "value: ${mAdjustMutableLiveData.value}")
 
     }
 
     fun setSecond(second: Int) {
         mAdjustMutableLiveData.value?.second = second
-        Log.d("setSecond", "value: ${mAdjustMutableLiveData.value}")
+//        Log.d("setSecond", "value: ${mAdjustMutableLiveData.value}")
     }
 
     fun setAngle(angle: Int) {
@@ -79,10 +79,10 @@ class AdjustViewModel : ViewModel() {
     }
 
     fun setClimbProfileWithSteps() {
-        val testProfile = ClimbProfile(profileId, "Manual", 10, false)
+        val testProfile = ClimbProfile(profileId, "Manual", 10)
         val testSteps = listOf(ClimbStep(1, profileId, 0, 0))
         mProfileWithSteps.value = ClimbProfileWithSteps(
-            ClimbProfile(profileId, "Manual", 10, false),
+            ClimbProfile(profileId, "Manual", 10),
             listOf(ClimbStep(1, profileId, climbLength, climbAngle))
         )
         Log.d("setClimbProfileWithSteps", "value: ${profileWithSteps.value}")

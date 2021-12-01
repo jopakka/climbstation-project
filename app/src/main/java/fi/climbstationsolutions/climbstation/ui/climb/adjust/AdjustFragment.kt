@@ -204,9 +204,9 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeLi
     }
 
     override fun onValueChanged(oldValue: Int, newValue: Int) {
-        Log.d(TAG, "Currently the picker is at $newValue degrees. oldValue: $oldValue")
-        Log.d(TAG, "anglepicker value: ${binding.adjustFragmentAnglePicker.value}, newValue: $newValue")
-        Log.d(TAG, "lengthpicker value: ${binding.adjustFragmentLengthPicker.value}, newValue: $newValue")
+//        Log.d(TAG, "Currently the picker is at $newValue degrees. oldValue: $oldValue")
+//        Log.d(TAG, "anglepicker value: ${binding.adjustFragmentAnglePicker.value}, newValue: $newValue")
+//        Log.d(TAG, "lengthpicker value: ${binding.adjustFragmentLengthPicker.value}, newValue: $newValue")
         viewModel.setAngle(binding.adjustFragmentAnglePicker.value)
         viewModel.setLength(binding.adjustFragmentLengthPicker.value)
     }
