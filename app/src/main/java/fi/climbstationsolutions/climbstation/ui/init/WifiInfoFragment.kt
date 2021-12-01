@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import fi.climbstationsolutions.climbstation.databinding.FragmentWifiInfoBinding
 
-class WifiInfoFragment : Fragment() {
+class WifiInfoFragment : Fragment(), View.OnClickListener {
     private lateinit var binding: FragmentWifiInfoBinding
 
     override fun onCreateView(
@@ -24,11 +24,25 @@ class WifiInfoFragment : Fragment() {
     }
 
     private fun initUI() {
-        binding.btnNext.setOnClickListener(nextBtnClickListener)
+        binding.apply {
+            btnNext.setOnClickListener(this@WifiInfoFragment)
+            btnSkip.setOnClickListener(this@WifiInfoFragment)
+        }
     }
 
-    private val nextBtnClickListener = View.OnClickListener {
+    override fun onClick(view: View?) {
+        when(view) {
+            binding.btnNext -> nextBtnAction()
+            binding.btnSkip -> skipBtnAction()
+        }
+    }
+
+    private fun nextBtnAction() {
         val direction = WifiInfoFragmentDirections.actionWifiInfoFragmentToSerialFragment()
         findNavController().navigate(direction)
+    }
+
+    private fun skipBtnAction() {
+        activity?.finish()
     }
 }

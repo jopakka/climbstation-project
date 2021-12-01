@@ -35,10 +35,15 @@ class ProfileHistoryFragment : Fragment(), SessionClickListener {
     }
 
     private fun initUI() {
+        val adapter = StatisticsAdapter(this@ProfileHistoryFragment)
+        binding.sessionRv.apply {
+            layoutManager = LinearLayoutManager(context)
+            this.adapter = adapter
+        }
+
         viewModel.allSessions.observe(viewLifecycleOwner) {
-            binding.sessionRv.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = StatisticsAdapter(it, this@ProfileHistoryFragment)
+            it?.let {
+                adapter.addHeaderAndSubmitList(it)
             }
         }
     }

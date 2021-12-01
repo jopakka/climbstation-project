@@ -1,45 +1,69 @@
 package fi.climbstationsolutions.climbstation.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class AdjustViewModel: ViewModel() {
-    private val _selectedLength = MutableLiveData<Int>()
-    val selectedLength: LiveData<Int> = _selectedLength
+    private val mAdjustMutableLiveData: MutableLiveData<AdjustData> = MutableLiveData(AdjustData())
 
-    private val _selectedSpeed = MutableLiveData<Int>()
-    val selectedSpeed: LiveData<Int> = _selectedSpeed
-
-    private val _selectedMode = MutableLiveData<String>()
-    val selectedMode: LiveData<String> = _selectedMode
-
-    // amount of numbers in length picker
-    private val myAmount = 100
-    val numbers: List<Int>
+    // amount of numbers in angle picker
+    private val angleAmount = 45
+    val angleNumbers: List<Int>
         get() {
             val numbersMutableList = mutableListOf(0)
-            for(i in 1..myAmount + 5) {
+            for(i in -15..angleAmount + 5) {
                 numbersMutableList.add(i)
             }
             return numbersMutableList
         }
 
-    // modes
-    val strings: List<String>
+    // amount of numbers in length picker
+    private val lengthAmount = 100
+    val lengthNumbers: List<Int>
         get() {
-            return mutableListOf("", "TO NEXT DIFFICULTY", "SLOW DOWN", "testi1", "testi2", "testi3", "testi4", "")
+            val numbersMutableList = mutableListOf(0)
+            for(i in 1..lengthAmount + 5) {
+                numbersMutableList.add(i)
+            }
+            return numbersMutableList
         }
 
-    fun setSelectedLength(length: Int) {
-        _selectedLength.value = length
+    private val mLoading: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().also { it.value = false }
+    }
+    val loading: LiveData<Boolean>
+        get() = mLoading
+
+    fun setMinute(minute: Int) {
+        mAdjustMutableLiveData.value?.minute = minute
+        Log.d("setMinute","value: ${mAdjustMutableLiveData.value}")
     }
 
-    fun setSelectedSpeed(speed: Int) {
-        _selectedSpeed.value = speed
+    fun setSecond(second: Int) {
+        mAdjustMutableLiveData.value?.second = second
+        Log.d("setSecond","value: ${mAdjustMutableLiveData.value}")
     }
 
-    fun setSelectedMode(mode: String) {
-        _selectedMode.value = mode
+    fun setAngle(angle: Int) {
+        mAdjustMutableLiveData.value?.angle = angle
+        Log.d("setAngle","value: ${mAdjustMutableLiveData.value}")
+    }
+
+    fun setLength(length: Int) {
+        mAdjustMutableLiveData.value?.length = length
+        Log.d("setLength","value: ${mAdjustMutableLiveData.value}")
+    }
+
+    fun getValues(): AdjustData? {
+        Log.d("AdjustData", "data: ${mAdjustMutableLiveData.value}")
+        return mAdjustMutableLiveData.value
+    }
+
+    fun setLoading(value: Boolean) {
+        mLoading.value = value
     }
 }
+
+data class AdjustData(var minute: Int = 0, var second: Int = 0, var angle: Int = 0, var length: Int = 0)

@@ -7,6 +7,13 @@
     <!--Menu strings-->
     <string name="child_item_title">%s: %.1f kg</string>
 
+    <!--Info popup strings-->
+    <string name="info_popup_title_climb">How to climb</string>
+    <string name="info_popup_title_connect">How to connect to ClimbStation</string>
+
+    <string name="info_popup_instructions_climb">First you must navigate to the \"Climb\" view from the bottom navigation menu. You will then see a screen with multiple items.\n\nOn the top left there is a graph which previews all the changes in the ClimbStation machine angles. On the top right you can see a preview of the difficulty level and its components. under the components there is a \"start\" button which starts the ClimbStation machine.\n\nMake sure you are connected to the ClimbStation machine first before starting the session.\n\nAt the bottom middle of the screen you can select difficulty profiles.\n\nIf you swipe left there is also another screen in which you can set a static angle, distance and timer for the climbing session in case you do not want the ClimbStation machine to change the angle during your session.\n\nThat is all, happy climbing!</string>
+    <string name="info_popup_instructions_connect">In this menu there is a \"Connect\" section. Click it and it will take you to a view in which the device connection is handled.\n\nFirst make sure you have an internet connection. Then you either input the device serial number in the input field and click next or scan the QR code on the side of the ClimbStation machine.\n\nOnce you are connected, you will be taken to the \"Climb\" view in which you can start your climbing session. </string>
+
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
     <string name="bottom_nav_statistics">Statistics</string>
@@ -45,6 +52,8 @@
     <string name="fragment_adjust_speed">Speed: %d m / min</string>
     <string name="fragment_adjust_mode">Mode:</string>
     <string name="fragment_adjust_start">Start</string>
+    <string name="fragment_adjust_duration">Duration</string>
+    <string name="fragment_adjust_angle">Angle / °</string>
 
     <!--statistics_session_history_item strings-->
     <string name="stat_sess_history_item_date">5.11.2021</string>
@@ -91,10 +100,12 @@
     <string name="warning">Warning</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="skip">Skip</string>
 
     <string name="error_while_connecting">We have troubles to connect ClimbStation. Please try again.</string>
     <string name="error_no_profile_selected">No profile selected.</string>
     <string name="error_while_getting_info">We have troubles to get info from ClimbStation.</string>
+    <string name="error_no_serial">No serial number set</string>
 
     <string name="prompt_quit_session">Do you want to quit the session?</string>
 
@@ -140,4 +151,31 @@
     <string name="angleShort">%.1f°</string>
     <string name="float_single_decimal">%.1f</string>
     <string name="bottom_nav_create">Create</string>
+
+    <!-- Camera permission -->
+    <string name="camera_alert_title">Camera permission</string>
+    <string name="camera_alert_message">App needs camera permission only for reading QR-codes from ClimbStation.\n\nDo you want to grant permission?</string>
+    <string name="camera_alert_positive">Grant permission</string>
+    <string name="camera_permission_not_granted">Camera permissions not granted</string>
+
+    <!-- QR fragment -->
+    <string name="read_qr">Read QR-code from ClimbStation</string>
+    <string name="click_here_to_enter_serial">Or click here to enter serial number here</string>
+
+    <!-- Speech -->
+    <plurals name="speech_time_climbed_plural">
+        <item quantity="one">You have climbed %d minute</item>
+        <item quantity="other">You have climbed %d minutes</item>
+    </plurals>
+    <plurals name="speech_distance_climbed_plural">
+        <item quantity="one">You have climbed %d meter</item>
+        <item quantity="other">You have climbed %d meters</item>
+    </plurals>
+
+    <string name="session_list_year_month">%s %d</string>
+
+    <plurals name="session_list_session_count">
+        <item quantity="one">%d Session</item>
+        <item quantity="other">%d Sessions</item>
+    </plurals>
 </resources>

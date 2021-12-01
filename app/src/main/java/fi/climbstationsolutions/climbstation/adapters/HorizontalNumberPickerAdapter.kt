@@ -42,7 +42,7 @@ class HorizontalNumberPickerAdapter(
             holder.numberLabel.text = number
             if (position == myPosition) {
                 holder.numberLabel.textSize = textSize
-                holder.numberLabel.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                holder.numberLabel.setTextColor(ContextCompat.getColor(context!!, R.color.black))
                 holder.numberLabel.paintFlags = Paint.UNDERLINE_TEXT_FLAG
             } else {
                 holder.numberLabel.textSize = 20F

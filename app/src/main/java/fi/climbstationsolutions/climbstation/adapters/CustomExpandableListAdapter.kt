@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 class CustomExpandableListAdapter(
     private var context: Context,
     private var listTitles: List<String>,
-    private var listItems: HashMap<String, List<String>>,
+    private var listItems: LinkedHashMap<String, List<String>>,
     private var viewModel: MainActivityViewModel
 ) : BaseExpandableListAdapter() {
 
@@ -67,18 +68,27 @@ class CustomExpandableListAdapter(
         txtTitle.text = title
 
         // icon
-        if (title == "Settings") {
-            txtTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_24, 0, 0, 0)
-        } else if (title == "Info") {
-            txtTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_info_24, 0, 0, 0)
+        when (title) {
+            "Settings" -> {
+                txtTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_24, 0, 0, 0)
+            }
+            "Info" -> {
+                txtTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_info_24, 0, 0, 0)
+            }
+            "Connect" -> {
+                txtTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_24, 0, 0, 0)
+            }
         }
 
         txtTitle.compoundDrawablePadding = 20
 
         // sets arrow icon up or down depending on if it is selected
-        txtArrow.isSelected = p1
-        txtSelectedColor.isSelected = p1
-
+        if (title != "Connect") {
+            txtArrow.isSelected = p1
+            txtSelectedColor.isSelected = p1
+        } else {
+            txtArrow.background = null
+        }
 
         return convertView
     }
@@ -107,15 +117,15 @@ class CustomExpandableListAdapter(
                     context.getString(R.string.child_item_title, title, viewModel.getWeight())
             }
         }
-        if(title == "How to connect to ClimbStation machine") {
+        if (title == "How to connect to ClimbStation machine") {
             txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_24, 0, 0, 0)
             txtChild.compoundDrawablePadding = 20
         }
-        if(title == "How to climb") {
+        if (title == "How to climb") {
             txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_stairs_24, 0, 0, 0)
             txtChild.compoundDrawablePadding = 20
         }
-        if(title == "How to create custom climbing profiles") {
+        if (title == "How to create custom climbing profiles") {
             txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_24, 0, 0, 0)
             txtChild.compoundDrawablePadding = 20
         }

@@ -27,6 +27,7 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
+import fi.climbstationsolutions.climbstation.ui.init.WifiInfoFragmentDirections
 
 class ClimbFragment : Fragment(), CellClickListener {
     private lateinit var binding: FragmentClimbBinding
@@ -52,18 +53,25 @@ class ClimbFragment : Fragment(), CellClickListener {
         setProfilesToRecyclerView()
 
         binding.startBtn.setOnClickListener(clickListener)
-
-        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_ID_NAME))
-            registerReceiver(errorsBroadcastReceiver, IntentFilter(BROADCAST_ERROR))
-        }
+        binding.adjustBtn.setOnClickListener(clickListener)
 
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(broadcastReceiver, IntentFilter(BROADCAST_ID_NAME))
+                registerReceiver(errorsBroadcastReceiver, IntentFilter(BROADCAST_ERROR))
+            }
+        }
+    }
+
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        broadcastManager.unregisterReceiver(broadcastReceiver)
+        broadcastManager.unregisterReceiver(errorsBroadcastReceiver)
     }
 
     override fun onCellClickListener(profile: ClimbProfileWithSteps) {
@@ -120,8 +128,6 @@ class ClimbFragment : Fragment(), CellClickListener {
                 viewModel.profileWithSteps.value?.let {
                     val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
                     findNavController().navigate(startAction)
-                } ?: run {
-                    showAlertDialog(getString(R.string.error_no_profile_selected))
                 }
             }
         }
@@ -147,10 +153,14 @@ class ClimbFragment : Fragment(), CellClickListener {
                 Log.d("STARTBTN", "Works")
                 viewModel.setLoading(true)
                 startClimbing()
-//                val profile = viewModel.profileWithSteps.value ?: return@OnClickListener
-//                val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(profile)
-//                this.findNavController().navigate(startAction)
+            }
+            binding.adjustBtn -> {
+                Log.d("adjustnav","here")
+                val direction = ClimbFragmentDirections.actionClimbToAdjustFragment()
+                findNavController().navigate(direction)
             }
         }
     }
+
+
 }

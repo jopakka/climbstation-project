@@ -2,6 +2,7 @@ package fi.climbstationsolutions.climbstation.utils
 
 import android.text.Editable
 import android.widget.EditText
+import android.util.Log
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputEditText
@@ -10,13 +11,14 @@ import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.database.Session
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import java.text.DateFormat
+import java.time.YearMonth
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 
 @BindingAdapter("stepsToDistance")
 fun bindStepsToDistance(view: TextView, steps: List<ClimbStep>?) {
-    val distance = if(steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
+    val distance = if (steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
     else 0
 
     view.text = view.context.getString(R.string.distanceLong, distance.toFloat())
@@ -24,7 +26,7 @@ fun bindStepsToDistance(view: TextView, steps: List<ClimbStep>?) {
 
 @BindingAdapter("stepsToDistanceShort")
 fun bindStepsToDistanceShort(view: TextView, steps: List<ClimbStep>?) {
-    val distance = if(steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
+    val distance = if (steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
     else 0
 
     view.text = view.resources.getString(R.string.distanceShort, distance.toFloat())
@@ -59,7 +61,7 @@ fun bindSessionTime(view: TextView, sessionWithData: SessionWithData?) {
 
     val endTime = sessionWithData.session.endedAt?.time ?: 0L
     val startTime = sessionWithData.session.createdAt.time
-    val time = if(endTime == 0L) 0L else endTime - startTime
+    val time = if (endTime == 0L) 0L else endTime - startTime
 
     bindSessionTimeLong(view, time)
 }
@@ -161,6 +163,55 @@ fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
 @BindingAdapter("allTimeDistance")
 fun bindAllTimeDistance(view: TextView, distance: Int) {
     view.text = view.context.getString(R.string.distanceShort, distance.div(1000f))
+}
+
+@BindingAdapter("infoPopupTitle")
+fun bindInfoPopupTitle(view: TextView, title: String) {
+    when (title) {
+        "How to climb" -> {
+            view.text = view.context.getString(R.string.info_popup_title_climb)
+        }
+        "How to connect to ClimbStation machine" -> {
+            view.text = view.context.getString(R.string.info_popup_title_connect)
+        }
+        else -> {
+            view.text = "error"
+            Log.d("bindInfoPopupTitle", "no such title: $title")
+        }
+    }
+}
+
+@BindingAdapter("infoPopupInstructions")
+fun bindInfoPopupInstructions(view: TextView, title: String) {
+    when (title) {
+        "How to climb" -> {
+            view.text = view.context.getString(R.string.info_popup_instructions_climb)
+        }
+        "How to connect to ClimbStation machine" -> {
+            view.text = view.context.getString(R.string.info_popup_instructions_connect)
+        }
+        else -> {
+            view.text = "error"
+            Log.d("bindInfoPopupTitle", "no such instructions: $title")
+        }
+    }
+}
+
+@BindingAdapter("yearMonth")
+fun bindYearMonth(view: TextView, yearMonth: YearMonth?) {
+    view.text = if (yearMonth == null) ""
+    else view.context.getString(
+        R.string.session_list_year_month,
+        yearMonth.month.name,
+        yearMonth.year
+    )
+}
+
+@BindingAdapter("sessionCount")
+fun bindSessionCount(view: TextView, sessionCount: Int?) {
+    val count = sessionCount ?: 0
+    val res = view.context.resources
+    view.text = res.getQuantityString(R.plurals.session_list_session_count, count, count)
 }
 
 @BindingAdapter("stepsCount")

@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavDeepLinkBuilder
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.*
@@ -13,6 +14,8 @@ import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
 import fi.climbstationsolutions.climbstation.ui.MainActivity
 import kotlinx.coroutines.*
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.floor
 
 class ClimbStationService : Service() {
     companion object {
@@ -42,8 +45,15 @@ class ClimbStationService : Service() {
 
     private var nm: NotificationManager? = null
     private var currentStep = 0
+    private var startTime: Long = 0L
 
-    private lateinit var climbStationSerialNo: String
+    private var tts: Tts? = null
+    private var nextDistanceToNotify = 0
+    private var nextTimeToNotify = 0
+    private val distanceNotifyRange = 5 // by meters
+    private val timeNotifyRange = 5 // by minutes
+
+    private var climbStationSerialNo: String? = null
     private lateinit var clientKey: String
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var profileWithSteps: ClimbProfileWithSteps
@@ -57,8 +67,9 @@ class ClimbStationService : Service() {
             stopService()
         } else {
             intent?.extras?.let {
+                initTts()
                 initService(
-                    it.getString(CLIMB_STATION_SERIAL_EXTRA, ""),
+                    it.getString(CLIMB_STATION_SERIAL_EXTRA, null),
                     it.getParcelable(PROFILE_EXTRA)
                 )
                 createNotification()
@@ -89,12 +100,21 @@ class ClimbStationService : Service() {
         sessionDao = AppDatabase.get(this).sessionDao()
     }
 
+    private fun initTts() {
+        tts = Tts(this)
+        nextDistanceToNotify = distanceNotifyRange
+        nextTimeToNotify = timeNotifyRange
+    }
+
     /**
      * Stops session and log user out of ClimbStation machine. Sets [SERVICE_RUNNING] to false
      */
     private fun stopService() {
         SERVICE_RUNNING = false
-        stopClimbStationAndLogout()
+        tts?.destroy()
+        climbStationSerialNo?.let {
+            stopClimbStationAndLogout(it)
+        }
         stopForeground(true)
         stopSelf()
     }
@@ -124,13 +144,11 @@ class ClimbStationService : Service() {
      * Creates notification for service
      */
     private fun createNotification() {
-        val notificationIntent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent = NavDeepLinkBuilder(this)
+            .setComponentName(MainActivity::class.java)
+            .setGraph(R.navigation.navigation_main)
+            .setDestination(R.id.climbOnFragment)
+            .createPendingIntent()
 
         if (nm == null)
             nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -170,9 +188,13 @@ class ClimbStationService : Service() {
 
         serviceScope.launch {
             try {
+                val serialNo = climbStationSerialNo
+                if (serialNo == null || serialNo == "") {
+                    throw NoSuchFieldException(getString(R.string.error_no_serial))
+                }
                 // Get clientKey from ClimbStation
                 clientKey = ClimbStationRepository.login(
-                    climbStationSerialNo,
+                    serialNo,
                     BuildConfig.USERNAME,
                     BuildConfig.PASSWORD
                 )
@@ -186,11 +208,10 @@ class ClimbStationService : Service() {
                         profileWithSteps.profile.id
                     )
                 )
-//                Log.d(TAG, "sessionID: $sessionID")
 
-                val started = operateClimbStation("start")
+                val started = operateClimbStation("start", serialNo)
                 if (started)
-                    getInfoFromClimbStation(sessionID ?: throw Exception("No sessionID"))
+                    getInfoFromClimbStation(sessionID ?: throw Exception("No sessionID"), serialNo)
                 else
                     throw Exception("ClimbStation not started")
 
@@ -201,7 +222,7 @@ class ClimbStationService : Service() {
                 sessionID?.let {
                     sessionDao.deleteSession(it)
                 }
-                broadcastError(getString(R.string.error_while_connecting))
+                broadcastError(e.localizedMessage ?: getString(R.string.error_while_connecting))
                 stopService()
             }
         }
@@ -210,11 +231,11 @@ class ClimbStationService : Service() {
     /**
      * Stops ClimbStation and log user out of it.
      */
-    private fun stopClimbStationAndLogout() {
+    private fun stopClimbStationAndLogout(serialNo: String) {
         serviceScope.launch {
             try {
-                operateClimbStation("stop")
-                logoutFromClimbStation()
+                operateClimbStation("stop", serialNo)
+                logoutFromClimbStation(serialNo)
             } catch (e: Exception) {
                 Log.e(TAG, "StopClimbStationAndLogout error: ${e.localizedMessage}")
             }
@@ -224,9 +245,9 @@ class ClimbStationService : Service() {
     /**
      * Operates ClimbStation. Only accepted [operation]s are "start" and "stop".
      */
-    private suspend fun operateClimbStation(operation: String): Boolean {
+    private suspend fun operateClimbStation(operation: String, serialNo: String): Boolean {
         return try {
-            ClimbStationRepository.operation(climbStationSerialNo, clientKey, operation)
+            ClimbStationRepository.operation(serialNo, clientKey, operation)
         } catch (e: Exception) {
             throw e
         }
@@ -235,14 +256,15 @@ class ClimbStationService : Service() {
     /**
      * Loop of getting info from ClimbStation and [broadcastId]
      */
-    private suspend fun getInfoFromClimbStation(sessionID: Long) {
+    private suspend fun getInfoFromClimbStation(sessionID: Long, serialNo: String) {
         try {
-            setAngle(profileWithSteps.steps[0].angle)
+            startTime = Calendar.getInstance().timeInMillis
+            setAngle(profileWithSteps.steps[0].angle, serialNo)
             broadcastId(sessionID)
 
             while (SERVICE_RUNNING) {
                 CLIMBING_ACTIVE = true
-                getInfo(sessionID)
+                getInfo(sessionID, serialNo)
                 delay(GET_INFO_DELAY)
             }
             CLIMBING_ACTIVE = false
@@ -257,23 +279,25 @@ class ClimbStationService : Service() {
     /**
      * Get info from CLimbStation. Save that data to database.
      */
-    private suspend fun getInfo(sessionID: Long) {
+    private suspend fun getInfo(sessionID: Long, serialNo: String) {
         // Get ClimbStation info
-        val info = ClimbStationRepository.deviceInfo(climbStationSerialNo, clientKey)
-//        Log.d(TAG, "Info: $info")
+        val info = ClimbStationRepository.deviceInfo(serialNo, clientKey)
 
         val speed = info.speedNow.toInt()
         val angle = info.angleNow.toInt()
         val length = info.length.toInt()
 
-        // Save info to database
-        val dID = sessionDao.insertData(Data(0, sessionID, speed, angle, length))
-//        Log.d(TAG, "dataID: $dID")
+        distanceNotifier(length)
+        val time = Calendar.getInstance().timeInMillis
+        timeNotifier(time - startTime)
 
-        adjustToProfile(info.length.toInt())
+        // Save info to database
+        sessionDao.insertData(Data(0, sessionID, speed, angle, length))
+
+        adjustToProfile(info.length.toInt(), serialNo)
     }
 
-    private suspend fun adjustToProfile(distance: Int) {
+    private suspend fun adjustToProfile(distance: Int, serialNo: String) {
         var step = profileWithSteps.steps[currentStep]
         val stepsSoFar = profileWithSteps.steps.filterIndexed { index, _ -> index < currentStep }
         val distanceSoFar = stepsSoFar.sumOf { it.distance }
@@ -284,30 +308,28 @@ class ClimbStationService : Service() {
             if (currentStep > profileWithSteps.steps.size) {
                 // TODO("What should it do after program")
                 // Now it just set wall to 0 angle and stops service
-                setAngle(0)
-                setSpeed(0)
+                setAngle(0, serialNo)
+                setSpeed(0, serialNo)
                 stopService()
                 return
             }
 
             step = profileWithSteps.steps[currentStep]
-            setAngle(step.angle)
+            setAngle(step.angle, serialNo)
         }
     }
 
-    private suspend fun setAngle(angle: Int) {
+    private suspend fun setAngle(angle: Int, serialNo: String) {
         try {
-            val response = ClimbStationRepository.setAngle(climbStationSerialNo, clientKey, angle)
-//            Log.d(TAG, "SetAngle: $response")
+            ClimbStationRepository.setAngle(serialNo, clientKey, angle)
         } catch (e: Exception) {
             Log.e(TAG, "SetAngle error: ${e.localizedMessage}")
         }
     }
 
-    private suspend fun setSpeed(speed: Int) {
+    private suspend fun setSpeed(speed: Int, serialNo: String) {
         try {
-            val response = ClimbStationRepository.setSpeed(climbStationSerialNo, clientKey, speed)
-//            Log.d(TAG, "SetSpeed: $response")
+            ClimbStationRepository.setSpeed(serialNo, clientKey, speed)
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
         }
@@ -316,11 +338,10 @@ class ClimbStationService : Service() {
     /**
      * Log user out of ClimbStation
      */
-    private fun logoutFromClimbStation() {
+    private fun logoutFromClimbStation(serialNo: String) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val logout = ClimbStationRepository.logout(climbStationSerialNo, clientKey)
-//                Log.d(TAG, "Logout: $logout")
+                ClimbStationRepository.logout(serialNo, clientKey)
             } catch (e: Exception) {
                 Log.e(TAG, "Logout error: ${e.localizedMessage}")
             }
@@ -330,6 +351,32 @@ class ClimbStationService : Service() {
     private suspend fun setEndTimeForSession(sessionID: Long?) {
         sessionID?.let {
             sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
+        }
+    }
+
+    private fun distanceNotifier(distance: Int) {
+        val meters = floor(distance / 1000f).toInt()
+        if (meters >= nextDistanceToNotify) {
+            nextDistanceToNotify = meters + distanceNotifyRange
+            tts?.speak(
+                resources.getQuantityString(
+                    R.plurals.speech_time_climbed_plural,
+                    meters, meters
+                )
+            )
+        }
+    }
+
+    private fun timeNotifier(time: Long) {
+        val minutes = (TimeUnit.MILLISECONDS.toMinutes(time) % TimeUnit.HOURS.toMinutes(1)).toInt()
+        if (minutes >= nextTimeToNotify) {
+            nextTimeToNotify = (minutes + timeNotifyRange)
+            tts?.speak(
+                resources.getQuantityString(
+                    R.plurals.speech_time_climbed_plural,
+                    minutes, minutes
+                )
+            )
         }
     }
 }
