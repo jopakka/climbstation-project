@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import fi.climbstationsolutions.climbstation.adapters.StatisticsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileHistoryBinding
 import java.time.LocalDateTime
@@ -26,6 +27,7 @@ class ProfileHistoryFragment : Fragment(), SessionClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileHistoryBinding.inflate(layoutInflater)
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initUI()
 
@@ -39,18 +41,30 @@ class ProfileHistoryFragment : Fragment(), SessionClickListener {
 
     private fun initUI() {
         val adapter = StatisticsAdapter(this@ProfileHistoryFragment)
+        val layoutManager = LinearLayoutManager(context)
         binding.sessionRv.apply {
-            layoutManager = LinearLayoutManager(context)
+            this.layoutManager = layoutManager
             this.adapter = adapter
+        }
+
+        val smoothScroller = object : LinearSmoothScroller(context) {
+            override fun getVerticalSnapPreference(): Int {
+                return SNAP_TO_START
+            }
         }
 
         viewModel.filteredSessions.observe(viewLifecycleOwner) {
             it?.let {
                 adapter.addHeaderAndSubmitList(it)
+                smoothScroller.targetPosition = 0
+                layoutManager.startSmoothScroll(smoothScroller)
             }
         }
 
-        binding.fabFilter.setOnClickListener(filterAction)
+        binding.apply {
+            fabFilter.setOnClickListener(filterAction)
+            chipFilter.setOnCloseIconClickListener { clearFilter() }
+        }
     }
 
     private val filterAction = View.OnClickListener {
@@ -60,8 +74,19 @@ class ProfileHistoryFragment : Fragment(), SessionClickListener {
                 val monthSelected = Date.from(beginningOfMonth.toInstant(ZoneOffset.UTC))
                 val nextMonth = Date.from(beginningOfMonth.plusMonths(1).toInstant(ZoneOffset.UTC))
                 viewModel.filterList(monthSelected, nextMonth)
+                binding.apply {
+                    filterMonth = beginningOfMonth.month.name
+                    filterYear = y
+                }
             }
-            setNegativeListener { viewModel.showAllSessions() }
         }.show(childFragmentManager, MonthYearDialog.TAG)
+    }
+
+    private fun clearFilter() {
+        viewModel.showAllSessions()
+        binding.apply {
+            filterMonth = null
+            filterYear = null
+        }
     }
 }

@@ -7,9 +7,6 @@ import androidx.fragment.app.DialogFragment
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.MonthYearDialogBinding
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Year
-import java.time.temporal.TemporalField
 import java.util.*
 
 class MonthYearDialog : DialogFragment() {
@@ -19,7 +16,6 @@ class MonthYearDialog : DialogFragment() {
 
     private lateinit var binding: MonthYearDialogBinding
     private var positiveListener: ((month: Int, year: Int) -> Unit) = { _, _ -> }
-    private var negativeListener: (() -> Unit) = {}
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = MonthYearDialogBinding.inflate(layoutInflater)
@@ -30,9 +26,6 @@ class MonthYearDialog : DialogFragment() {
             .setPositiveButton(R.string.filter) { _, _ ->
                 val (month, year) = getPickerValues()
                 positiveListener(month, year)
-            }
-            .setNegativeButton(R.string.clear) { _, _ ->
-                negativeListener()
             }
 
         initMonthPicker()
@@ -45,18 +38,16 @@ class MonthYearDialog : DialogFragment() {
         positiveListener = listener
     }
 
-    fun setNegativeListener(listener: () -> Unit) {
-        negativeListener = listener
-    }
-
     private fun initMonthPicker() {
         val months = Calendar.getInstance(TimeZone.getDefault())
             .getDisplayNames(Calendar.MONTH, Calendar.LONG_STANDALONE, Locale.ENGLISH) ?: return
+        val currentMonth = LocalDate.now().monthValue - 1
 
         binding.pickerMonth.apply {
             minValue = 0
             maxValue = 11
             displayedValues = months.keys.toTypedArray()
+            value = currentMonth
         }
     }
 

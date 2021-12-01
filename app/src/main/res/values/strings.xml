@@ -140,6 +140,7 @@
     <string name="year">Year</string>
     <string name="filter">Filter</string>
     <string name="clear">Clear</string>
+    <string name="filter_month_year">%s %d</string>
 
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
@@ -185,4 +186,5 @@
         <item quantity="one">%d Session</item>
         <item quantity="other">%d Sessions</item>
     </plurals>
+    <string name="sessions_list_empty">No Sessions</string>
 </resources>
