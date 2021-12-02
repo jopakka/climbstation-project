@@ -134,8 +134,10 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         }
 
         val id = viewModel.sessionWithData.value?.session?.id
-        val action =
-            id?.let { ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(it) }
+        val profile = viewModel.profileWithSteps.value
+        val action = if(id != null && profile != null) {
+            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id, profile)
+        } else null
         if (action != null) {
             this.findNavController().navigate(action)
         }

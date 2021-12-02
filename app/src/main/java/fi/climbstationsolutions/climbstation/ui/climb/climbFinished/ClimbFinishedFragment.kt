@@ -37,6 +37,7 @@ class ClimbFinishedFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.getSessionId(args.sessionId)
+        viewModel.setProfile(args.climbProfile)
 
         setUI()
         setBroadcastManager()
