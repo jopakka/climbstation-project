@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
@@ -26,6 +27,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         ClimbOnViewModelFactory(requireContext())
     }
     private lateinit var broadcastManager: LocalBroadcastManager
+    private val args: ClimbOnFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +49,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             stopClimbing()
         }
 
+        viewModel.setProfile(args.profileWithSteps)
         viewModel.startTimer()
 
         setBackButtonAction()

@@ -15,7 +15,6 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
 
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
-    private val profileDao = database.profileDao()
 
     val sessionWithData = sessionDao.getLastSessionWithData()
 
@@ -25,14 +24,8 @@ class ClimbOnViewModel(context: Context) : ViewModel() {
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
 
-    init {
-        mProfileWithSteps.addSource(sessionWithData) {
-            viewModelScope.launch(Dispatchers.IO) {
-                if(it != null) {
-                    mProfileWithSteps.postValue(profileDao.getProfileWithSteps(it.session.profileId))
-                }
-            }
-        }
+    fun setProfile(profileWithSteps: ClimbProfileWithSteps) {
+        mProfileWithSteps.value = profileWithSteps
     }
 
     private val mTimer: MutableLiveData<Long> by lazy {
