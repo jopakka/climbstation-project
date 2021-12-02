@@ -33,6 +33,7 @@ class ClimbStationService : Service() {
         const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
         const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
         const val BROADCAST_ID_NAME = "ClimbStationService_ID"
+        const val BROADCAST_FINISHED = "ClimbStationService_Finished"
         const val BROADCAST_ERROR = "ClimbStationService_Error"
         const val BROADCAST_ERROR_CLIMB = "ClimbStationService_Error_Climb"
         var SERVICE_RUNNING = false
@@ -47,6 +48,7 @@ class ClimbStationService : Service() {
     private var nm: NotificationManager? = null
     private var currentStep = 0
     private var startTime: Long = 0L
+    private var timer: Int? = null // by milliseconds
 
     private var tts: Tts? = null
     private var nextDistanceToNotify = 0
@@ -71,7 +73,8 @@ class ClimbStationService : Service() {
                 initTts()
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, null),
-                    it.getParcelable(PROFILE_EXTRA)
+                    it.getParcelable(PROFILE_EXTRA),
+                    it.getInt(TIMER_EXTRA, -1)
                 )
                 createNotification()
                 beginSession()
@@ -94,10 +97,13 @@ class ClimbStationService : Service() {
      * @param serialNo ClimbStations serial number
      * @param prof Wanted climbing profile
      */
-    private fun initService(serialNo: String, prof: ClimbProfileWithSteps?) {
+    private fun initService(serialNo: String, prof: ClimbProfileWithSteps?, timer: Int) {
         SERVICE_RUNNING = true
         climbStationSerialNo = serialNo
         profileWithSteps = prof ?: throw NullPointerException("No profile passed to extras")
+        if(timer != -1) {
+            this.timer = timer
+        }
         sessionDao = AppDatabase.get(this).sessionDao()
     }
 
@@ -126,6 +132,12 @@ class ClimbStationService : Service() {
     private fun broadcastId(id: Long) {
         val intent = Intent(BROADCAST_ID_NAME)
         intent.putExtra("id", id)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    private fun broadcastFinished() {
+        val intent = Intent(BROADCAST_FINISHED)
+        intent.putExtra("finished", true)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -218,6 +230,7 @@ class ClimbStationService : Service() {
 
                 // Set endedAt time to session when it's finished
                 setEndTimeForSession(sessionID)
+                broadcastFinished()
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
                 sessionID?.let {
@@ -263,7 +276,7 @@ class ClimbStationService : Service() {
             setAngle(profileWithSteps.steps[0].angle, serialNo)
             broadcastId(sessionID)
 
-            while (SERVICE_RUNNING) {
+            while (SERVICE_RUNNING && !checkTimeFinished(Calendar.getInstance().timeInMillis - startTime)) {
                 CLIMBING_ACTIVE = true
                 getInfo(sessionID, serialNo)
                 delay(GET_INFO_DELAY)
@@ -379,5 +392,11 @@ class ClimbStationService : Service() {
                 )
             )
         }
+    }
+
+    private fun checkTimeFinished(elapsed: Long): Boolean {
+        return if(timer != null) {
+            elapsed >= timer!!
+        } else false
     }
 }
