@@ -81,7 +81,7 @@ class ClimbFragment : Fragment(), CellClickListener {
     private fun setProfilesToRecyclerView() {
         viewModel.allProfiles.observe(viewLifecycleOwner) {
             val adapter = binding.difficultyRv.adapter as DifficultyRecyclerviewAdapter
-            adapter.addProfiles(it)
+//            adapter.addProfiles(it)
 
             val prof = it.firstOrNull()
             if (prof != null) {
@@ -126,7 +126,7 @@ class ClimbFragment : Fragment(), CellClickListener {
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment()
+                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(it)
                     findNavController().navigate(startAction)
                 }
             }
