@@ -26,7 +26,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
-    private lateinit var broadcastManager: LocalBroadcastManager
+    private var broadcastManager: LocalBroadcastManager? = null
     private val args: ClimbOnFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -38,12 +38,14 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(
-                errorBroadcastReceiver,
-                IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
-            )
-            registerReceiver(finishedBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_FINISHED))
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(
+                    errorBroadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
+                )
+                registerReceiver(finishedBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_FINISHED))
+            }
         }
 
         binding.btnStop.setOnClickListener {
@@ -61,7 +63,11 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).apply {
+        unregisterBroadcastManager()
+    }
+
+    private fun unregisterBroadcastManager() {
+        broadcastManager?.apply {
             unregisterReceiver(errorBroadcastReceiver)
             unregisterReceiver(finishedBroadcastReceiver)
         }
@@ -138,14 +144,10 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         val id = viewModel.sessionWithData.value?.session?.id
         val profile = viewModel.profileWithSteps.value
         val action = if(id != null && profile != null) {
-            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id, profile)
+            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id, profile, args.timer)
         } else null
         if (action != null) {
             this.findNavController().navigate(action)
-            LocalBroadcastManager.getInstance(requireContext()).apply {
-                unregisterReceiver(errorBroadcastReceiver)
-                unregisterReceiver(finishedBroadcastReceiver)
-            }
         }
     }
 

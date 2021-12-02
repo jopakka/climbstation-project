@@ -25,7 +25,7 @@ class ClimbFinishedFragment : Fragment() {
     private lateinit var binding: FragmentClimbFinishedBinding
     private val viewModel: ClimbFinishedViewModel by viewModels()
     private val args: ClimbFinishedFragmentArgs by navArgs()
-    private lateinit var broadcastManager: LocalBroadcastManager
+    private var broadcastManager: LocalBroadcastManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,12 +49,14 @@ class ClimbFinishedFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        broadcastManager?.unregisterReceiver(broadcastReceiver)
     }
 
     private fun setBroadcastManager() {
-        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
+            }
         }
     }
 
@@ -84,27 +86,32 @@ class ClimbFinishedFragment : Fragment() {
         val context = context ?: return
         val activity = activity ?: return
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
-        val profile = viewModel.profileWithSteps.value ?: return
-        Log.d("profile","profile: $profile")
 
-        Intent(context, ClimbStationService::class.java).also {
-            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
-            it.putExtra(
-                ClimbStationService.PROFILE_EXTRA,
-                profile
-            )
-            activity.startForegroundService(it)
+        viewModel.profileWithSteps.observe(viewLifecycleOwner) { profile ->
+            if(profile == null) return@observe
+
+            Intent(context, ClimbStationService::class.java).also {
+                it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
+                it.putExtra(
+                    ClimbStationService.PROFILE_EXTRA,
+                    profile
+                )
+
+                val timer = args.timer
+                if(timer != -1) {
+                    it.putExtra(ClimbStationService.TIMER_EXTRA, timer)
+                }
+                activity.startForegroundService(it)
+            }
         }
     }
 
     private val climbAgainAction = View.OnClickListener {
-        Log.d("climbagain","here")
         viewModel.setLoading(true)
         startClimbing()
     }
 
     private val finishAction = View.OnClickListener {
-        val direction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimb()
-        findNavController().navigate(direction)
+        findNavController().navigateUp()
     }
 }

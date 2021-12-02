@@ -22,16 +22,20 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
 import me.angrybyte.numberpicker.listener.OnValueChangeListener
 
-class
-AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
+class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
     private lateinit var binding: FragmentAdjustBinding
     private lateinit var broadcastManager: LocalBroadcastManager
     private val TAG: String = AdjustFragment::class.java.simpleName
 
     private val viewModel: AdjustViewModel by viewModels()
+    private val climbViewModel: ClimbViewModel by viewModels(
+        ownerProducer = { requireParentFragment() }
+    )
 
     private var angleListWidth: Int? = null
     private var lengthListWidth: Int? = null
@@ -44,7 +48,7 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeLi
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-        viewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
+        climbViewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
         binding.adjustFragmentTimepickerMinute.minValue = 0
         binding.adjustFragmentTimepickerSecond.minValue = 0
@@ -80,19 +84,18 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeLi
         override fun onReceive(context: Context, intent: Intent) {
             val error = intent.getStringExtra(ClimbStationService.EXTRA_ERROR) ?: return
             showAlertDialog(error)
-            viewModel.setLoading(false)
+            climbViewModel.setLoading(false)
         }
     }
 
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getLongExtra("id", -1L)
-            viewModel.setLoading(false)
+            climbViewModel.setLoading(false)
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction =
-                        AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment(it)
+                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(it, viewModel.getTime() ?: -1)
                     findNavController().navigate(startAction)
                 }
             }
@@ -201,7 +204,7 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeLi
         when (it) {
             binding.adjustFragmentStartBtn -> {
                 Log.d("STARTBTN", "Works")
-                viewModel.setLoading(true)
+                climbViewModel.setLoading(true)
                 viewModel.setClimbProfileWithSteps()
                 viewModel.getTime()
                 startClimbing()
