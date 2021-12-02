@@ -74,11 +74,11 @@
             app:layout_constraintStart_toEndOf="@+id/btnClimbAgain" />
 
         <include
-            tools:visibility="gone"
             android:id="@+id/include"
             layout="@layout/loading_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:isVisible="@{viewModel.loading}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
