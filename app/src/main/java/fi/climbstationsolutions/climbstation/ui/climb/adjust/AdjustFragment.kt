@@ -95,7 +95,7 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(it)
+                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(it, viewModel.getTime() ?: -1)
                     findNavController().navigate(startAction)
                 }
             }

@@ -31,7 +31,7 @@ import fi.climbstationsolutions.climbstation.ui.init.WifiInfoFragmentDirections
 
 class ClimbProfilesFragment : Fragment(), CellClickListener {
     private lateinit var binding: FragmentClimbProfilesBinding
-    private lateinit var broadcastManager: LocalBroadcastManager
+    private var broadcastManager: LocalBroadcastManager? = null
 
     private val viewModel: ClimbViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
@@ -71,8 +71,8 @@ class ClimbProfilesFragment : Fragment(), CellClickListener {
 
     override fun onPause() {
         super.onPause()
-        broadcastManager.unregisterReceiver(broadcastReceiver)
-        broadcastManager.unregisterReceiver(errorsBroadcastReceiver)
+        broadcastManager?.unregisterReceiver(broadcastReceiver)
+        broadcastManager?.unregisterReceiver(errorsBroadcastReceiver)
     }
 
     override fun onCellClickListener(profile: ClimbProfileWithSteps) {
