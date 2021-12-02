@@ -92,7 +92,7 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeLi
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
                     val startAction =
-                        AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment()
+                        AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment(it)
                     findNavController().navigate(startAction)
                 }
             }

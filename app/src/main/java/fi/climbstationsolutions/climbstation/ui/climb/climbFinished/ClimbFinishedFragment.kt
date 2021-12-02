@@ -72,7 +72,7 @@ class ClimbFinishedFragment : Fragment() {
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimbOnFragment()
+                    val startAction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimbOnFragment(it)
                     findNavController().navigate(startAction)
                 }
             }
