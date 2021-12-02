@@ -132,9 +132,9 @@ fun bindSessionAverageSpeed(view: TextView, sessionWithData: SessionWithData?) {
 
     val seconds = result / 1000F
 
-    val distance = sessionWithData.data.last().totalDistance / 1000F
+    val distance = sessionWithData.data.lastOrNull()?.totalDistance?.div(1000F)
 
-    val avrgSpeed = (distance / seconds) * 60
+    val avrgSpeed = (distance?.div(seconds))?.times(60)
 
     view.text = view.context.getString(R.string.float_single_decimal, avrgSpeed)
 }
