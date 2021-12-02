@@ -1,8 +1,8 @@
 package fi.climbstationsolutions.climbstation.utils
 
 import android.text.Editable
-import android.widget.EditText
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputEditText
@@ -230,7 +230,22 @@ fun bindStepNumber(view: TextView, step: ClimbStep) {
 fun bindStepDistance(view: TextInputEditText, step: ClimbStep?) {
     view.text = Editable.Factory.getInstance().newEditable((step?.distance ?: 0).toString())
 }
+
 @BindingAdapter("stepAngle")
 fun bindStepAngle(view: TextInputEditText, step: ClimbStep?) {
     view.text = Editable.Factory.getInstance().newEditable((step?.angle ?: 0).toString())
+}
+
+@BindingAdapter("filterMonth", "filterYear")
+fun bindFilterMonthYear(view: TextView, month: String?, year: Int?) {
+    view.visibility = if (month == null || year == null) View.GONE
+    else {
+        val monthCapitalize = month.lowercase(Locale.getDefault()).replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault())
+            else it.toString()
+        }
+        view.text = view.context.getString(R.string.filter_month_year, monthCapitalize, year)
+        View.VISIBLE
+    }
+
 }

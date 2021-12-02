@@ -45,7 +45,7 @@ interface SessionWithDataDao {
     // SessionWithData
     @Transaction
     @Query("SELECT * FROM Session ORDER BY CASE WHEN :desc = 1 THEN createdAt END DESC, CASE WHEN :desc = 0 THEN createdAt END ASC")
-    fun getAllSessionsWithData(desc: Boolean = true): LiveData<List<SessionWithData>>
+    suspend fun getAllSessionsWithData(desc: Boolean = true): List<SessionWithData>
 
     @Query("SELECT SUM(max) FROM (SELECT MAX(totalDistance) AS max FROM Data GROUP BY sessionId)")
     fun getAllTimeDistance(): LiveData<Int>
@@ -58,4 +58,7 @@ interface SessionWithDataDao {
 
     @Query("SELECT SUM(total) FROM (SELECT (endedAt - createdAt) AS total FROM Session WHERE DATETIME(session.createdAt / 1000, 'unixepoch') >= DATETIME('now', '-7 days'))")
     fun getSevenDayDuration(): LiveData<Long>
+
+    @Query("SELECT * FROM Session WHERE createdAt >= :start AND createdAt < :end ORDER BY CASE WHEN :desc = 1 THEN createdAt END DESC, CASE WHEN :desc = 0 THEN createdAt END ASC")
+    suspend fun getSessionWithDataBetween(start: Date, end: Date, desc: Boolean = true): List<SessionWithData>
 }

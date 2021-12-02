@@ -10,7 +10,11 @@ sealed class DataItem {
         override val id = data.session.id
     }
 
-    class HeaderItem(val yearMonth: YearMonth?, var sessionCount: Int = 0) : DataItem() {
+    data class HeaderItem(val yearMonth: YearMonth?, var sessionCount: Int = 0) : DataItem() {
+        override val id = Long.MIN_VALUE
+    }
+
+    object EmptyListItem : DataItem() {
         override val id = Long.MIN_VALUE
     }
 }
