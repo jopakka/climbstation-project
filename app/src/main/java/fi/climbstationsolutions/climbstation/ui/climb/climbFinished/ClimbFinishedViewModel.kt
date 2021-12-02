@@ -32,6 +32,10 @@ class ClimbFinishedViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
+    fun setProfile(profile: ClimbProfileWithSteps) {
+        mProfileWithSteps.value = profile
+    }
+
     private val mLoading: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().also { it.value = false }
     }
@@ -40,13 +44,5 @@ class ClimbFinishedViewModel(application: Application) : AndroidViewModel(applic
 
     fun setLoading(value: Boolean) {
         mLoading.value = value
-    }
-
-    init {
-        mProfileWithSteps.addSource(sessionWithData) {
-            viewModelScope.launch(Dispatchers.IO) {
-                mProfileWithSteps.postValue(profileDao.getProfileWithSteps(it.session.profileId))
-            }
-        }
     }
 }

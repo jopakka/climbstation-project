@@ -73,6 +73,9 @@
             android:id="@+id/action_climbFinishedFragment_to_climbOnFragment"
             app:destination="@id/climbOnFragment"
             app:popUpTo="@id/climb" />
+        <argument
+            android:name="climbProfile"
+            app:argType="fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps" />
     </fragment>
     <fragment
         android:id="@+id/profile"
