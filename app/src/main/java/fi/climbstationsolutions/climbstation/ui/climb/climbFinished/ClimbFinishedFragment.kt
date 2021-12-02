@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +84,7 @@ class ClimbFinishedFragment : Fragment() {
         val activity = activity ?: return
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
         val profile = viewModel.profileWithSteps.value ?: return
+        Log.d("profile","profile: $profile")
 
         Intent(context, ClimbStationService::class.java).also {
             it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
@@ -95,6 +97,7 @@ class ClimbFinishedFragment : Fragment() {
     }
 
     private val climbAgainAction = View.OnClickListener {
+        Log.d("climbagain","here")
         viewModel.setLoading(true)
         startClimbing()
     }

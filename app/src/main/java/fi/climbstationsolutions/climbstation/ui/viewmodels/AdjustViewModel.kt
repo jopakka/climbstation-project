@@ -79,8 +79,8 @@ class AdjustViewModel : ViewModel() {
     }
 
     fun setClimbProfileWithSteps() {
-        val testProfile = ClimbProfile(profileId, "Manual", 10)
-        val testSteps = listOf(ClimbStep(1, profileId, 0, 0))
+//        val testProfile = ClimbProfile(profileId, "Manual", 10)
+//        val testSteps = listOf(ClimbStep(1, profileId, 0, 0))
         mProfileWithSteps.value = ClimbProfileWithSteps(
             ClimbProfile(profileId, "Manual", 10),
             listOf(ClimbStep(1, profileId, climbLength, climbAngle))
