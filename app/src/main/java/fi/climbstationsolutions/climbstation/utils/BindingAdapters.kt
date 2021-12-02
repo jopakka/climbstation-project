@@ -174,6 +174,9 @@ fun bindInfoPopupTitle(view: TextView, title: String) {
         "How to connect to ClimbStation machine" -> {
             view.text = view.context.getString(R.string.info_popup_title_connect)
         }
+        "How to create custom climbing profiles" -> {
+            view.text = view.context.getString(R.string.info_popup_title_create_custom_climb_profile)
+        }
         else -> {
             view.text = "error"
             Log.d("bindInfoPopupTitle", "no such title: $title")
@@ -189,6 +192,9 @@ fun bindInfoPopupInstructions(view: TextView, title: String) {
         }
         "How to connect to ClimbStation machine" -> {
             view.text = view.context.getString(R.string.info_popup_instructions_connect)
+        }
+        "How to create custom climbing profiles" -> {
+            view.text = view.context.getString(R.string.info_popup_instructions_create_custom_profile)
         }
         else -> {
             view.text = "error"

@@ -81,7 +81,7 @@ class ClimbFragment : Fragment(), CellClickListener {
     private fun setProfilesToRecyclerView() {
         viewModel.allProfiles.observe(viewLifecycleOwner) {
             val adapter = binding.difficultyRv.adapter as DifficultyRecyclerviewAdapter
-//            adapter.addProfiles(it)
+            adapter.addProfiles(it)
 
             val prof = it.firstOrNull()
             if (prof != null) {
@@ -137,7 +137,7 @@ class ClimbFragment : Fragment(), CellClickListener {
         activity?.let {
             val builder = AlertDialog.Builder(it).apply {
                 setTitle(R.string.error)
-                setMessage(message)
+                setMessage(message + getString(R.string.error_connect))
                 setPositiveButton(android.R.string.ok) { d, _ ->
                     d.cancel()
                 }
