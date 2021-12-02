@@ -11,9 +11,6 @@
         android:label="ClimbFragment"
         tools:layout="@layout/fragment_climb">
         <action
-            android:id="@+id/action_climb_to_adjustFragment"
-            app:destination="@id/adjustFragment" />
-        <action
             android:id="@+id/action_climb_to_climbOnFragment"
             app:destination="@id/climbOnFragment" />
     </fragment>
@@ -37,15 +34,6 @@
         android:name="fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/adjustFragment"
-        android:name="fi.climbstationsolutions.climbstation.ui.climb.adjust.AdjustFragment"
-        android:label="fragment_adjust"
-        tools:layout="@layout/fragment_adjust" >
-        <action
-            android:id="@+id/action_adjustFragment_to_climbOnFragment"
-            app:destination="@id/climbOnFragment" />
-    </fragment>
     <fragment
         android:id="@+id/climbOnFragment"
         android:name="fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnFragment"

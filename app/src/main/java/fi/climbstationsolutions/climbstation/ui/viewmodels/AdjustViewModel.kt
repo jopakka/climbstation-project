@@ -43,12 +43,6 @@ class AdjustViewModel : ViewModel() {
             return numbersMutableList
         }
 
-    private val mLoading: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().also { it.value = false }
-    }
-    val loading: LiveData<Boolean>
-        get() = mLoading
-
     fun setMinute(minute: Int) {
         mAdjustMutableLiveData.value?.minute = minute
 //        Log.d("setMinute", "value: ${mAdjustMutableLiveData.value}")
@@ -72,10 +66,6 @@ class AdjustViewModel : ViewModel() {
 
     fun getClimbProfileWithSteps(): ClimbProfileWithSteps? {
         return profileWithSteps.value
-    }
-
-    fun setLoading(value: Boolean) {
-        mLoading.value = value
     }
 
     fun setClimbProfileWithSteps() {
