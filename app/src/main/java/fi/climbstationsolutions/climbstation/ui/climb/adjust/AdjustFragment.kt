@@ -92,7 +92,7 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeLi
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
                     val startAction =
-                        AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment()
+                        AdjustFragmentDirections.actionAdjustFragmentToClimbOnFragment(it)
                     findNavController().navigate(startAction)
                 }
             }
@@ -180,14 +180,20 @@ AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeLi
         val context = context ?: return
         val activity = activity ?: return
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
-        val profile = viewModel.profileWithSteps.value ?: return
-        val timer = viewModel.getTime()
+//        val profile = viewModel.profileWithSteps.value ?: return
 
-        Intent(context, ClimbStationService::class.java).also {
-            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
-            it.putExtra(ClimbStationService.PROFILE_EXTRA, profile)
-            it.putExtra(ClimbStationService.TIMER_EXTRA, timer)
-            activity.startForegroundService(it)
+
+        viewModel.profileWithSteps.observe(viewLifecycleOwner) {profile ->
+            if(profile == null) return@observe
+            val timer = viewModel.getTime()
+            Log.d("profileadjust","profile: $profile")
+
+            Intent(context, ClimbStationService::class.java).also {
+                it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
+                it.putExtra(ClimbStationService.PROFILE_EXTRA, profile)
+                it.putExtra(ClimbStationService.TIMER_EXTRA, timer)
+                activity.startForegroundService(it)
+            }
         }
     }
 
