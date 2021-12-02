@@ -3,23 +3,49 @@ package fi.climbstationsolutions.climbstation.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
+import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.databinding.SingleDifficultyItemBinding
 import fi.climbstationsolutions.climbstation.ui.climb.CellClickListener
+import fi.climbstationsolutions.climbstation.ui.climb.DifficultyProfileDataItem
+import fi.climbstationsolutions.climbstation.ui.profile.DataItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.YearMonth
+import java.util.*
 
 
 class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClickListener) :
-    RecyclerView.Adapter<DifficultyRecyclerviewAdapter.ViewHolder>() {
+    ListAdapter<DifficultyProfileDataItem, RecyclerView.ViewHolder>(DifficultyProfileDataItemCallBack()) {
+    companion object {
+        private const val ITEM_DIFFICULTY = 0
+        private const val ITEM_HEADER = 1
+    }
 
-    private val mProfileList: MutableList<ClimbProfileWithSteps> = mutableListOf()
     private var selectedPosition = 0
 
-    fun addProfiles(list: List<ClimbProfileWithSteps>) {
-        val startPos = mProfileList.size
-        mProfileList.addAll(list)
-        notifyItemRangeInserted(startPos, list.size)
+    private val adapterScope = CoroutineScope(Dispatchers.Default)
+
+    fun addHeaderAndSubmitList(list: List<ClimbProfileWithSteps>?) {
+        adapterScope.launch {
+            val items = when (list?.isNullOrEmpty()) {
+                null, true -> emptyList()
+                else -> {
+                    list.mapIndexed { i, profileWithSteps ->
+                        DifficultyProfileDataItem.DifficultyItem(profileWithSteps)
+                    }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(items)
+            }
+        }
     }
 
     class ViewHolder(private val binding: SingleDifficultyItemBinding) :
@@ -51,20 +77,9 @@ class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClickList
         return ViewHolder.from(parent)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = mProfileList[position]
-        holder.bind(item)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when(holder) {
 
-        if (selectedPosition == position) {
-            holder.selectedBg()
-        } else {
-            holder.defaultBg()
-        }
-
-        holder.itemView.setOnClickListener {
-            Log.d("DRVA","holder.itemview clicked")
-            cellClickListener.onCellClickListener(item)
-            singleSelection(position)
         }
     }
 
@@ -74,5 +89,15 @@ class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClickList
         notifyItemChanged(selectedPosition)
         selectedPosition = pos
         notifyItemChanged(pos)
+    }
+}
+
+class DifficultyProfileDataItemCallBack : DiffUtil.ItemCallback<DifficultyProfileDataItem>() {
+    override fun areItemsTheSame(oldItem: DifficultyProfileDataItem, newItem: DifficultyProfileDataItem): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: DifficultyProfileDataItem, newItem: DifficultyProfileDataItem): Boolean {
+        return oldItem == newItem
     }
 }
