@@ -78,6 +78,12 @@ jobs:
           profile: Nexus 6
           script: ./gradlew connectedCheck --stacktrace
           
+      - name: Upload test reports
+        uses: actions/upload-artifact@v2
+        with: 
+          name: test-results
+          path: app/build/reports/
+          
   apk:
     name: Generate APK
     needs: [build, unit_tests, instrumentation_tests]
