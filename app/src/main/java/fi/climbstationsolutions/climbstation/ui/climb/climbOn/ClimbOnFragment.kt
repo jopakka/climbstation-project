@@ -43,6 +43,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
                 errorBroadcastReceiver,
                 IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
             )
+            registerReceiver(finishedBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_FINISHED))
         }
 
         binding.btnStop.setOnClickListener {
@@ -60,8 +61,10 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext())
-            .unregisterReceiver(errorBroadcastReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).apply {
+            unregisterReceiver(errorBroadcastReceiver)
+            unregisterReceiver(finishedBroadcastReceiver)
+        }
     }
 
     private fun setupPager() {
@@ -125,6 +128,27 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         }
     }
 
+    private val finishedBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            navigateToFinished()
+        }
+    }
+
+    private fun navigateToFinished() {
+        val id = viewModel.sessionWithData.value?.session?.id
+        val profile = viewModel.profileWithSteps.value
+        val action = if(id != null && profile != null) {
+            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id, profile)
+        } else null
+        if (action != null) {
+            this.findNavController().navigate(action)
+            LocalBroadcastManager.getInstance(requireContext()).apply {
+                unregisterReceiver(errorBroadcastReceiver)
+                unregisterReceiver(finishedBroadcastReceiver)
+            }
+        }
+    }
+
     private fun stopClimbing() {
         val context = context ?: return
         val activity = activity ?: return
@@ -136,13 +160,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             }
         }
 
-        val id = viewModel.sessionWithData.value?.session?.id
-        val profile = viewModel.profileWithSteps.value
-        val action = if(id != null && profile != null) {
-            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id, profile)
-        } else null
-        if (action != null) {
-            this.findNavController().navigate(action)
-        }
+        navigateToFinished()
     }
 }
