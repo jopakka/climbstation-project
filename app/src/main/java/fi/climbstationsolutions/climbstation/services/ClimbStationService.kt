@@ -317,7 +317,7 @@ class ClimbStationService : Service() {
         val stepsSoFar = profileWithSteps.steps.filterIndexed { index, _ -> index < currentStep }
         val distanceSoFar = stepsSoFar.sumOf { it.distance }
 
-        if (distanceSoFar + step.distance >= distance) {
+        if (distance != 0 && distanceSoFar + step.distance >= distance) {
             currentStep += 1
 
             if (currentStep > profileWithSteps.steps.size) {
@@ -397,9 +397,9 @@ class ClimbStationService : Service() {
     }
 
     private fun checkTimeFinished(elapsed: Long): Boolean {
-        val t = timer ?: return false
-        return if(t > 0) {
-            elapsed >= timer!!
+        val t = timer
+        return if(t != null && t > 0) {
+            elapsed >= t
         } else false
     }
 }

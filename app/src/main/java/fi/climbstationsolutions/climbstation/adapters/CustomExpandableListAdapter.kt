@@ -64,7 +64,7 @@ class CustomExpandableListAdapter(
         val txtTitle: TextView = convertView!!.findViewById(R.id.listTitle)
         val txtArrow: ImageView = convertView!!.findViewById(R.id.ivGroupIndicator)
         val txtSelectedColor: ImageView = convertView!!.findViewById(R.id.ivGroupColorIndicator)
-        txtTitle.setTypeface(null, Typeface.BOLD)
+//        txtTitle.setTypeface(null, Typeface.BOLD)
         txtTitle.text = title
 
         // icon

@@ -9,4 +9,5 @@
     android:textColor="@color/white"
     android:textSize="20sp"
     android:textStyle="bold"
+    android:theme="@style/CustomFont"
     tools:textColor="@color/black" />

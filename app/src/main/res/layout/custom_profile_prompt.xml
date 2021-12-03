@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:theme="@style/CustomFont">
 
     <TextView
         android:id="@+id/custom_profile_dialog_title"
@@ -22,7 +23,7 @@
     <EditText
         android:id="@+id/custom_profile_dialog_editText"
         android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/content_description_weight_input"
         android:hint="Add name to your custom profile"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -15,7 +15,8 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/rv_background_layout"
         android:foreground="?attr/selectableItemBackground"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:theme="@style/CustomFont">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/historyProfileDateContainer"

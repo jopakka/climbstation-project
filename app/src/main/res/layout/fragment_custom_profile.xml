@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="viewModel"
             type="fi.climbstationsolutions.climbstation.ui.create.CustomProfileViewModel" />
@@ -11,7 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fragment_background_color">
+        android:background="@color/fragment_background_color"
+        android:theme="@style/CustomFont">
 
         <TextView
             android:id="@+id/textview2"
@@ -54,9 +57,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Add your first climbing profile"
-                android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="22sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
