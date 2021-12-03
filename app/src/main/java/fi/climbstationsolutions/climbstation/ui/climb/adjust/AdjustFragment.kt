@@ -50,10 +50,10 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
         binding.viewModel = viewModel
         climbViewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
-        binding.adjustFragmentTimepickerMinute.minValue = 0
-        binding.adjustFragmentTimepickerSecond.minValue = 0
-        binding.adjustFragmentTimepickerMinute.maxValue = 60
-        binding.adjustFragmentTimepickerSecond.maxValue = 60
+//        binding.adjustFragmentTimepickerMinute.minValue = 0
+//        binding.adjustFragmentTimepickerSecond.minValue = 0
+//        binding.adjustFragmentTimepickerMinute.maxValue = 60
+//        binding.adjustFragmentTimepickerSecond.maxValue = 60
 
         return binding.root
     }
@@ -145,19 +145,21 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
     }
 
     private fun initializeVariables() {
-        binding.adjustFragmentTimepickerMinute.minValue = 0
-        binding.adjustFragmentTimepickerSecond.minValue = 0
-        binding.adjustFragmentTimepickerMinute.maxValue = 60
-        binding.adjustFragmentTimepickerSecond.maxValue = 60
+        binding.adjustFragmentTimepickerMinute.apply {
+            minValue = 0
+            maxValue = 60
+            setFormatter { i: Int -> String.format("%02d", i) }
+            setOnValueChangedListener(this@AdjustFragment)
+            value = viewModel.timer.value?.minute ?: 0
+        }
 
-        binding.adjustFragmentTimepickerMinute.setFormatter { i: Int ->
-            String.format("%02d", i)
+        binding.adjustFragmentTimepickerSecond.apply {
+            minValue = 0
+            maxValue = 59
+            setFormatter { i: Int -> String.format("%02d", i) }
+            setOnValueChangedListener(this@AdjustFragment)
+            value = viewModel.timer.value?.second ?: 0
         }
-        binding.adjustFragmentTimepickerSecond.setFormatter { i: Int ->
-            String.format("%02d", i)
-        }
-        binding.adjustFragmentTimepickerMinute.setOnValueChangedListener(this)
-        binding.adjustFragmentTimepickerSecond.setOnValueChangedListener(this)
 
         angleListWidth =
             context?.resources?.getDimensionPixelSize(R.dimen.string_list_layout_width)

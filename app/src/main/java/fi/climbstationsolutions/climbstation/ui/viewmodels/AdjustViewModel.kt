@@ -11,6 +11,8 @@ import fi.climbstationsolutions.climbstation.database.ClimbStep
 class AdjustViewModel : ViewModel() {
     private val profileId = 1000L
     private val mAdjustMutableLiveData: MutableLiveData<Timer> = MutableLiveData(Timer())
+    val timer: LiveData<Timer>
+        get() = mAdjustMutableLiveData
 
     private val mProfileWithSteps: MutableLiveData<ClimbProfileWithSteps> =
         MutableLiveData<ClimbProfileWithSteps>()
