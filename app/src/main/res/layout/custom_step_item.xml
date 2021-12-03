@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rv_background_layout"
+        android:theme="@style/CustomFont"
         android:clickable="true">
 
         <androidx.constraintlayout.widget.Guideline

@@ -15,6 +15,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/rv_background_layout"
         android:foreground="?attr/selectableItemBackground"
+        android:theme="@style/CustomFont"
         android:padding="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
