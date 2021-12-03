@@ -6,5 +6,7 @@
 
         <!--Put your ip here for testing purposes, remember to remove after use-->
         <domain includeSubdomains="true">192.168.100.18</domain>
+        <domain includeSubdomains="true">192.168.100.22</domain>
+        <domain includeSubdomains="true">192.168.1.13</domain>
     </domain-config>
 </network-security-config>

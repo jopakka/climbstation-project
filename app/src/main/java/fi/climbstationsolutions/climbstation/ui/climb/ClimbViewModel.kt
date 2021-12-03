@@ -26,7 +26,7 @@ class ClimbViewModel(application: Application): AndroidViewModel(application) {
         get() = mLoading
 
     fun setProfile(profile: ClimbProfileWithSteps) {
-        mProfileWithSteps.value = profile
+        mProfileWithSteps.postValue(profile)
     }
 
     fun setLoading(value: Boolean) {
