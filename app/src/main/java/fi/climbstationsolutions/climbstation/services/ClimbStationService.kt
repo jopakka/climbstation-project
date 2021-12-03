@@ -54,7 +54,7 @@ class ClimbStationService : Service() {
     private var nextDistanceToNotify = 0
     private var nextTimeToNotify = 0
     private val distanceNotifyRange = 5 // by meters
-    private val timeNotifyRange = 5 // by minutes
+    private val timeNotifyRange = 1 // by minutes
 
     private var climbStationSerialNo: String? = null
     private lateinit var clientKey: String
@@ -237,6 +237,7 @@ class ClimbStationService : Service() {
                     sessionDao.deleteSession(it)
                 }
                 broadcastError(e.localizedMessage ?: getString(R.string.error_while_connecting))
+            } finally {
                 stopService()
             }
         }
@@ -316,7 +317,7 @@ class ClimbStationService : Service() {
         val stepsSoFar = profileWithSteps.steps.filterIndexed { index, _ -> index < currentStep }
         val distanceSoFar = stepsSoFar.sumOf { it.distance }
 
-        if (distanceSoFar + step.distance >= distance) {
+        if (distance != 0 && distanceSoFar + step.distance >= distance) {
             currentStep += 1
 
             if (currentStep > profileWithSteps.steps.size) {
@@ -324,6 +325,7 @@ class ClimbStationService : Service() {
                 // Now it just set wall to 0 angle and stops service
                 setAngle(0, serialNo)
                 setSpeed(0, serialNo)
+                broadcastFinished()
                 stopService()
                 return
             }
@@ -395,8 +397,9 @@ class ClimbStationService : Service() {
     }
 
     private fun checkTimeFinished(elapsed: Long): Boolean {
-        return if(timer != null) {
-            elapsed >= timer!!
+        val t = timer
+        return if(t != null && t > 0) {
+            elapsed >= t
         } else false
     }
 }

@@ -147,8 +147,9 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
      * returns those coordinates
      */
     private fun calculateAndDrawLine(p: Path, s: ClimbStep): Pair<Float, Float> {
-        val a = (cos(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
-        val b = (sin(Math.toRadians(-s.angle.toDouble())) * s.distance).toFloat()
+        val dist = if(s.distance == 0) 1 else s.distance
+        val a = (cos(Math.toRadians(-s.angle.toDouble())) * dist).toFloat()
+        val b = (sin(Math.toRadians(-s.angle.toDouble())) * dist).toFloat()
         p.rLineTo(b, a)
         return Pair(a, b)
     }

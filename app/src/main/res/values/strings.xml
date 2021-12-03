@@ -119,6 +119,8 @@
     <string name="wall">Wall</string>
     <string name="stats">Stats</string>
     <string name="history">History</string>
+    <string name="manual">Manual</string>
+    <string name="profiles">Profiles</string>
 
     <string name="past_7_days">Past 7 days</string>
     <string name="all_time">All time</string>
@@ -143,6 +145,10 @@
     <string name="filter_month_year">%s %d</string>
 
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
+
+    <string name="length">Length</string>
+    <string name="speed">Speed</string>
+    <string name="angle">Angle</string>
 
     <!--units-->
     <string name="speedLong">%d m/min</string>

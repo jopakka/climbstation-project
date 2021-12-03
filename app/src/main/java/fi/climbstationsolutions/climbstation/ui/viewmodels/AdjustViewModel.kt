@@ -11,6 +11,8 @@ import fi.climbstationsolutions.climbstation.database.ClimbStep
 class AdjustViewModel : ViewModel() {
     private val profileId = 1000L
     private val mAdjustMutableLiveData: MutableLiveData<Timer> = MutableLiveData(Timer())
+    val timer: LiveData<Timer>
+        get() = mAdjustMutableLiveData
 
     private val mProfileWithSteps: MutableLiveData<ClimbProfileWithSteps> =
         MutableLiveData<ClimbProfileWithSteps>()
@@ -18,8 +20,10 @@ class AdjustViewModel : ViewModel() {
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
 
-    private var climbAngle = 0
-    private var climbLength = 0
+    var climbAngle = 0
+        private set
+    var climbLength = 0
+        private set
 
     // amount of numbers in angle picker
     private val angleAmount = 45
@@ -42,12 +46,6 @@ class AdjustViewModel : ViewModel() {
             }
             return numbersMutableList
         }
-
-    private val mLoading: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().also { it.value = false }
-    }
-    val loading: LiveData<Boolean>
-        get() = mLoading
 
     fun setMinute(minute: Int) {
         mAdjustMutableLiveData.value?.minute = minute
@@ -72,10 +70,6 @@ class AdjustViewModel : ViewModel() {
 
     fun getClimbProfileWithSteps(): ClimbProfileWithSteps? {
         return profileWithSteps.value
-    }
-
-    fun setLoading(value: Boolean) {
-        mLoading.value = value
     }
 
     fun setClimbProfileWithSteps() {
