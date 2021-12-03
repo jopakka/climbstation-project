@@ -80,13 +80,12 @@ class ClimbProfilesFragment : Fragment(), CellClickListener {
     }
 
     private fun setProfilesToRecyclerView() {
-        viewModel.allProfiles.observe(viewLifecycleOwner) {
+        viewModel.allProfiles.observe(viewLifecycleOwner) { list ->
             val adapter = binding.difficultyRv.adapter as DifficultyRecyclerviewAdapter
-            adapter.addProfiles(it)
-
-            val prof = it.firstOrNull()
-            if (prof != null) {
-                setProfile(prof)
+            adapter.addHeaderAndSubmitList(list) { id ->
+                val prof = list.firstOrNull { it.profile.id == id }
+                if(prof != null)
+                    setProfile(prof)
             }
         }
     }

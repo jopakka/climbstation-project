@@ -150,6 +150,10 @@
     <string name="speed">Speed</string>
     <string name="angle">Angle</string>
 
+    <string name="profiles_default">Default</string>
+    <string name="profiles_custom">Custom</string>
+    <string name="difficulty_profiles">Difficulty profiles</string>
+
     <!--units-->
     <string name="speedLong">%d m/min</string>
     <string name="distanceLong">%.1f meters</string>
