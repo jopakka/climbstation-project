@@ -50,11 +50,6 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
         binding.viewModel = viewModel
         climbViewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
-        binding.adjustFragmentTimepickerMinute.minValue = 0
-        binding.adjustFragmentTimepickerSecond.minValue = 0
-        binding.adjustFragmentTimepickerMinute.maxValue = 60
-        binding.adjustFragmentTimepickerSecond.maxValue = 60
-
         return binding.root
     }
 
@@ -119,9 +114,9 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initializeVariables()
         initializeSelectedLength()
         initializeSelectedAngle()
+        initializeVariables()
 
         Log.d("SF1", "selected values: ${viewModel.getClimbProfileWithSteps()}")
 
@@ -145,19 +140,26 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
     }
 
     private fun initializeVariables() {
-        binding.adjustFragmentTimepickerMinute.minValue = 0
-        binding.adjustFragmentTimepickerSecond.minValue = 0
-        binding.adjustFragmentTimepickerMinute.maxValue = 60
-        binding.adjustFragmentTimepickerSecond.maxValue = 60
+        binding.adjustFragmentTimepickerMinute.apply {
+            minValue = 0
+            maxValue = 60
+            setFormatter { i: Int -> String.format("%02d", i) }
+            setOnValueChangedListener(this@AdjustFragment)
+            value = viewModel.timer.value?.minute ?: 0
+        }
 
-        binding.adjustFragmentTimepickerMinute.setFormatter { i: Int ->
-            String.format("%02d", i)
+        binding.adjustFragmentTimepickerSecond.apply {
+            minValue = 0
+            maxValue = 59
+            setFormatter { i: Int -> String.format("%02d", i) }
+            setOnValueChangedListener(this@AdjustFragment)
+            value = viewModel.timer.value?.second ?: 0
         }
-        binding.adjustFragmentTimepickerSecond.setFormatter { i: Int ->
-            String.format("%02d", i)
+
+        binding.apply {
+            adjustFragmentAnglePicker.value = viewModel?.climbAngle ?: 0
+            adjustFragmentLengthPicker.value = viewModel?.climbLength ?: 0
         }
-        binding.adjustFragmentTimepickerMinute.setOnValueChangedListener(this)
-        binding.adjustFragmentTimepickerSecond.setOnValueChangedListener(this)
 
         angleListWidth =
             context?.resources?.getDimensionPixelSize(R.dimen.string_list_layout_width)
@@ -183,8 +185,6 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
         val context = context ?: return
         val activity = activity ?: return
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
-//        val profile = viewModel.profileWithSteps.value ?: return
-
 
         viewModel.profileWithSteps.observe(viewLifecycleOwner) {profile ->
             if(profile == null) return@observe
@@ -213,9 +213,6 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
     }
 
     override fun onValueChanged(oldValue: Int, newValue: Int) {
-//        Log.d(TAG, "Currently the picker is at $newValue degrees. oldValue: $oldValue")
-//        Log.d(TAG, "anglepicker value: ${binding.adjustFragmentAnglePicker.value}, newValue: $newValue")
-//        Log.d(TAG, "lengthpicker value: ${binding.adjustFragmentLengthPicker.value}, newValue: $newValue")
         viewModel.setAngle(binding.adjustFragmentAnglePicker.value)
         viewModel.setLength(binding.adjustFragmentLengthPicker.value)
     }
