@@ -20,8 +20,10 @@ class AdjustViewModel : ViewModel() {
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
 
-    private var climbAngle = 0
-    private var climbLength = 0
+    var climbAngle = 0
+        private set
+    var climbLength = 0
+        private set
 
     // amount of numbers in angle picker
     private val angleAmount = 45
