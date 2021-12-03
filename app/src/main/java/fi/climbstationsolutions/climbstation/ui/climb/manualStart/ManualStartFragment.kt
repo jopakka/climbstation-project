@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb.adjust
+package fi.climbstationsolutions.climbstation.ui.climb.manualStart
 
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
@@ -16,7 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.databinding.FragmentAdjustBinding
+import fi.climbstationsolutions.climbstation.databinding.FragmentManualStartBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
@@ -27,10 +27,10 @@ import fi.climbstationsolutions.climbstation.ui.climb.ClimbViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
 import me.angrybyte.numberpicker.listener.OnValueChangeListener
 
-class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
-    private lateinit var binding: FragmentAdjustBinding
+class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
+    private lateinit var binding: FragmentManualStartBinding
     private lateinit var broadcastManager: LocalBroadcastManager
-    private val TAG: String = AdjustFragment::class.java.simpleName
+    private val TAG: String = ManualStartFragment::class.java.simpleName
 
     private val viewModel: AdjustViewModel by viewModels()
     private val climbViewModel: ClimbViewModel by viewModels(
@@ -44,7 +44,7 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAdjustBinding.inflate(layoutInflater)
+        binding = FragmentManualStartBinding.inflate(layoutInflater)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
@@ -144,7 +144,7 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
             minValue = 0
             maxValue = 60
             setFormatter { i: Int -> String.format("%02d", i) }
-            setOnValueChangedListener(this@AdjustFragment)
+            setOnValueChangedListener(this@ManualStartFragment)
             value = viewModel.timer.value?.minute ?: 0
         }
 
@@ -152,7 +152,7 @@ class AdjustFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueCh
             minValue = 0
             maxValue = 59
             setFormatter { i: Int -> String.format("%02d", i) }
-            setOnValueChangedListener(this@AdjustFragment)
+            setOnValueChangedListener(this@ManualStartFragment)
             value = viewModel.timer.value?.second ?: 0
         }
 
