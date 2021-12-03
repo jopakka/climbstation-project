@@ -9,7 +9,11 @@ sealed class DifficultyProfileDataItem {
         override val id = climbProfileWithSteps.profile.id
     }
 
-    object DifficultyHeaderItem : DifficultyProfileDataItem() {
+    object DifficultyHeader1Item : DifficultyProfileDataItem() {
+        override val id = Long.MIN_VALUE
+    }
+
+    data class DifficultyHeader2Item(val default: Boolean) : DifficultyProfileDataItem() {
         override val id = Long.MIN_VALUE
     }
 }

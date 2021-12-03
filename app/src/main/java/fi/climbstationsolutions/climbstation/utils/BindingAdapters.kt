@@ -249,3 +249,13 @@ fun bindFilterMonthYear(view: TextView, month: String?, year: Int?) {
     }
 
 }
+
+@BindingAdapter("isDefaultProfileHeader")
+fun bindIsDefaultProfileHeader(view: TextView, default: Boolean) {
+    val context = view.context
+    view.text = if(default) {
+        context.getString(R.string.profiles_default)
+    } else {
+        context.getString(R.string.profiles_custom)
+    }
+}
