@@ -60,6 +60,7 @@ class ClimbStationService : Service() {
     private lateinit var clientKey: String
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var profileWithSteps: ClimbProfileWithSteps
+    private var localBroadcastManager: LocalBroadcastManager? = null
 
     /**
      * Creates notification, initializes variables and starts session.
@@ -105,6 +106,7 @@ class ClimbStationService : Service() {
             this.timer = timer
         }
         sessionDao = AppDatabase.get(this).sessionDao()
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
     }
 
     private fun initTts() {
@@ -132,25 +134,25 @@ class ClimbStationService : Service() {
     private fun broadcastId(id: Long) {
         val intent = Intent(BROADCAST_ID_NAME)
         intent.putExtra("id", id)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastFinished() {
         val intent = Intent(BROADCAST_FINISHED)
         intent.putExtra("finished", true)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR)
         intent.putExtra(EXTRA_ERROR, message)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastClimbError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR_CLIMB)
         intent.putExtra(EXTRA_ERROR, message)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     /**
