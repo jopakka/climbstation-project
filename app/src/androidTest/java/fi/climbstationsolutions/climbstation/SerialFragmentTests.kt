@@ -10,8 +10,8 @@ import fi.climbstationsolutions.climbstation.ui.init.SerialFragment
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class SerialFragmentTests {
+// @RunWith(AndroidJUnit4::class)
+// class SerialFragmentTests {
 
     // For some reason this doesn't work on github actions anymore.
     // Locally it still works
@@ -20,4 +20,4 @@ class SerialFragmentTests {
     //     launchFragmentInContainer<SerialFragment>()
     //     onView(withId(R.id.viewFinder)).check(matches(isDisplayed()))
     // }
-}
+// }
