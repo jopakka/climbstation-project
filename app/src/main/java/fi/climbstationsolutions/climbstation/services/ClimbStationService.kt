@@ -2,6 +2,7 @@ package fi.climbstationsolutions.climbstation.services
 
 import android.app.*
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -71,13 +72,14 @@ class ClimbStationService : Service() {
             stopService()
         } else {
             intent?.extras?.let {
+                val profile = it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps
                 initTts()
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, null),
-                    it.getParcelable(PROFILE_EXTRA),
+                    profile,
                     it.getInt(TIMER_EXTRA, -1)
                 )
-                createNotification()
+                createNotification(profile)
                 beginSession()
             }
         }
@@ -158,11 +160,14 @@ class ClimbStationService : Service() {
     /**
      * Creates notification for service
      */
-    private fun createNotification() {
+    private fun createNotification(profileWithSteps: ClimbProfileWithSteps?) {
         val pendingIntent = NavDeepLinkBuilder(this)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.navigation_main)
             .setDestination(R.id.climbOnFragment)
+            .setArguments(Bundle().also {
+                it.putParcelable("profileWithSteps", profileWithSteps)
+            })
             .createPendingIntent()
 
         if (nm == null)
@@ -183,9 +188,9 @@ class ClimbStationService : Service() {
 
         nm?.createNotificationChannel(notificationChannel)
 
-        // TODO("Change notification text")
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Climbing in progress")
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.notification_content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.app_logo)

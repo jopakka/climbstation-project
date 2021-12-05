@@ -200,4 +200,7 @@
         <item quantity="other">%d Sessions</item>
     </plurals>
     <string name="sessions_list_empty">No Sessions</string>
+
+    <string name="notification_title">Climbing in progress</string>
+    <string name="notification_content">Click to see your climbing statistics</string>
 </resources>
