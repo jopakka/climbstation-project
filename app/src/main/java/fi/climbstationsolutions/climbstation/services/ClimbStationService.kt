@@ -2,6 +2,7 @@ package fi.climbstationsolutions.climbstation.services
 
 import android.app.*
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -60,6 +61,7 @@ class ClimbStationService : Service() {
     private lateinit var clientKey: String
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var profileWithSteps: ClimbProfileWithSteps
+    private var localBroadcastManager: LocalBroadcastManager? = null
 
     /**
      * Creates notification, initializes variables and starts session.
@@ -70,13 +72,14 @@ class ClimbStationService : Service() {
             stopService()
         } else {
             intent?.extras?.let {
+                val profile = it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps
                 initTts()
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, null),
-                    it.getParcelable(PROFILE_EXTRA),
+                    profile,
                     it.getInt(TIMER_EXTRA, -1)
                 )
-                createNotification()
+                createNotification(profile)
                 beginSession()
             }
         }
@@ -105,6 +108,7 @@ class ClimbStationService : Service() {
             this.timer = timer
         }
         sessionDao = AppDatabase.get(this).sessionDao()
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
     }
 
     private fun initTts() {
@@ -132,35 +136,38 @@ class ClimbStationService : Service() {
     private fun broadcastId(id: Long) {
         val intent = Intent(BROADCAST_ID_NAME)
         intent.putExtra("id", id)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastFinished() {
         val intent = Intent(BROADCAST_FINISHED)
         intent.putExtra("finished", true)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR)
         intent.putExtra(EXTRA_ERROR, message)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastClimbError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR_CLIMB)
         intent.putExtra(EXTRA_ERROR, message)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     /**
      * Creates notification for service
      */
-    private fun createNotification() {
+    private fun createNotification(profileWithSteps: ClimbProfileWithSteps?) {
         val pendingIntent = NavDeepLinkBuilder(this)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.navigation_main)
             .setDestination(R.id.climbOnFragment)
+            .setArguments(Bundle().also {
+                it.putParcelable("profileWithSteps", profileWithSteps)
+            })
             .createPendingIntent()
 
         if (nm == null)
@@ -181,9 +188,9 @@ class ClimbStationService : Service() {
 
         nm?.createNotificationChannel(notificationChannel)
 
-        // TODO("Change notification text")
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Climbing in progress")
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.notification_content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.app_logo)

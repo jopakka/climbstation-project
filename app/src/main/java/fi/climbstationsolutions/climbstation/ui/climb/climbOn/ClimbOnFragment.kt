@@ -129,7 +129,9 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         override fun onReceive(context: Context, intent: Intent) {
             val message = intent.getStringExtra(ClimbStationService.EXTRA_ERROR) ?: return
             showErrorDialog(message) {
-                findNavController().navigateUp()
+                try {
+                    findNavController().navigateUp()
+                } catch (e: Exception) {}
             }
         }
     }
