@@ -24,7 +24,7 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbViewModel
-import fi.climbstationsolutions.climbstation.ui.viewmodels.AdjustViewModel
+import fi.climbstationsolutions.climbstation.ui.viewmodels.ManualStartViewModel
 import me.angrybyte.numberpicker.listener.OnValueChangeListener
 
 class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
@@ -32,7 +32,7 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
     private lateinit var broadcastManager: LocalBroadcastManager
     private val TAG: String = ManualStartFragment::class.java.simpleName
 
-    private val viewModel: AdjustViewModel by viewModels()
+    private val viewModel: ManualStartViewModel by viewModels()
     private val climbViewModel: ClimbViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
@@ -101,7 +101,7 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
         activity?.let {
             val builder = AlertDialog.Builder(it).apply {
                 setTitle(R.string.error)
-                setMessage(message)
+                setMessage(message + getString(R.string.error_connect))
                 setPositiveButton(android.R.string.ok) { d, _ ->
                     d.cancel()
                 }
