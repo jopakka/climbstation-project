@@ -121,13 +121,13 @@ class ClimbStationService : Service() {
      * Stops session and log user out of ClimbStation machine. Sets [SERVICE_RUNNING] to false
      */
     private fun stopService() {
-        SERVICE_RUNNING = false
         tts?.destroy()
         climbStationSerialNo?.let {
             stopClimbStationAndLogout(it)
         }
         stopForeground(true)
         stopSelf()
+        SERVICE_RUNNING = false
     }
 
     /**
