@@ -30,6 +30,12 @@ class CustomStepsViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
+    fun duplicateStep(id: Long, distance: Int, angle: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            profileDao.insertStep(ClimbStep(0, id, distance, angle))
+        }
+    }
+
     fun updateStepDistance(distance: Int, id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             profileDao.updateCustomStepDistance(distance, id)
@@ -39,6 +45,12 @@ class CustomStepsViewModel(application: Application) : AndroidViewModel(applicat
     fun updateStepAngle(angle: Int, id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             profileDao.updateCustomStepAngle(angle, id)
+        }
+    }
+
+    fun deleteStep(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            profileDao.deleteStep(id)
         }
     }
 }
