@@ -173,6 +173,7 @@
     </plurals>
 
     <string name="session_list_year_month">%s %d</string>
+    <string name="Step">Step %d</string>
 
     <plurals name="session_list_session_count">
         <item quantity="one">%d Session</item>
