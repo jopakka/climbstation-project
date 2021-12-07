@@ -4,17 +4,22 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
-import fi.climbstationsolutions.climbstation.network.profile.Profile
 import java.io.*
+import java.util.*
 
 class ProfileSharer(private val activity: Activity) {
-    private val gson = Gson()
+    private val moshi = Moshi.Builder()
+        .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+        .addLast(KotlinJsonAdapterFactory())
+        .build()
+    private val jsonAdapter = moshi.adapter(ClimbProfileWithSteps::class.java)
 
     fun shareProfile(profile: ClimbProfileWithSteps) {
-        val json = gson.toJson(profile)
+        val json = jsonAdapter.toJson(profile)
         val file = createFile(profile.profile.name)
         writeToFile(file, json)
 
@@ -35,8 +40,10 @@ class ProfileSharer(private val activity: Activity) {
     fun getSharedProfile(uri: Uri): ClimbProfileWithSteps? {
         val data = readFromFile(uri)
         return try {
-            Gson().fromJson(data, ClimbProfileWithSteps::class.java)
-        } catch (e: Exception) { null }
+            jsonAdapter.fromJson(data)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun createFile(name: String): File {

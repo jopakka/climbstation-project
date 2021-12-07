@@ -148,6 +148,7 @@
     <string name="filter_month_year">%s %d</string>
 
     <string name="share">Share</string>
+    <string name="not_valid_profile">Not a valid profile</string>
 
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
