@@ -1,10 +1,11 @@
 package fi.climbstationsolutions.climbstation.adapters
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.app.Activity
+import android.view.*
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.databinding.CustomProfileItemBinding
 import fi.climbstationsolutions.climbstation.ui.climb.CellClickListener
@@ -14,6 +15,8 @@ import fi.climbstationsolutions.climbstation.ui.create.CustomProfileClickListene
 class CustomProfileAdapter(private val customProfileClickListener: CustomProfileClickListener) : RecyclerView.Adapter<CustomProfileAdapter.ViewHolder>() {
 
     private val customProfileList: MutableList<ClimbProfileWithSteps> = mutableListOf()
+    var selectedProfileId: Long = -1
+        private set
 
     fun addProfiles(list: List<ClimbProfileWithSteps>) {
         customProfileList.clear()
@@ -24,7 +27,7 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
     }
 
     class ViewHolder(private val binding: CustomProfileItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), View.OnCreateContextMenuListener {
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
@@ -35,8 +38,17 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
         }
 
         fun bind(item: ClimbProfileWithSteps) {
+            binding.root.setOnCreateContextMenuListener(this)
             binding.customProfileItem = item
             binding.executePendingBindings()
+        }
+
+        override fun onCreateContextMenu(
+            menu: ContextMenu,
+            v: View,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
+            menu.add(Menu.NONE, R.id.menuShare, Menu.NONE, v.context.getString(R.string.share))
         }
     }
 
@@ -49,6 +61,10 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
         holder.bind(item)
         holder.itemView.setOnClickListener {
             customProfileClickListener.onCustomProfileClickListener(item.profile.id)
+        }
+        holder.itemView.setOnLongClickListener {
+            selectedProfileId = item.profile.id
+            false
         }
     }
 
