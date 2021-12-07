@@ -15,7 +15,7 @@ class ProfileSharer(private val activity: Activity) {
         val json = gson.toJson(profile)
 
         val outputDir = activity.cacheDir
-        val file = File.createTempFile("profileTest", ".json", outputDir)
+        val file = File.createTempFile(profile.profile.name, ".json", outputDir)
 
         val stream = FileOutputStream(file)
         stream.use {
