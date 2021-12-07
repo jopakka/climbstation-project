@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
@@ -25,7 +26,8 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private val viewModel: ClimbOnViewModel by viewModels {
         ClimbOnViewModelFactory(requireContext())
     }
-    private lateinit var broadcastManager: LocalBroadcastManager
+    private var broadcastManager: LocalBroadcastManager? = null
+    private val args: ClimbOnFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,17 +38,21 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(
-                errorBroadcastReceiver,
-                IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
-            )
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(
+                    errorBroadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
+                )
+                registerReceiver(finishedBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_FINISHED))
+            }
         }
 
         binding.btnStop.setOnClickListener {
             stopClimbing()
         }
 
+        viewModel.setProfile(args.profileWithSteps)
         viewModel.startTimer()
 
         setBackButtonAction()
@@ -57,8 +63,14 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext())
-            .unregisterReceiver(errorBroadcastReceiver)
+        unregisterBroadcastManager()
+    }
+
+    private fun unregisterBroadcastManager() {
+        broadcastManager?.apply {
+            unregisterReceiver(errorBroadcastReceiver)
+            unregisterReceiver(finishedBroadcastReceiver)
+        }
     }
 
     private fun setupPager() {
@@ -117,8 +129,27 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         override fun onReceive(context: Context, intent: Intent) {
             val message = intent.getStringExtra(ClimbStationService.EXTRA_ERROR) ?: return
             showErrorDialog(message) {
-                findNavController().navigateUp()
+                try {
+                    findNavController().navigateUp()
+                } catch (e: Exception) {}
             }
+        }
+    }
+
+    private val finishedBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            navigateToFinished()
+        }
+    }
+
+    private fun navigateToFinished() {
+        val id = viewModel.sessionWithData.value?.session?.id
+        val profile = viewModel.profileWithSteps.value
+        val action = if(id != null && profile != null) {
+            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id, profile, args.timer)
+        } else null
+        if (action != null) {
+            this.findNavController().navigate(action)
         }
     }
 
@@ -133,11 +164,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             }
         }
 
-        val id = viewModel.sessionWithData.value?.session?.id
-        val action =
-            id?.let { ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(it) }
-        if (action != null) {
-            this.findNavController().navigate(action)
-        }
+        navigateToFinished()
     }
 }

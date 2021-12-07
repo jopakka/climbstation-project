@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/darkened_mountain"
-        tools:context=".ui.init.InitActivity">
+        tools:context=".ui.init.InitActivity"
+        android:theme="@style/CustomFont">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

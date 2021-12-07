@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class ClimbFinishedFragment : Fragment() {
     private lateinit var binding: FragmentClimbFinishedBinding
     private val viewModel: ClimbFinishedViewModel by viewModels()
     private val args: ClimbFinishedFragmentArgs by navArgs()
-    private lateinit var broadcastManager: LocalBroadcastManager
+    private var broadcastManager: LocalBroadcastManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +37,7 @@ class ClimbFinishedFragment : Fragment() {
         binding.viewModel = viewModel
 
         viewModel.getSessionId(args.sessionId)
+        viewModel.setProfile(args.climbProfile)
 
         setUI()
         setBroadcastManager()
@@ -47,12 +49,14 @@ class ClimbFinishedFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(broadcastReceiver)
+        broadcastManager?.unregisterReceiver(broadcastReceiver)
     }
 
     private fun setBroadcastManager() {
-        broadcastManager = LocalBroadcastManager.getInstance(requireContext()).apply {
-            registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
+            }
         }
     }
 
@@ -70,7 +74,7 @@ class ClimbFinishedFragment : Fragment() {
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimbOnFragment()
+                    val startAction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimbOnFragment(it)
                     findNavController().navigate(startAction)
                 }
             }
@@ -82,15 +86,23 @@ class ClimbFinishedFragment : Fragment() {
         val context = context ?: return
         val activity = activity ?: return
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
-        val profile = viewModel.profileWithSteps.value ?: return
 
-        Intent(context, ClimbStationService::class.java).also {
-            it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
-            it.putExtra(
-                ClimbStationService.PROFILE_EXTRA,
-                profile
-            )
-            activity.startForegroundService(it)
+        viewModel.profileWithSteps.observe(viewLifecycleOwner) { profile ->
+            if(profile == null) return@observe
+
+            Intent(context, ClimbStationService::class.java).also {
+                it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
+                it.putExtra(
+                    ClimbStationService.PROFILE_EXTRA,
+                    profile
+                )
+
+                val timer = args.timer
+                if(timer != -1) {
+                    it.putExtra(ClimbStationService.TIMER_EXTRA, timer)
+                }
+                activity.startForegroundService(it)
+            }
         }
     }
 
@@ -100,7 +112,6 @@ class ClimbFinishedFragment : Fragment() {
     }
 
     private val finishAction = View.OnClickListener {
-        val direction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimb()
-        findNavController().navigate(direction)
+        findNavController().navigateUp()
     }
 }

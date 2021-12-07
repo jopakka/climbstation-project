@@ -1,8 +1,8 @@
 package fi.climbstationsolutions.climbstation.utils
 
 import android.text.Editable
-import android.widget.EditText
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputEditText
@@ -21,7 +21,7 @@ fun bindStepsToDistance(view: TextView, steps: List<ClimbStep>?) {
     val distance = if (steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
     else 0
 
-    view.text = view.context.getString(R.string.distanceLong, distance.toFloat())
+    view.text = view.context.getString(R.string.distanceShort, distance.toFloat())
 }
 
 @BindingAdapter("stepsToDistanceShort")
@@ -37,7 +37,7 @@ fun bindStepsToAngle(view: TextView, steps: List<ClimbStep>?) {
     val avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
     else 0f
 
-    view.text = view.context.getString(R.string.angleLong, avgAngle)
+    view.text = view.context.getString(R.string.angleShort, avgAngle)
 }
 
 @BindingAdapter("speed")
@@ -132,9 +132,9 @@ fun bindSessionAverageSpeed(view: TextView, sessionWithData: SessionWithData?) {
 
     val seconds = result / 1000F
 
-    val distance = sessionWithData.data.last().totalDistance / 1000F
+    val distance = sessionWithData.data.lastOrNull()?.totalDistance?.div(1000F)
 
-    val avrgSpeed = (distance / seconds) * 60
+    val avrgSpeed = (distance?.div(seconds))?.times(60)
 
     view.text = view.context.getString(R.string.float_single_decimal, avrgSpeed)
 }
@@ -174,6 +174,9 @@ fun bindInfoPopupTitle(view: TextView, title: String) {
         "How to connect to ClimbStation machine" -> {
             view.text = view.context.getString(R.string.info_popup_title_connect)
         }
+        "How to create custom climbing profiles" -> {
+            view.text = view.context.getString(R.string.info_popup_title_create_custom_climb_profile)
+        }
         else -> {
             view.text = "error"
             Log.d("bindInfoPopupTitle", "no such title: $title")
@@ -189,6 +192,9 @@ fun bindInfoPopupInstructions(view: TextView, title: String) {
         }
         "How to connect to ClimbStation machine" -> {
             view.text = view.context.getString(R.string.info_popup_instructions_connect)
+        }
+        "How to create custom climbing profiles" -> {
+            view.text = view.context.getString(R.string.info_popup_instructions_create_custom_profile)
         }
         else -> {
             view.text = "error"
@@ -230,7 +236,32 @@ fun bindStepNumber(view: TextView, step: ClimbStep) {
 fun bindStepDistance(view: TextInputEditText, step: ClimbStep?) {
     view.text = Editable.Factory.getInstance().newEditable((step?.distance ?: 0).toString())
 }
+
 @BindingAdapter("stepAngle")
 fun bindStepAngle(view: TextInputEditText, step: ClimbStep?) {
     view.text = Editable.Factory.getInstance().newEditable((step?.angle ?: 0).toString())
+}
+
+@BindingAdapter("filterMonth", "filterYear")
+fun bindFilterMonthYear(view: TextView, month: String?, year: Int?) {
+    view.visibility = if (month == null || year == null) View.GONE
+    else {
+        val monthCapitalize = month.lowercase(Locale.getDefault()).replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault())
+            else it.toString()
+        }
+        view.text = view.context.getString(R.string.filter_month_year, monthCapitalize, year)
+        View.VISIBLE
+    }
+
+}
+
+@BindingAdapter("isDefaultProfileHeader")
+fun bindIsDefaultProfileHeader(view: TextView, default: Boolean) {
+    val context = view.context
+    view.text = if(default) {
+        context.getString(R.string.profiles_default)
+    } else {
+        context.getString(R.string.profiles_custom)
+    }
 }

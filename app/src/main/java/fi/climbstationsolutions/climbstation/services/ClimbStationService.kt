@@ -2,6 +2,7 @@ package fi.climbstationsolutions.climbstation.services
 
 import android.app.*
 import android.content.Intent
+import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -28,10 +29,12 @@ class ClimbStationService : Service() {
         private const val NOTIFICATION_CHANNEL_GROUP_NAME = "Climbing group"
 
         const val PROFILE_EXTRA = "Profile"
+        const val TIMER_EXTRA = "Timer"
         const val EXTRA_ERROR = "ErrorMessage"
         const val ACTION_STOP = "${BuildConfig.APPLICATION_ID}.stop"
         const val CLIMB_STATION_SERIAL_EXTRA = "SerialNo"
         const val BROADCAST_ID_NAME = "ClimbStationService_ID"
+        const val BROADCAST_FINISHED = "ClimbStationService_Finished"
         const val BROADCAST_ERROR = "ClimbStationService_Error"
         const val BROADCAST_ERROR_CLIMB = "ClimbStationService_Error_Climb"
         var SERVICE_RUNNING = false
@@ -46,17 +49,19 @@ class ClimbStationService : Service() {
     private var nm: NotificationManager? = null
     private var currentStep = 0
     private var startTime: Long = 0L
+    private var timer: Int? = null // by milliseconds
 
     private var tts: Tts? = null
     private var nextDistanceToNotify = 0
     private var nextTimeToNotify = 0
     private val distanceNotifyRange = 5 // by meters
-    private val timeNotifyRange = 5 // by minutes
+    private val timeNotifyRange = 1 // by minutes
 
     private var climbStationSerialNo: String? = null
     private lateinit var clientKey: String
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var profileWithSteps: ClimbProfileWithSteps
+    private var localBroadcastManager: LocalBroadcastManager? = null
 
     /**
      * Creates notification, initializes variables and starts session.
@@ -67,12 +72,14 @@ class ClimbStationService : Service() {
             stopService()
         } else {
             intent?.extras?.let {
+                val profile = it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps
                 initTts()
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, null),
-                    it.getParcelable(PROFILE_EXTRA)
+                    profile,
+                    it.getInt(TIMER_EXTRA, -1)
                 )
-                createNotification()
+                createNotification(profile)
                 beginSession()
             }
         }
@@ -93,11 +100,15 @@ class ClimbStationService : Service() {
      * @param serialNo ClimbStations serial number
      * @param prof Wanted climbing profile
      */
-    private fun initService(serialNo: String, prof: ClimbProfileWithSteps?) {
+    private fun initService(serialNo: String, prof: ClimbProfileWithSteps?, timer: Int) {
         SERVICE_RUNNING = true
         climbStationSerialNo = serialNo
         profileWithSteps = prof ?: throw NullPointerException("No profile passed to extras")
+        if(timer != -1) {
+            this.timer = timer
+        }
         sessionDao = AppDatabase.get(this).sessionDao()
+        localBroadcastManager = LocalBroadcastManager.getInstance(this)
     }
 
     private fun initTts() {
@@ -125,29 +136,38 @@ class ClimbStationService : Service() {
     private fun broadcastId(id: Long) {
         val intent = Intent(BROADCAST_ID_NAME)
         intent.putExtra("id", id)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
+    }
+
+    private fun broadcastFinished() {
+        val intent = Intent(BROADCAST_FINISHED)
+        intent.putExtra("finished", true)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR)
         intent.putExtra(EXTRA_ERROR, message)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     private fun broadcastClimbError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR_CLIMB)
         intent.putExtra(EXTRA_ERROR, message)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        localBroadcastManager?.sendBroadcast(intent)
     }
 
     /**
      * Creates notification for service
      */
-    private fun createNotification() {
+    private fun createNotification(profileWithSteps: ClimbProfileWithSteps?) {
         val pendingIntent = NavDeepLinkBuilder(this)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.navigation_main)
             .setDestination(R.id.climbOnFragment)
+            .setArguments(Bundle().also {
+                it.putParcelable("profileWithSteps", profileWithSteps)
+            })
             .createPendingIntent()
 
         if (nm == null)
@@ -168,9 +188,9 @@ class ClimbStationService : Service() {
 
         nm?.createNotificationChannel(notificationChannel)
 
-        // TODO("Change notification text")
         val notification = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Climbing in progress")
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.notification_content))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setSmallIcon(R.drawable.app_logo)
@@ -217,12 +237,14 @@ class ClimbStationService : Service() {
 
                 // Set endedAt time to session when it's finished
                 setEndTimeForSession(sessionID)
+                broadcastFinished()
             } catch (e: Exception) {
                 Log.e(TAG, "Start session error: ${e.localizedMessage}")
                 sessionID?.let {
                     sessionDao.deleteSession(it)
                 }
                 broadcastError(e.localizedMessage ?: getString(R.string.error_while_connecting))
+            } finally {
                 stopService()
             }
         }
@@ -262,7 +284,7 @@ class ClimbStationService : Service() {
             setAngle(profileWithSteps.steps[0].angle, serialNo)
             broadcastId(sessionID)
 
-            while (SERVICE_RUNNING) {
+            while (SERVICE_RUNNING && !checkTimeFinished(Calendar.getInstance().timeInMillis - startTime)) {
                 CLIMBING_ACTIVE = true
                 getInfo(sessionID, serialNo)
                 delay(GET_INFO_DELAY)
@@ -302,7 +324,7 @@ class ClimbStationService : Service() {
         val stepsSoFar = profileWithSteps.steps.filterIndexed { index, _ -> index < currentStep }
         val distanceSoFar = stepsSoFar.sumOf { it.distance }
 
-        if (distanceSoFar + step.distance >= distance) {
+        if (distance != 0 && distanceSoFar + step.distance >= distance) {
             currentStep += 1
 
             if (currentStep > profileWithSteps.steps.size) {
@@ -310,6 +332,7 @@ class ClimbStationService : Service() {
                 // Now it just set wall to 0 angle and stops service
                 setAngle(0, serialNo)
                 setSpeed(0, serialNo)
+                broadcastFinished()
                 stopService()
                 return
             }
@@ -378,5 +401,12 @@ class ClimbStationService : Service() {
                 )
             )
         }
+    }
+
+    private fun checkTimeFinished(elapsed: Long): Boolean {
+        val t = timer
+        return if(t != null && t > 0) {
+            elapsed >= t
+        } else false
     }
 }

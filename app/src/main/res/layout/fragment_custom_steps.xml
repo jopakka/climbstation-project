@@ -3,7 +3,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="viewModel"
             type="fi.climbstationsolutions.climbstation.ui.create.CustomStepsViewModel" />
@@ -12,7 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/fragment_background_color">
+        android:background="@color/fragment_background_color"
+        android:theme="@style/CustomFont">
 
         <TextView
             android:id="@+id/textView2"
@@ -62,9 +65,9 @@
 
                 <TextView
                     android:id="@+id/textView20"
+                    stepsCount="@{viewModel.customProfileWithSteps.steps}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    stepsCount="@{viewModel.customProfileWithSteps.steps}"
                     android:textColor="@color/card_white"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -100,9 +103,9 @@
 
                 <TextView
                     android:id="@+id/textView22"
+                    stepsToDistanceShort="@{viewModel.customProfileWithSteps.steps}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    stepsToDistanceShort="@{viewModel.customProfileWithSteps.steps}"
                     android:textColor="@color/card_white"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -138,9 +141,9 @@
 
                 <TextView
                     android:id="@+id/textView24"
+                    stepsAverageAngle="@{viewModel.customProfileWithSteps.steps}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    stepsAverageAngle="@{viewModel.customProfileWithSteps.steps}"
                     android:textColor="@color/card_white"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -180,14 +183,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Add steps to your climbing profile"
-                android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="22sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floating_action_button"
             android:layout_width="wrap_content"

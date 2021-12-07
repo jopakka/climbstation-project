@@ -2,17 +2,14 @@ package fi.climbstationsolutions.climbstation.ui
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.widget.ExpandableListAdapter
-import android.widget.ExpandableListView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.navigation.NavigationView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
@@ -29,7 +26,7 @@ import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.utils.ExpandableListData.data
 import fi.climbstationsolutions.climbstation.utils.MenuActions
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -50,7 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // sets ClimbStation drawer menu logo to expandableListView
         val listHeaderView =
-            layoutInflater.inflate(R.layout.overflow_menu_header_layout, null, false)
+            layoutInflater.inflate(R.layout.overflow_menu_header_layout, binding.root, false)
         binding.expendableList.addHeaderView(listHeaderView)
 
         if (!ClimbStationService.SERVICE_RUNNING && !hasSerialNo()) {
@@ -61,22 +58,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         initNavigation()
         viewModel.setWeight()
+        setupCustomExpandableList()
 
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
             Log.d("topAppBar", "menu clicked")
             when (menuItem.itemId) {
                 R.id.more -> {
-                    if (binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-                        binding.overflowDrawerLayout.closeDrawer(GravityCompat.END)
-                    } else if (!binding.overflowDrawerLayout.isDrawerOpen(GravityCompat.END)) {
-                        binding.overflowDrawerLayout.openDrawer(GravityCompat.END)
-                        setupCustomExpandableList()
-                    }
+                    binding.overflowDrawerLayout.openDrawer(GravityCompat.END)
                     true
                 }
                 else -> {
                     false
                 }
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        binding.overflowDrawerLayout.apply {
+            if (isDrawerOpen(GravityCompat.END)) {
+                closeDrawer(GravityCompat.END)
+            } else {
+                super.onBackPressed()
             }
         }
     }
@@ -130,74 +133,59 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         prefs[SERIAL_NO_PREF_NAME] = serial
     }
 
-    // For top app bar overflow menu items
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_settings -> {
-                Log.d("MainActivity3 menu item click", "settings clicked")
-                return true
-            }
-            R.id.nav_info -> {
-                Log.d("MainActivity3 menu item click", "info clicked")
-                return true
-            }
-        }
-        return false
-    }
-
     private fun setupCustomExpandableList() {
-        if (binding.expendableList != null) {
-            val listData = data
-            Log.d("listData1", "listData1: ${listData}")
-            Log.d("HashMap_data", "data: $listData")
-            titleList = ArrayList(listData.keys)
-            adapter = CustomExpandableListAdapter(
-                this,
-                titleList as ArrayList<String>,
-                listData,
-                viewModel
-            )
-            binding.expendableList.setAdapter(adapter)
+        val listData = data
+        Log.d("listData1", "listData1: ${listData}")
+        Log.d("HashMap_data", "data: $listData")
+        titleList = ArrayList(listData.keys)
+        adapter = CustomExpandableListAdapter(
+            this,
+            titleList as ArrayList<String>,
+            listData,
+            viewModel
+        )
+        binding.expendableList.setAdapter(adapter)
 
-            binding.expendableList.setOnGroupClickListener { expandableListView: ExpandableListView, view1: View, i: Int, l: Long ->
-                Log.d("groupclick", "1: $expandableListView, 2: $view1, 3: $i, 4: $l")
-                if (l == 0L) {
-                    Log.d("groupclick", "done")
-                    getSerialNumber.launch(null)
-                }
-                false
+        binding.expendableList.setOnGroupClickListener { _, _, i: Int, _: Long ->
+            val groupKey =
+                (listData.filterValues { it == listData[(titleList as ArrayList<String>)[i]]!! }.keys).elementAt(
+                    0
+                )
+            if (groupKey == "Connect") {
+                getSerialNumber.launch(null)
             }
+            false
+        }
 
-            binding.expendableList.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
-                val childItem =
-                    listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
+        binding.expendableList.setOnChildClickListener { _, _, groupPosition, childPosition, _ ->
+            val childItem =
+                listData[(titleList as ArrayList<String>)[groupPosition]]!![childPosition]
 
-                val groupKey =
-                    (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(
-                        0
-                    )
+            val groupKey =
+                (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(
+                    0
+                )
 
-                Log.d("MainActivity_menuChildClick", "childItem: $childItem")
-                Log.d("MainActivity_menuChildClick", "groupKey: $groupKey")
+            Log.d("MainActivity_menuChildClick", "childItem: $childItem")
+            Log.d("MainActivity_menuChildClick", "groupKey: $groupKey")
 
-                if (childItem == "Bodyweight") {
-                    MenuActions().updateUserWeight(this) {
-                        val weight = it.toFloatOrNull()
-                        viewModel.setWeight(weight) {
-                            (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
-                        }
+            if (childItem == "Bodyweight") {
+                MenuActions().updateUserWeight(this) {
+                    val weight = it.toFloatOrNull()
+                    viewModel.setWeight(weight) {
+                        (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
                     }
                 }
-                when (groupKey) {
-                    "Info" -> {
-                        MenuActions().showInfoPopup(childItem, this, infoViewModel)
-                    }
-                    else -> {
-                        Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
-                    }
-                }
-                false
             }
+            when (groupKey) {
+                "Info" -> {
+                    MenuActions().showInfoPopup(childItem, this, infoViewModel)
+                }
+                else -> {
+                    Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
+                }
+            }
+            false
         }
     }
 }

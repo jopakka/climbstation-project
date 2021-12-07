@@ -14,6 +14,9 @@ class MenuActions {
         }
         if(infoRequest == "How to connect to ClimbStation machine") {
             PopupHandlers().showInfoDialog(infoRequest, context, viewModel)
+        }
+        if(infoRequest == "How to create custom climbing profiles") {
+            PopupHandlers().showInfoDialog(infoRequest, context, viewModel)
         } else {
             Log.d("MenuActions", "No such info popup available")
         }

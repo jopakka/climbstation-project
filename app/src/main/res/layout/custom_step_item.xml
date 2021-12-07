@@ -18,6 +18,8 @@
         android:background="@drawable/rv_background_layout"
         android:clickable="true"
         android:animateLayoutChanges="true">
+        android:theme="@style/CustomFont"
+        android:clickable="true">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"

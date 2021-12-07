@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="fi.climbstationsolutions.climbstation.ui.viewmodels.ManualStartViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/darkened_mountain"
+        tools:context=".ui.climb.manualStart.ManualStartFragment"
+        android:theme="@style/CustomFont">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:scrollbars="vertical"
+            android:scrollbarSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/adjust_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/adjust_frame"
+                android:paddingBottom="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/adjust_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/fragment_adjust_title"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/numberValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/fragment_adjust_duration"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/adjust_title" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/adjust_fragment_timepicker_container"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:paddingBottom="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/numberValue">
+
+                    <ImageView
+                        android:id="@+id/adjust_fragment_minute_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:src="@drawable/ic_arrow_up_24"
+                        app:layout_constraintBottom_toTopOf="@+id/adjust_fragment_timepicker_minute"
+                        app:layout_constraintEnd_toStartOf="@id/adjust_fragment_second_up"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/adjust_fragment_second_up"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:src="@drawable/ic_arrow_up_24"
+                        app:layout_constraintBottom_toTopOf="@+id/adjust_fragment_timepicker_second"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/adjust_fragment_minute_up" />
+
+                    <ImageView
+                        android:id="@+id/adjust_fragment_minute_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:rotation="180"
+                        android:src="@drawable/ic_arrow_up_24"
+                        app:layout_constraintEnd_toStartOf="@id/adjust_fragment_second_down"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_timepicker_minute" />
+
+                    <ImageView
+                        android:id="@+id/adjust_fragment_second_down"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:rotation="180"
+                        android:src="@drawable/ic_arrow_up_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/adjust_fragment_minute_down"
+                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_timepicker_second" />
+
+                    <NumberPicker
+                        android:id="@+id/adjust_fragment_timepicker_minute"
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="0dp"
+                        android:tag="minute"
+                        android:theme="@style/TimePickerTheme"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/adjust_fragment_timepicker_second"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <NumberPicker
+                        android:id="@+id/adjust_fragment_timepicker_second"
+                        android:layout_width="50dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="0dp"
+                        android:tag="second"
+                        android:theme="@style/TimePickerTheme"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/adjust_fragment_timepicker_minute"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="min"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/adjust_fragment_timepicker_minute"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="0dp"
+                        android:text="sec"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/adjust_fragment_timepicker_second"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/adjust_fragment_anglepicker_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/adjust_fragment_timepicker_container">
+
+                    <TextView
+                        android:id="@+id/adjust_fragment_angle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/fragment_adjust_angle"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toTopOf="@id/adjust_fragment_angle_picker"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <me.angrybyte.numberpicker.view.ActualNumberPicker
+                        android:id="@+id/adjust_fragment_angle_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="75dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        app:bar_color="@color/climbstation_red"
+                        app:bar_width="1dp"
+                        app:bars_count="13"
+                        app:controls_color="@color/black"
+                        app:draw_over_controls="true"
+                        app:draw_over_text="false"
+                        app:fast_controls_color="@android:color/darker_gray"
+                        app:highlight_color="#FFFF3040"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/adjust_fragment_angle"
+                        app:max_value="15"
+                        app:min_value="-45"
+                        app:selection_color="#A0FF3040"
+                        app:show_bars="true"
+                        app:show_controls="true"
+                        app:show_fast_controls="false"
+                        app:show_highlight="false"
+                        app:show_text="true"
+                        app:text_color="@color/black"
+                        app:text_size="24sp"
+                        app:value="0" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="50dp"
+                        android:background="@color/climbstation_red"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_angle_picker" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/adjust_fragment_lengthpicker_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/adjust_fragment_anglepicker_container">
+
+                    <TextView
+                        android:id="@+id/adjust_fragment_length"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/fragment_adjust_length"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toTopOf="@id/adjust_fragment_length_picker"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <me.angrybyte.numberpicker.view.ActualNumberPicker
+                        android:id="@+id/adjust_fragment_length_picker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="75dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/white"
+                        app:bar_color="@color/climbstation_red"
+                        app:bar_width="1dp"
+                        app:bars_count="13"
+                        app:controls_color="@color/black"
+                        app:draw_over_controls="true"
+                        app:draw_over_text="false"
+                        app:fast_controls_color="@android:color/darker_gray"
+                        app:highlight_color="#FFFF3040"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/adjust_fragment_length"
+                        app:max_value="100"
+                        app:min_value="0"
+                        app:selection_color="#A0FF3040"
+                        app:show_bars="true"
+                        app:show_controls="true"
+                        app:show_fast_controls="false"
+                        app:show_highlight="false"
+                        app:show_text="true"
+                        app:text_color="@color/black"
+                        app:text_size="24sp"
+                        app:value="0" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_marginStart="50dp"
+                        android:layout_marginEnd="50dp"
+                        android:background="@color/climbstation_red"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_length_picker" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/adjust_fragment_start_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginTop="30dp"
+                    android:backgroundTint="@color/button_green"
+                    android:contentDescription="@string/content_description_fragment_adjust_start_btn"
+                    android:padding="20dp"
+                    android:text="@string/fragment_adjust_start"
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_lengthpicker_container" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
