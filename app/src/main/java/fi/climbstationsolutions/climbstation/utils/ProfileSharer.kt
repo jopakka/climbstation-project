@@ -13,14 +13,9 @@ class ProfileSharer(private val activity: Activity) {
 
     fun shareProfile(profile: ClimbProfileWithSteps) {
         val json = gson.toJson(profile)
+        val file = createFile(profile.profile.name)
+        writeToFile(file, json)
 
-        val outputDir = activity.cacheDir
-        val file = File.createTempFile(profile.profile.name, ".json", outputDir)
-
-        val stream = FileOutputStream(file)
-        stream.use {
-            it.write(json.toByteArray())
-        }
         val uri = FileProvider.getUriForFile(
             activity,
             "fi.climbstationsolutions.climbstation.fileprovider",
@@ -33,5 +28,17 @@ class ProfileSharer(private val activity: Activity) {
             putExtra(Intent.EXTRA_STREAM, uri)
         }
         activity.startActivity(sendIntent)
+    }
+
+    private fun createFile(name: String): File {
+        val outputDir = activity.cacheDir
+        return File.createTempFile(name, ".json", outputDir)
+    }
+
+    private fun writeToFile(file: File, data: String) {
+        val stream = FileOutputStream(file)
+        stream.use {
+            it.write(data.toByteArray())
+        }
     }
 }
