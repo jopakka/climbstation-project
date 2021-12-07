@@ -1,18 +1,14 @@
 package fi.climbstationsolutions.climbstation.adapters
 
-import android.app.Activity
 import android.view.*
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.databinding.CustomProfileItemBinding
-import fi.climbstationsolutions.climbstation.ui.climb.CellClickListener
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.create.CustomProfileClickListener
 
-class CustomProfileAdapter(private val customProfileClickListener: CustomProfileClickListener) : RecyclerView.Adapter<CustomProfileAdapter.ViewHolder>() {
+class CustomProfileAdapter(private val customProfileClickListener: CustomProfileClickListener) :
+    RecyclerView.Adapter<CustomProfileAdapter.ViewHolder>() {
 
     private val customProfileList: MutableList<ClimbProfileWithSteps> = mutableListOf()
     var selectedProfileId: Long = -1
@@ -57,7 +53,8 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = CustomProfileItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            CustomProfileItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

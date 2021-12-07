@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,10 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomProfileAdapter
-import fi.climbstationsolutions.climbstation.adapters.CustomStepsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentCustomProfileBinding
-import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
 import fi.climbstationsolutions.climbstation.utils.ProfileSharer
+import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
 
 class CustomProfileFragment : Fragment(), CustomProfileClickListener {
     private lateinit var binding: FragmentCustomProfileBinding
@@ -40,7 +38,7 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
         val swipeHandler = object : SwipeToDelete(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
-                when(direction) {
+                when (direction) {
                     ItemTouchHelper.LEFT -> {
                         val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
                         viewModel.deleteProfile(id)
@@ -104,7 +102,7 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.menuShare -> {
                 val sharer = ProfileSharer(requireActivity())
                 val adapter = binding.customProfileRv.adapter as CustomProfileAdapter

@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             R.id.climbHistory -> hideBottomNav()
             else -> showBottomNav()
         }
-        when(d.id) {
+        when (d.id) {
             R.id.customStepsFragment -> showTopBarShare()
             else -> hideTopBarShare()
         }
