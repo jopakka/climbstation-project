@@ -9,10 +9,14 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomProfileAdapter
+import fi.climbstationsolutions.climbstation.adapters.CustomStepsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentCustomProfileBinding
+import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
 import fi.climbstationsolutions.climbstation.utils.ProfileSharer
 
 class CustomProfileFragment : Fragment(), CustomProfileClickListener {
@@ -33,6 +37,21 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
             adapter = CustomProfileAdapter(this@CustomProfileFragment)
         }
 
+        val swipeHandler = object : SwipeToDelete(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
+                when(direction) {
+                    ItemTouchHelper.LEFT -> {
+                        val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
+                        viewModel.deleteProfile(id)
+                    }
+                }
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.customProfileRv)
+
         setCustomProfilesToRecyclerView()
         binding.floatingActionButton.setOnClickListener(fabListener)
         registerForContextMenu(binding.customProfileRv)
@@ -43,7 +62,8 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
         val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
         viewModel.customProfiles.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
-                Log.d("ITEM", it.toString())
+                binding.customProfileRv.visibility = View.VISIBLE
+                binding.emptyRvTitle.visibility = View.GONE
                 adapter.addProfiles(it)
             } else {
                 binding.customProfileRv.visibility = View.GONE

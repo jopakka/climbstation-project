@@ -26,20 +26,24 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
         }
     }
 
-    class ViewHolder(private val binding: CustomProfileItemBinding) :
-        RecyclerView.ViewHolder(binding.root), View.OnCreateContextMenuListener {
+    fun deleteStep(pos: Int): Long {
+        val item = customProfileList[pos]
+        customProfileList.removeAt(pos)
+        notifyItemRemoved(pos)
+        return item.profile.id
+    }
 
-        companion object {
-            fun from(parent: ViewGroup): ViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = CustomProfileItemBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
-            }
-        }
+    inner class ViewHolder(private val binding: CustomProfileItemBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnCreateContextMenuListener {
 
         fun bind(item: ClimbProfileWithSteps) {
             binding.root.setOnCreateContextMenuListener(this)
             binding.customProfileItem = item
+
+            binding.customProfileEditBtn.setOnClickListener {
+                customProfileClickListener.onCustomProfileClickListener(item.profile.id)
+            }
+
             binding.executePendingBindings()
         }
 
@@ -53,15 +57,13 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        val binding = CustomProfileItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = customProfileList[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener {
-            customProfileClickListener.onCustomProfileClickListener(item.profile.id)
-        }
         holder.itemView.setOnLongClickListener {
             selectedProfileId = item.profile.id
             false
