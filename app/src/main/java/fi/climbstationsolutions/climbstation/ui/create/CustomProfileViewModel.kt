@@ -29,4 +29,10 @@ class CustomProfileViewModel(application: Application): AndroidViewModel(applica
             profileDao.insertProfile(ClimbProfile(0, profileName, createdAt = currentDate, isDefault = false))
         }
     }
+
+    fun deleteProfile(id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            profileDao.deleteProfile(id)
+        }
+    }
 }

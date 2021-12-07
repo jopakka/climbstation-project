@@ -29,6 +29,7 @@
 
         <activity
             android:name=".ui.MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|screenLayout"
             android:exported="true"
             android:theme="@style/SplashTheme">
