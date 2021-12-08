@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.view.*
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -17,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomProfileAdapter
-import fi.climbstationsolutions.climbstation.adapters.CustomStepsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentCustomProfileBinding
+import fi.climbstationsolutions.climbstation.utils.ProfileSharer
 import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
 
 class CustomProfileFragment : Fragment(), CustomProfileClickListener {
@@ -67,6 +68,7 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
 
         setCustomProfilesToRecyclerView()
         binding.floatingActionButton.setOnClickListener(fabListener)
+        registerForContextMenu(binding.customProfileRv)
         return binding.root
     }
 
@@ -113,5 +115,20 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
     override fun onCustomProfileClickListener(id: Long) {
         val action = CustomProfileFragmentDirections.actionCreateToCustomStepsFragment(id)
         findNavController().navigate(action)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuShare -> {
+                val sharer = ProfileSharer(requireActivity())
+                val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
+                viewModel.customProfiles.observe(viewLifecycleOwner) {
+                    val profile = it.firstOrNull { p -> p.profile.id == adapter.selectedProfileId }
+                    if (profile != null) sharer.shareProfile(profile)
+                }
+                true
+            }
+            else -> super.onContextItemSelected(item)
+        }
     }
 }
