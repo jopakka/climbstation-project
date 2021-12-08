@@ -109,18 +109,6 @@ class MainActivity : AppCompatActivity() {
             R.id.climbHistory -> hideBottomNav()
             else -> showBottomNav()
         }
-        when (d.id) {
-            R.id.customStepsFragment -> showTopBarShare()
-            else -> hideTopBarShare()
-        }
-    }
-
-    private fun hideTopBarShare() {
-        binding.topAppBar.menu.findItem(R.id.topMenuShare).isVisible = false
-    }
-
-    private fun showTopBarShare() {
-        binding.topAppBar.menu.findItem(R.id.topMenuShare).isVisible = true
     }
 
     private fun showBottomNav() {
