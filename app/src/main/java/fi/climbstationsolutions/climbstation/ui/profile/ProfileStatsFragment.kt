@@ -82,11 +82,11 @@ class ProfileStatsFragment : Fragment() {
             DataPoint(8.0, 70.0),
             DataPoint(9.0, 85.0),
             DataPoint(10.0, 100.0),
-            DataPoint(11.0, 0.0),
-            DataPoint(12.0, 0.0),
-            DataPoint(13.0, 0.0),
-            DataPoint(14.0, 0.0),
-            DataPoint(15.0, 0.0),
+            DataPoint(11.0, 10.0),
+            DataPoint(12.0, 35.0),
+            DataPoint(13.0, 25.0),
+            DataPoint(14.0, 10.0),
+            DataPoint(15.0, 70.0),
             DataPoint(16.0, 2.0),
             DataPoint(17.0, 3.0),
             DataPoint(18.0, 5.0),
@@ -108,6 +108,7 @@ class ProfileStatsFragment : Fragment() {
         binding.graphView.gridLabelRenderer.numHorizontalLabels = 7
         binding.graphView.gridLabelRenderer.gridStyle = GridLabelRenderer.GridStyle.NONE
         binding.graphView.viewport.setDrawBorder(true)
+//        binding.graphView.viewport.setMinimalViewport(3.0,3.0,3.0,3.0)
         binding.graphView.gridLabelRenderer.gridColor =
             ContextCompat.getColor(requireContext(), R.color.white)
         binding.graphView.gridLabelRenderer.verticalLabelsColor =
@@ -118,6 +119,12 @@ class ProfileStatsFragment : Fragment() {
         binding.graphView.viewport.setMaxX(25.0)
         binding.graphView.viewport.isXAxisBoundsManual = true
 //        binding.graphView.gridLabelRenderer.setHorizontalLabelsAngle(45)
+        binding.graphView.gridLabelRenderer.verticalAxisTitle = "minutes"
+        binding.graphView.gridLabelRenderer.horizontalAxisTitle = "hour of day"
+        binding.graphView.gridLabelRenderer.verticalAxisTitleColor = Color.WHITE
+        binding.graphView.gridLabelRenderer.horizontalAxisTitleColor = Color.WHITE
+        binding.graphView.gridLabelRenderer.labelVerticalWidth = 80
+//        binding.graphView.gridLabelRenderer.labelHorizontalHeight = 200
     }
 
     private val clickListener = View.OnClickListener {
