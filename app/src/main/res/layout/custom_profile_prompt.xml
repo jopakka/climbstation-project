@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/content_description_weight_input"
         android:hint="Add name to your custom profile"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

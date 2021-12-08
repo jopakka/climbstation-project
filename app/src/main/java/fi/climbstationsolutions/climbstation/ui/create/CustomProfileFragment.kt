@@ -3,8 +3,13 @@ package fi.climbstationsolutions.climbstation.ui.create
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.view.*
 import android.widget.EditText
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -40,8 +45,19 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
                 val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
-                        viewModel.deleteProfile(id)
+                        val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+                        builder.apply {
+                            setTitle("Delete custom profile")
+                            setMessage("Are you sure you want to delete the profile?")
+                            setNegativeButton("Cancel") { _, _ ->
+                                adapter.notifyItemChanged(viewHolder.bindingAdapterPosition)
+                            }
+                            setPositiveButton("Delete") { _, _ ->
+                                val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
+                                viewModel.deleteProfile(id)
+                            }
+                            show()
+                        }
                     }
                 }
             }
@@ -72,20 +88,20 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
 
     private fun addNamePopUp() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-        val li = LayoutInflater.from(activity?.applicationContext)
-        val promptsView = li.inflate(R.layout.custom_profile_prompt, null)
+        val promptsView = layoutInflater.inflate(R.layout.custom_profile_prompt, null)
         builder.setView(promptsView)
         val userInput = promptsView.findViewById<EditText>(R.id.custom_profile_dialog_editText)
-        builder.setCancelable(true)
 
-        builder.setPositiveButton("Add") { _, _ ->
-            viewModel.addCustomProfile(userInput.text.toString())
+        builder.apply {
+            setPositiveButton("Add") { _, _ ->
+                if (userInput.text.toString() != "")
+                    viewModel.addCustomProfile(userInput.text.toString())
+            }
+            setNegativeButton("Cancel") { _, _ ->
+                Log.d("Cancel", "WORKS")
+            }
+            show()
         }
-        builder.setNegativeButton("Cancel") { _, _ ->
-            Log.d("Cancel", "WORKS")
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
     }
 
     private val fabListener = View.OnClickListener {
