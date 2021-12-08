@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.ShareActivity"
+        <activity android:name=".ui.share.ShareActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
