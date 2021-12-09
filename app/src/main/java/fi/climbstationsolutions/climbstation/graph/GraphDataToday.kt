@@ -1,17 +1,27 @@
 package fi.climbstationsolutions.climbstation.graph
 
 import android.app.Application
+import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
+import fi.climbstationsolutions.climbstation.database.AppDatabase
+import fi.climbstationsolutions.climbstation.database.SessionWithData
+import fi.climbstationsolutions.climbstation.utils.CalorieCounter
+import fi.climbstationsolutions.climbstation.utils.Converters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.util.*
 
-class GraphDataToday(context: Application) {
+class GraphDataToday(context: Context) {
     // This holds data to be inserted into DataPoints
     private val hourList: MutableList<Double> = mutableListOf(
-        10.0,
+        0.0,
         0.0,
         0.0,
         0.0,
@@ -37,10 +47,77 @@ class GraphDataToday(context: Application) {
         0.0
     )
 
+    private val database = AppDatabase.get(context)
+    private val sessionDao = database.sessionDao()
+
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun createGraphData(selectedVariable: String): BarGraphSeries<DataPoint> = withContext(
         Dispatchers.IO
     ) {
+        val date = Date()
+        val localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        val year = localDate.year
+        val month = localDate.monthValue
+        val day = localDate.dayOfMonth
+        val currentYearMonthDay = year.toString() + month.toString() + day.toString()
+
+        val beginningOfDay = LocalDateTime.of(year, month, day, 0, 0)
+        val daySelected = Date.from(beginningOfDay.toInstant(ZoneOffset.UTC))
+        val nextDay = Date.from(beginningOfDay.plusDays(1).toInstant(ZoneOffset.UTC))
+
+        val sessionsToday: List<SessionWithData> =
+            sessionDao.getSessionWithDataBetween(daySelected, nextDay)
+        Log.d("graphDataToday", "sessionsToday: $sessionsToday")
+
+        val cal = Calendar.getInstance()
+        var counter = 1
+        var itemHourPrevious = 0
+        var itemHour = 0
+        val averageAngleList: MutableList<Int> = mutableListOf()
+        val distanceList: MutableList<Float> = mutableListOf()
+        val caloriesList: MutableList<Float> = mutableListOf()
+
+        // assign items to hourList
+        for (item in sessionsToday) {
+            val itemDate = item.session.endedAt
+            cal.time = itemDate!!
+            itemHour = cal[Calendar.HOUR_OF_DAY]
+            if (counter == 1) itemHourPrevious = itemHour
+            if (itemHour != itemHourPrevious) {
+                counter = 1
+                averageAngleList.clear()
+                distanceList.clear()
+                caloriesList.clear()
+            }
+            if (selectedVariable == "Distance") {
+                distanceList.add((item.data.first().totalDistance).toFloat() / 1000)
+                hourList[itemHour] = distanceList.sum().toDouble()
+            }
+            if (selectedVariable == "Avg angle") {
+                for (i in item.data) {
+                    averageAngleList.add(i.angle)
+                }
+                hourList[itemHour] = averageAngleList.average()
+            }
+            if (selectedVariable == "Time") {
+                val startTime = item.session.createdAt.time
+                val endTime = item.session.endedAt.time
+                Log.d("GraphDataToday", "startTime: $startTime, endTime: $endTime")
+                val duration = (String.format("%.3f", (((endTime - startTime).toFloat() / 1000) / 60))).toDouble()
+                Log.d("GraphDataToday","duration: $duration minutes")
+                hourList[itemHour] += duration
+            }
+
+            if(selectedVariable == "Calories") {
+                val userWeight = database.settingsDao().getBodyWeightById(1)?.weight
+                val distance = (item.data.first().totalDistance.toFloat() / 1000)
+                val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
+                caloriesList.add(calories)
+                Log.d("GraphDataToday", "caloriesList: $caloriesList")
+                hourList[itemHour] = caloriesList.sum().toDouble()
+            }
+        }
+
         // BarGraphSeries is used in generating graph data using DataPoints
         return@withContext BarGraphSeries(
             arrayOf(

@@ -214,7 +214,7 @@ class ProfileStatsFragment : Fragment() {
     ) {
         Log.d("createGraph", "inside createGraph")
         binding.graphView.removeAllSeries()
-        val gD: GraphDataHandler by viewModels()
+        val gD = GraphDataHandler(requireContext())
 
         if (selectedVariable == "Distance") binding.graphView.gridLabelRenderer.verticalAxisTitle = "metres"
         if (selectedVariable == "Avg angle") binding.graphView.gridLabelRenderer.verticalAxisTitle = "degrees"

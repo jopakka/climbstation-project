@@ -1,14 +1,13 @@
 package fi.climbstationsolutions.climbstation.graph
 
-import android.app.Application
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 
-class GraphDataHandler(application: Application): AndroidViewModel(application) {
-    private val appContext = application
+class GraphDataHandler(context: Context) {
+    private val appContext = context
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getGraphDataPointsOfToday(selectedVariable: String): BarGraphSeries<DataPoint> {
         return GraphDataToday(appContext).createGraphData(selectedVariable)

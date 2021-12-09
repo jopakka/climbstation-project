@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation.graph
 
 import android.app.Application
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.jjoe64.graphview.series.BarGraphSeries
@@ -8,9 +9,9 @@ import com.jjoe64.graphview.series.DataPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class GraphDataThisWeek(context: Application) {
+class GraphDataThisWeek(context: Context) {
     // This holds data to be inserted into DataPoints
-    private val dayList: MutableList<Double> = mutableListOf(20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    private val dayList: MutableList<Double> = mutableListOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun createGraphData(selectedVariable: String): BarGraphSeries<DataPoint> = withContext(
