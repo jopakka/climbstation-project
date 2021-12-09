@@ -7,6 +7,9 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 import java.util.*
 
+/**
+ * Data class for each session.
+ */
 @Entity
 data class Session(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
@@ -16,6 +19,9 @@ data class Session(
     val endedAt: Date? = null
 )
 
+/**
+ * Data class for each data item in session.
+ */
 @Entity(
     foreignKeys = [
         ForeignKey(
@@ -34,17 +40,26 @@ data class Data(
     val totalDistance: Int
 )
 
+/**
+ * Data class which gets [Session] and all of its [Data] items.
+ */
 data class SessionWithData(
     @Embedded val session: Session,
     @Relation(parentColumn = "id", entityColumn = "sessionId") val data: List<Data>
 )
 
+/**
+ * Data class for user body weight.
+ */
 @Entity
 data class BodyWeight(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val weight: Float = 70.00f
 )
 
+/**
+ * Data class for climbing profile.
+ */
 @Entity
 @Parcelize
 data class ClimbProfile(
@@ -55,6 +70,9 @@ data class ClimbProfile(
     val isDefault: Boolean = false
 ) : Parcelable
 
+/**
+ * Data class for each climbing profile step
+ */
 @Entity(
     foreignKeys = [
         ForeignKey(
@@ -73,6 +91,9 @@ data class ClimbStep(
     val angle: Int
 ) : Parcelable
 
+/**
+ * Data class which gets [ClimbProfile] and all of its [ClimbStep] items.
+ */
 @Parcelize
 data class ClimbProfileWithSteps(
     @Embedded val profile: @RawValue ClimbProfile,
