@@ -215,6 +215,12 @@ class ProfileStatsFragment : Fragment() {
         Log.d("createGraph", "inside createGraph")
         binding.graphView.removeAllSeries()
         val gD: GraphDataHandler by viewModels()
+
+        if (selectedVariable == "Distance") binding.graphView.gridLabelRenderer.verticalAxisTitle = "metres"
+        if (selectedVariable == "Avg angle") binding.graphView.gridLabelRenderer.verticalAxisTitle = "degrees"
+        if (selectedVariable == "Time") binding.graphView.gridLabelRenderer.verticalAxisTitle = "minutes"
+        if (selectedVariable == "Calories") binding.graphView.gridLabelRenderer.verticalAxisTitle = "Calories"
+
         when (selectedTime) {
             "Today" -> {
                 mainScope.launch {
@@ -229,6 +235,7 @@ class ProfileStatsFragment : Fragment() {
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(25.0)
+                    binding.graphView.gridLabelRenderer.horizontalAxisTitle = "hours of day"
                 }
             }
             "This week" -> {
@@ -244,6 +251,7 @@ class ProfileStatsFragment : Fragment() {
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(7.0)
+                    binding.graphView.gridLabelRenderer.horizontalAxisTitle = "days of week"
                 }
             }
             "This month" -> {
@@ -259,6 +267,7 @@ class ProfileStatsFragment : Fragment() {
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(32.0)
+                    binding.graphView.gridLabelRenderer.horizontalAxisTitle = "days of month"
                 }
             }
             "This year" -> {
@@ -274,6 +283,7 @@ class ProfileStatsFragment : Fragment() {
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(13.0)
+                    binding.graphView.gridLabelRenderer.horizontalAxisTitle = "months of year"
                 }
             }
             else -> {
