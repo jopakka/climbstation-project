@@ -7,6 +7,9 @@ import androidx.room.Query
 import androidx.room.Transaction
 import java.util.*
 
+/**
+ * Queries for climbing sessions.
+ */
 @Dao
 interface SessionWithDataDao {
     // Session
@@ -60,5 +63,9 @@ interface SessionWithDataDao {
     fun getSevenDayDuration(): LiveData<Long>
 
     @Query("SELECT * FROM Session WHERE createdAt >= :start AND createdAt < :end ORDER BY CASE WHEN :desc = 1 THEN createdAt END DESC, CASE WHEN :desc = 0 THEN createdAt END ASC")
-    suspend fun getSessionWithDataBetween(start: Date, end: Date, desc: Boolean = true): List<SessionWithData>
+    suspend fun getSessionWithDataBetween(
+        start: Date,
+        end: Date,
+        desc: Boolean = true
+    ): List<SessionWithData>
 }

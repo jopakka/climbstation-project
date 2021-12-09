@@ -4,6 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 
+/**
+ * Queries for users body weight.
+ */
 @Dao
 interface SettingsDao {
     //BodyWeight

@@ -5,6 +5,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import fi.climbstationsolutions.climbstation.ui.profile.ProfileHistoryFragment
 import fi.climbstationsolutions.climbstation.ui.profile.ProfileStatsFragment
 
+/**
+ * ViewPagerAdapter for profile fragment, where is displayed stats
+ * and previous sessions.
+ */
 class ProfileTabPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2

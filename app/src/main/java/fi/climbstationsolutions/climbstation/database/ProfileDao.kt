@@ -4,15 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 
+/**
+ * Queries for climbing profiles
+ */
 @Dao
 interface ProfileDao {
     @Insert
     suspend fun insertProfile(profile: ClimbProfile): Long
 
     @Query("DELETE FROM ClimbProfile WHERE id = :id AND isDefault = 0")
-    suspend fun deleteProfile (id: Long)
+    suspend fun deleteProfile(id: Long)
 
     @Insert
     suspend fun insertStep(step: ClimbStep): Long
