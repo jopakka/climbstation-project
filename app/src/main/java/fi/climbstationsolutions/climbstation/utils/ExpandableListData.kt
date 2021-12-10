@@ -19,6 +19,7 @@ internal object ExpandableListData {
             infoItems.add("How to connect to ClimbStation machine")
             infoItems.add("How to climb")
             infoItems.add("How to create custom climbing profiles")
+            infoItems.add("Developers")
             expandableListDetail["Info"] = infoItems
 
             return expandableListDetail

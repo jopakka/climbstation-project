@@ -11,10 +11,12 @@
     <string name="info_popup_title_climb">How to climb</string>
     <string name="info_popup_title_connect">How to connect to ClimbStation</string>
     <string name="info_popup_title_create_custom_climb_profile">How to create custom climb profile</string>
+    <string name="info_popup_title_developers">Developers</string>
 
     <string name="info_popup_instructions_climb">First you must navigate to the \"Climb\" view from the bottom navigation menu. You will then see a screen with multiple items.\n\nOn the top left there is a wall profile which previews all the changes in the ClimbStation machine angles. On the top right you can see a preview of the difficulty level and its components. Under the components there is a \"start\" button which starts the ClimbStation machine.\n\nMake sure you are connected to the ClimbStation machine first before starting the session.\n\nAt the bottom middle of the screen you can select difficulty profiles.\n\nIf you click on the \"manual start\" -button there is also another screen in which you can set a static angle, distance and timer for the climbing session in case you do not want the ClimbStation machine to change the angle during your session.\n\nThat is all, happy climbing!</string>
     <string name="info_popup_instructions_connect">In this menu there is a \"Connect\" section. Click it and it will take you to a view in which the device connection is handled.\n\nFirst make sure you are connected to the interned by WIFI. Then you either input the device serial number in the input field and click next or scan the QR code on the side of the ClimbStation machine.\n\nOnce you are connected, you will be taken to the \"Climb\" view in which you can start your climbing session. </string>
     <string name="info_popup_instructions_create_custom_profile">Navigate to the \"Create\" view via the bottom navigation. Add a new profile by clicking the \"ADD PROFILE\" button. It will generate a new item in the view. Next, click on that item and it will take you to another view.\n\nThe climbing profiles are created using steps. You can add a new step by clicking the \"ADD NEW STEP\" button. Each step has a length and angle. You can edit these values by clicking on them. You can add as many steps as you want.\n\nYou can use these newly created custom climbing profiles in the \"Climb\" view of the app. You should see your custom created profiles in the list of routes.</string>
+    <string name="info_popup_instructions_developers">Oskar Wiiala\nJoonas Niemi\nPatrik Pölkki</string>
 
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
@@ -105,6 +107,10 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="skip">Skip</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="saved">Saved</string>
+    <string name="profile_saved_successfully">Profile saved successfully</string>
 
     <string name="day_short">D</string>
     <string name="week_short">W</string>
@@ -152,6 +158,9 @@
     <string name="clear">Clear</string>
     <string name="filter_month_year">%s %d</string>
 
+    <string name="share">Share</string>
+    <string name="not_valid_profile">Not a valid profile</string>
+
     <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
     <string name="length">Length</string>
@@ -172,9 +181,10 @@
 
     <!--unit abbreviations-->
     <string name="speedShort">%d m/min</string>
-    <string name="distanceShort">%.1f m</string>
+    <string name="distanceShort">%.0f m</string>
     <string name="caloriesShort">%.3f kcal</string>
     <string name="angleShort">%.1f°</string>
+    <string name="angleShortInt">%d°</string>
     <string name="float_single_decimal">%.1f</string>
     <string name="bottom_nav_create">Create</string>
 
@@ -200,6 +210,9 @@
 
     <string name="session_list_year_month">%s %d</string>
     <string name="Step">Step %d</string>
+    <string name="steps">Steps</string>
+
+    <string name="save">Save</string>
 
     <plurals name="session_list_session_count">
         <item quantity="one">%d Session</item>

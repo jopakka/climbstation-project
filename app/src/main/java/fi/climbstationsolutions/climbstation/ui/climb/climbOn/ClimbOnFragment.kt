@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.TabPagerAdapter
+import fi.climbstationsolutions.climbstation.adapters.ClimbOnTabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 
@@ -74,7 +74,7 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     }
 
     private fun setupPager() {
-        binding.climbOnPager.adapter = TabPagerAdapter(this)
+        binding.climbOnPager.adapter = ClimbOnTabPagerAdapter(this)
         TabLayoutMediator(binding.tabLayout, binding.climbOnPager) { tab, pos ->
             tab.text = when (pos) {
                 0 -> getString(R.string.wall)

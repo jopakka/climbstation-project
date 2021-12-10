@@ -42,7 +42,7 @@ class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusLis
             binding.lengthEditText.hint =
                 this.itemView.context.getString(R.string.distanceShort, item.distance.toFloat())
             binding.angleEditText.hint =
-                this.itemView.context.getString(R.string.angleShort, item.angle.toFloat())
+                this.itemView.context.getString(R.string.angleShortInt, item.angle)
 
             binding.lengthEditText.doOnTextChanged { text, _, _, _ ->
                 text.toString().toIntOrNull().let {

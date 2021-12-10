@@ -18,6 +18,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.floor
 
+/**
+ * Service for fetching information from ClimbStation and controlling it
+ * while user is climbing.
+ */
 class ClimbStationService : Service() {
     companion object {
         private const val TAG = "ClimbStationService"
@@ -45,23 +49,22 @@ class ClimbStationService : Service() {
 
     private val serviceJob = Job()
     private val serviceScope = CoroutineScope(Dispatchers.IO + serviceJob)
-
     private var nm: NotificationManager? = null
     private var currentStep = 0
     private var startTime: Long = 0L
     private var timer: Int? = null // by milliseconds
-
     private var tts: Tts? = null
     private var nextDistanceToNotify = 0
     private var nextTimeToNotify = 0
-    private val distanceNotifyRange = 5 // by meters
-    private val timeNotifyRange = 1 // by minutes
-
     private var climbStationSerialNo: String? = null
     private lateinit var clientKey: String
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var profileWithSteps: ClimbProfileWithSteps
     private var localBroadcastManager: LocalBroadcastManager? = null
+
+    // Values which control how often text-to-speech will notify user
+    private val distanceNotifyRange = 5 // by meters
+    private val timeNotifyRange = 1 // by minutes
 
     /**
      * Creates notification, initializes variables and starts session.
@@ -104,13 +107,16 @@ class ClimbStationService : Service() {
         SERVICE_RUNNING = true
         climbStationSerialNo = serialNo
         profileWithSteps = prof ?: throw NullPointerException("No profile passed to extras")
-        if(timer != -1) {
+        if (timer != -1) {
             this.timer = timer
         }
         sessionDao = AppDatabase.get(this).sessionDao()
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
     }
 
+    /**
+     * Initializes [Tts] for service and values for it
+     */
     private fun initTts() {
         tts = Tts(this)
         nextDistanceToNotify = distanceNotifyRange
@@ -121,17 +127,17 @@ class ClimbStationService : Service() {
      * Stops session and log user out of ClimbStation machine. Sets [SERVICE_RUNNING] to false
      */
     private fun stopService() {
-        SERVICE_RUNNING = false
         tts?.destroy()
         climbStationSerialNo?.let {
             stopClimbStationAndLogout(it)
         }
         stopForeground(true)
         stopSelf()
+        SERVICE_RUNNING = false
     }
 
     /**
-     * Broadcasts id
+     * Broadcasts session id
      */
     private fun broadcastId(id: Long) {
         val intent = Intent(BROADCAST_ID_NAME)
@@ -139,18 +145,27 @@ class ClimbStationService : Service() {
         localBroadcastManager?.sendBroadcast(intent)
     }
 
+    /**
+     * Broadcast when session is finished
+     */
     private fun broadcastFinished() {
         val intent = Intent(BROADCAST_FINISHED)
         intent.putExtra("finished", true)
         localBroadcastManager?.sendBroadcast(intent)
     }
 
+    /**
+     * Broadcast for generic errors
+     */
     private fun broadcastError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR)
         intent.putExtra(EXTRA_ERROR, message)
         localBroadcastManager?.sendBroadcast(intent)
     }
 
+    /**
+     * Broadcast for climb errors
+     */
     private fun broadcastClimbError(message: String = "") {
         val intent = Intent(BROADCAST_ERROR_CLIMB)
         intent.putExtra(EXTRA_ERROR, message)
@@ -161,6 +176,7 @@ class ClimbStationService : Service() {
      * Creates notification for service
      */
     private fun createNotification(profileWithSteps: ClimbProfileWithSteps?) {
+        // Intent which navigates to climbOn fragment when notification is clicked
         val pendingIntent = NavDeepLinkBuilder(this)
             .setComponentName(MainActivity::class.java)
             .setGraph(R.navigation.navigation_main)
@@ -319,6 +335,9 @@ class ClimbStationService : Service() {
         adjustToProfile(info.length.toInt(), serialNo)
     }
 
+    /**
+     * Adjusts ClimbStations angle to [profileWithSteps], if user is climbed enough.
+     */
     private suspend fun adjustToProfile(distance: Int, serialNo: String) {
         var step = profileWithSteps.steps[currentStep]
         val stepsSoFar = profileWithSteps.steps.filterIndexed { index, _ -> index < currentStep }
@@ -342,6 +361,9 @@ class ClimbStationService : Service() {
         }
     }
 
+    /**
+     * Sends setAngle request to machine
+     */
     private suspend fun setAngle(angle: Int, serialNo: String) {
         try {
             ClimbStationRepository.setAngle(serialNo, clientKey, angle)
@@ -350,6 +372,9 @@ class ClimbStationService : Service() {
         }
     }
 
+    /**
+     * Sends setSpeed request to machine
+     */
     private suspend fun setSpeed(speed: Int, serialNo: String) {
         try {
             ClimbStationRepository.setSpeed(serialNo, clientKey, speed)
@@ -371,12 +396,19 @@ class ClimbStationService : Service() {
         }
     }
 
+    /**
+     * Sets end time for [Session] if [sessionID] is not null
+     */
     private suspend fun setEndTimeForSession(sessionID: Long?) {
         sessionID?.let {
             sessionDao.setEndedAtToSession(it, Calendar.getInstance().time)
         }
     }
 
+    /**
+     * Notifies user about how much (s)he is climbed, if [distance] to meters
+     * is greater than [nextDistanceToNotify]
+     */
     private fun distanceNotifier(distance: Int) {
         val meters = floor(distance / 1000f).toInt()
         if (meters >= nextDistanceToNotify) {
@@ -390,6 +422,10 @@ class ClimbStationService : Service() {
         }
     }
 
+    /**
+     * Notifies user about how much (s)he is climbed, if [time] to minutes
+     * is greater than [nextTimeToNotify]
+     */
     private fun timeNotifier(time: Long) {
         val minutes = (TimeUnit.MILLISECONDS.toMinutes(time) % TimeUnit.HOURS.toMinutes(1)).toInt()
         if (minutes >= nextTimeToNotify) {
@@ -403,9 +439,12 @@ class ClimbStationService : Service() {
         }
     }
 
+    /**
+     * @return true if [timer] is not null and it's greater than 0 else false
+     */
     private fun checkTimeFinished(elapsed: Long): Boolean {
         val t = timer
-        return if(t != null && t > 0) {
+        return if (t != null && t > 0) {
             elapsed >= t
         } else false
     }

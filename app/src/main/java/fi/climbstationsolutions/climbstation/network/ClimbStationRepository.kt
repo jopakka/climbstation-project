@@ -22,8 +22,6 @@ object ClimbStationRepository {
         return try {
             val req = LoginRequest(climbStationSerialNo, userID, password)
             val response = call.login(req)
-//            Log.d(TAG, "$response")
-
             response.clientKey ?: throw NullPointerException("No clientKey")
         } catch (e: Exception) {
             Log.e(TAG, "Login error: ${e.localizedMessage}")
@@ -43,8 +41,6 @@ object ClimbStationRepository {
         return try {
             val req = LogoutRequest(climbStationSerialNo, clientKey)
             val response = call.logout(req)
-//            Log.d(TAG, "Logout: $response")
-
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "Logout error: ${e.localizedMessage}")
@@ -65,8 +61,6 @@ object ClimbStationRepository {
         return try {
             val req = InfoRequest(climbStationSerialNo, clientKey)
             val response = call.deviceInfo(req)
-//            Log.d(TAG, "DeviceInfo: $response")
-
             if (response.response?.equals("OK") == true) response
             else throw NullPointerException("Response not ok")
         } catch (e: Exception) {
@@ -96,8 +90,6 @@ object ClimbStationRepository {
 
             val req = OperationRequest(climbStationSerialNo, clientKey, operation)
             val response = call.operation(req)
-//            Log.d(TAG, "$response")
-
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "Operation error: ${e.localizedMessage}")
@@ -114,12 +106,14 @@ object ClimbStationRepository {
      * @return [Boolean] Was operation successful
      * @throws Exception Something else went wrong
      */
-    suspend fun setSpeed(climbStationSerialNo: String, clientKey: String, @IntRange(from = 0) speed: Int): Boolean {
+    suspend fun setSpeed(
+        climbStationSerialNo: String,
+        clientKey: String,
+        @IntRange(from = 0) speed: Int
+    ): Boolean {
         return try {
             val req = SpeedRequest(climbStationSerialNo, clientKey, speed.toString())
             val response = call.setSpeed(req)
-//            Log.d(TAG, "$response")
-
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")
@@ -136,12 +130,14 @@ object ClimbStationRepository {
      * @return [Boolean] Was operation successful
      * @throws Exception Something else went wrong
      */
-    suspend fun setAngle(climbStationSerialNo: String, clientKey: String, @IntRange(from = -45, to = 45) angle: Int): Boolean {
+    suspend fun setAngle(
+        climbStationSerialNo: String,
+        clientKey: String,
+        @IntRange(from = -45, to = 45) angle: Int
+    ): Boolean {
         return try {
             val req = AngleRequest(climbStationSerialNo, clientKey, angle.toString())
             val response = call.setAngle(req)
-//            Log.d(TAG, "$response")
-
             response.response?.equals("OK") ?: false
         } catch (e: Exception) {
             Log.e(TAG, "SetSpeed error: ${e.localizedMessage}")

@@ -105,6 +105,7 @@ class MainActivity : AppCompatActivity() {
         when (d.id) {
             R.id.climbOnFragment,
             R.id.climbFinishedFragment,
+            R.id.customStepsFragment,
             R.id.climbHistory -> hideBottomNav()
             else -> showBottomNav()
         }

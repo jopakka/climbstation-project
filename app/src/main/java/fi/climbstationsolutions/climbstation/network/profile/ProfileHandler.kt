@@ -35,6 +35,9 @@ object ProfileHandler {
     }
 }
 
+/**
+ * Data class for default profile steps.
+ */
 @Parcelize
 data class Step(
     val step: Int,
@@ -42,6 +45,9 @@ data class Step(
     val angle: Int
 ) : Parcelable
 
+/**
+ * Data class for default profiles.
+ */
 @Parcelize
 data class Profile(
     val level: Int,

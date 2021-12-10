@@ -14,6 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+/**
+ * Database class which contains [Session], [Data], [BodyWeight], [ClimbProfile] and
+ * [ClimbStep] entities.
+ */
 @Database(
     entities = [
         Session::class,
@@ -33,6 +37,12 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var mInstance: AppDatabase? = null
 
+        /**
+         * Gets instance of [AppDatabase].
+         *
+         * When this is called first time, it will automatically adds default profiles
+         * from raw folder "profiles.json" to database.
+         */
         fun get(context: Context): AppDatabase {
             return mInstance ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -50,7 +60,8 @@ abstract class AppDatabase : RoomDatabase() {
                             val dao = get(context).profileDao()
                             val profiles = ProfileHandler.readProfiles(context, R.raw.profiles)
                             profiles.forEach {
-                                val id = dao.insertProfile(ClimbProfile(0, it.name, isDefault = true))
+                                val id =
+                                    dao.insertProfile(ClimbProfile(0, it.name, isDefault = true))
                                 it.steps.forEach { s ->
                                     dao.insertStep(ClimbStep(0, id, s.distance, s.angle))
                                 }

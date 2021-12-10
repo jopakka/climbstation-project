@@ -6,7 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.view.*
 import android.widget.EditText
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomProfileAdapter
-import fi.climbstationsolutions.climbstation.adapters.CustomStepsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentCustomProfileBinding
+import fi.climbstationsolutions.climbstation.utils.ProfileSharer
 import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
 
 class CustomProfileFragment : Fragment(), CustomProfileClickListener {
@@ -40,10 +43,21 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
         val swipeHandler = object : SwipeToDelete(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
-                when(direction) {
+                when (direction) {
                     ItemTouchHelper.LEFT -> {
-                        val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
-                        viewModel.deleteProfile(id)
+                        val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+                        builder.apply {
+                            setTitle("Delete custom profile")
+                            setMessage("Are you sure you want to delete the profile?")
+                            setNegativeButton("Cancel") { _, _ ->
+                                adapter.notifyItemChanged(viewHolder.bindingAdapterPosition)
+                            }
+                            setPositiveButton("Delete") { _, _ ->
+                                val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
+                                viewModel.deleteProfile(id)
+                            }
+                            show()
+                        }
                     }
                 }
             }
@@ -54,6 +68,7 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
 
         setCustomProfilesToRecyclerView()
         binding.floatingActionButton.setOnClickListener(fabListener)
+        registerForContextMenu(binding.customProfileRv)
         return binding.root
     }
 
@@ -73,20 +88,20 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
 
     private fun addNamePopUp() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
-        val li = LayoutInflater.from(activity?.applicationContext)
-        val promptsView = li.inflate(R.layout.custom_profile_prompt, null)
+        val promptsView = layoutInflater.inflate(R.layout.custom_profile_prompt, null)
         builder.setView(promptsView)
         val userInput = promptsView.findViewById<EditText>(R.id.custom_profile_dialog_editText)
-        builder.setCancelable(true)
 
-        builder.setPositiveButton("Add") { _, _ ->
-            viewModel.addCustomProfile(userInput.text.toString())
+        builder.apply {
+            setPositiveButton("Add") { _, _ ->
+                if (userInput.text.toString() != "")
+                    viewModel.addCustomProfile(userInput.text.toString())
+            }
+            setNegativeButton("Cancel") { _, _ ->
+                Log.d("Cancel", "WORKS")
+            }
+            show()
         }
-        builder.setNegativeButton("Cancel") { _, _ ->
-            Log.d("Cancel", "WORKS")
-        }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
     }
 
     private val fabListener = View.OnClickListener {
@@ -100,5 +115,20 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
     override fun onCustomProfileClickListener(id: Long) {
         val action = CustomProfileFragmentDirections.actionCreateToCustomStepsFragment(id)
         findNavController().navigate(action)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuShare -> {
+                val sharer = ProfileSharer(requireActivity())
+                val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
+                viewModel.customProfiles.observe(viewLifecycleOwner) {
+                    val profile = it.firstOrNull { p -> p.profile.id == adapter.selectedProfileId }
+                    if (profile != null) sharer.shareProfile(profile)
+                }
+                true
+            }
+            else -> super.onContextItemSelected(item)
+        }
     }
 }
