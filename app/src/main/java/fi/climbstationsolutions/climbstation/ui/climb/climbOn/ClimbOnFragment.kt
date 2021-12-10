@@ -64,7 +64,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
         viewModel.startTimer()
 
         setBackButtonAction()
-        setupPager()
 
         return binding.root
     }
@@ -79,17 +78,6 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             unregisterReceiver(errorBroadcastReceiver)
             unregisterReceiver(finishedBroadcastReceiver)
         }
-    }
-
-    private fun setupPager() {
-        binding.climbOnPager.adapter = ClimbOnTabPagerAdapter(this)
-        TabLayoutMediator(binding.tabLayout, binding.climbOnPager) { tab, pos ->
-            tab.text = when (pos) {
-                0 -> getString(R.string.wall)
-                1 -> getString(R.string.stats)
-                else -> null
-            }
-        }.attach()
     }
 
     private fun setBackButtonAction() {
