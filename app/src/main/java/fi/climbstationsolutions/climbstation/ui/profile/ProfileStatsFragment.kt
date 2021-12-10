@@ -1,7 +1,6 @@
 package fi.climbstationsolutions.climbstation.ui.profile
 
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,17 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.annotation.RequiresApi
-import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.button.MaterialButton
-import com.google.gson.internal.bind.ArrayTypeAdapter
 import com.jjoe64.graphview.GridLabelRenderer
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
-import com.jjoe64.graphview.series.LineGraphSeries
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileStatsBinding
 import fi.climbstationsolutions.climbstation.graph.GraphDataHandler
@@ -108,8 +103,8 @@ class ProfileStatsFragment : Fragment() {
         val series = BarGraphSeries(dataPoints)
         series.color = ContextCompat.getColor(requireContext(), R.color.climbstation_red)
         series.spacing = 5
-        series.isDrawValuesOnTop = true;
-        series.valuesOnTopColor = Color.WHITE;
+        series.isDrawValuesOnTop = true
+        series.valuesOnTopColor = Color.WHITE
         binding.graphView.addSeries(series)
         series.valuesOnTopSize = 25F
 
@@ -140,32 +135,28 @@ class ProfileStatsFragment : Fragment() {
                 viewModel.setTime("Today")
                 viewModel.setTime2(CustomDateGenerator.getToday())
                 selectedTime = "Today"
-                Log.d("time selection1", "time selected: $selectedTime")
-                createGraph(binding.root, selectedVariable, selectedTime)
+                createGraph(selectedVariable, selectedTime)
             }
             binding.profileGraphSelectWeek -> {
                 selectGraphButton(it as MaterialButton)
                 viewModel.setTime("This week")
                 viewModel.setTime2(CustomDateGenerator.getThisWeek())
                 selectedTime = "This week"
-                Log.d("time selection2", "time selected: $selectedTime")
-                createGraph(binding.root, selectedVariable, selectedTime)
+                createGraph(selectedVariable, selectedTime)
             }
             binding.profileGraphSelectMonth -> {
                 selectGraphButton(it as MaterialButton)
                 viewModel.setTime("This month")
                 viewModel.setTime2(CustomDateGenerator.getThisMonth())
                 selectedTime = "This month"
-                Log.d("time selection3", "time selected: $selectedTime")
-                createGraph(binding.root, selectedVariable, selectedTime)
+                createGraph(selectedVariable, selectedTime)
             }
             binding.profileGraphSelectYear -> {
                 selectGraphButton(it as MaterialButton)
                 viewModel.setTime("This year")
                 viewModel.setTime2(CustomDateGenerator.getThisYear())
                 selectedTime = "This year"
-                Log.d("time selection4", "time selected: $selectedTime")
-                createGraph(binding.root, selectedVariable, selectedTime)
+                createGraph(selectedVariable, selectedTime)
             }
         }
     }
@@ -175,30 +166,22 @@ class ProfileStatsFragment : Fragment() {
     ) {
         binding.profileGraphSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    Log.d("spinner", "clicked")
+
                     viewModel.setVariable(spinnerList[p2])
-                    Log.d("spinner", "spinnerlist: ${spinnerList[p2]}")
-                    Log.d("spinner", "viewmodel: ${viewModel.graphVariable.value}")
 
                     selectedVariable = spinnerList[p2]
-                    Log.d("selectVariable click", "item selected: $selectedVariable")
                     if (selectedVariable == "Distance") {
-                        Log.d("variable selection1", "variable selected: $selectedVariable")
-                        createGraph(binding.root, selectedVariable, selectedTime)
+                        createGraph(selectedVariable, selectedTime)
                     }
                     if (selectedVariable == "Avg angle") {
-                        Log.d("variable selection2", "variable selected: $selectedVariable")
-                        createGraph(binding.root, selectedVariable, selectedTime)
+                        createGraph(selectedVariable, selectedTime)
                     }
                     if (selectedVariable == "Time") {
-                        Log.d("variable selection3", "variable selected: $selectedVariable")
-                        createGraph(binding.root, selectedVariable, selectedTime)
+                        createGraph(selectedVariable, selectedTime)
                     }
                     if (selectedVariable == "Calories") {
-                        Log.d("variable selection4", "variable selected: $selectedVariable")
-                        createGraph(binding.root, selectedVariable, selectedTime)
+                        createGraph(selectedVariable, selectedTime)
                     }
                 }
 
@@ -209,28 +192,31 @@ class ProfileStatsFragment : Fragment() {
     }
 
     private fun createGraph(
-        view: View,
         selectedVariable: String = "Distance",
         selectedTime: String = "Today"
     ) {
-        Log.d("createGraph", "inside createGraph")
         binding.graphView.removeAllSeries()
         val gD = GraphDataHandler(requireContext())
 
-        if (selectedVariable == "Distance") binding.graphView.gridLabelRenderer.verticalAxisTitle = "metres"
-        if (selectedVariable == "Avg angle") binding.graphView.gridLabelRenderer.verticalAxisTitle = "degrees"
-        if (selectedVariable == "Time") binding.graphView.gridLabelRenderer.verticalAxisTitle = "minutes"
-        if (selectedVariable == "Calories") binding.graphView.gridLabelRenderer.verticalAxisTitle = "Calories"
+        if (selectedVariable == "Distance") binding.graphView.gridLabelRenderer.verticalAxisTitle =
+            "metres"
+        if (selectedVariable == "Avg angle") binding.graphView.gridLabelRenderer.verticalAxisTitle =
+            "degrees"
+        if (selectedVariable == "Time") binding.graphView.gridLabelRenderer.verticalAxisTitle =
+            "minutes"
+        if (selectedVariable == "Calories") binding.graphView.gridLabelRenderer.verticalAxisTitle =
+            "Calories"
 
         when (selectedTime) {
             "Today" -> {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfToday(selectedVariable)
                     series.isAnimated = true
-                    series.color = ContextCompat.getColor(requireContext(), R.color.climbstation_red)
+                    series.color =
+                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true;
-                    series.valuesOnTopColor = Color.WHITE;
+                    series.isDrawValuesOnTop = true
+                    series.valuesOnTopColor = Color.WHITE
                     series.valuesOnTopSize = 25F
 
                     binding.graphView.addSeries(series)
@@ -243,10 +229,11 @@ class ProfileStatsFragment : Fragment() {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfThisWeek(selectedVariable)
                     series.isAnimated = true
-                    series.color = ContextCompat.getColor(requireContext(), R.color.climbstation_red)
+                    series.color =
+                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true;
-                    series.valuesOnTopColor = Color.WHITE;
+                    series.isDrawValuesOnTop = true
+                    series.valuesOnTopColor = Color.WHITE
                     series.valuesOnTopSize = 25F
 
                     binding.graphView.addSeries(series)
@@ -257,13 +244,13 @@ class ProfileStatsFragment : Fragment() {
             }
             "This month" -> {
                 mainScope.launch {
-                    Log.d("createGraph","inside This month")
                     val series = gD.getGraphDataPointsOfThisMonth(selectedVariable)
                     series.isAnimated = true
-                    series.color = ContextCompat.getColor(requireContext(), R.color.climbstation_red)
+                    series.color =
+                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true;
-                    series.valuesOnTopColor = Color.WHITE;
+                    series.isDrawValuesOnTop = true
+                    series.valuesOnTopColor = Color.WHITE
                     series.valuesOnTopSize = 25F
 
                     binding.graphView.addSeries(series)
@@ -276,10 +263,11 @@ class ProfileStatsFragment : Fragment() {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfThisYear(selectedVariable)
                     series.isAnimated = true
-                    series.color = ContextCompat.getColor(requireContext(), R.color.climbstation_red)
+                    series.color =
+                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true;
-                    series.valuesOnTopColor = Color.WHITE;
+                    series.isDrawValuesOnTop = true
+                    series.valuesOnTopColor = Color.WHITE
                     series.valuesOnTopSize = 25F
 
                     binding.graphView.addSeries(series)
@@ -289,7 +277,7 @@ class ProfileStatsFragment : Fragment() {
                 }
             }
             else -> {
-                Log.d("createGraph","no action set for time: $selectedTime")
+                Log.d("createGraph", "no action set for time: $selectedTime")
             }
         }
     }

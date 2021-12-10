@@ -1,9 +1,7 @@
 package fi.climbstationsolutions.climbstation.graph
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -23,7 +21,6 @@ class GraphDataThisWeek(context: Context) {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun createGraphData(selectedVariable: String): BarGraphSeries<DataPoint> = withContext(
         Dispatchers.IO
     ) {
@@ -35,11 +32,9 @@ class GraphDataThisWeek(context: Context) {
         val week = calendarCurrent[Calendar.WEEK_OF_YEAR]
 
         calendarCurrent.clear()
-        calendarCurrent.set(Calendar.WEEK_OF_YEAR, week);
-        calendarCurrent.set(Calendar.YEAR, year);
+        calendarCurrent.set(Calendar.WEEK_OF_YEAR, week)
+        calendarCurrent.set(Calendar.YEAR, year)
         val day = calendarCurrent[Calendar.DAY_OF_MONTH]
-
-        Log.d("GraphDataThisWeek", "currentYear: $year, currentWeek: $week, firstDayOfWeek: $day")
 
         val beginningOfWeek = LocalDateTime.of(year, month, day, 0, 0)
         val weekSelected = Date.from(beginningOfWeek.toInstant(ZoneOffset.UTC))
@@ -51,7 +46,7 @@ class GraphDataThisWeek(context: Context) {
         val calendarItem = Calendar.getInstance()
         var counter = 1
         var itemMonthPrevious = 0
-        var itemWeekIndex = 0
+        var itemWeekIndex: Int
         val averageAngleList: MutableList<Int> = mutableListOf()
         val distanceList: MutableList<Float> = mutableListOf()
         val caloriesList: MutableList<Float> = mutableListOf()
@@ -62,11 +57,9 @@ class GraphDataThisWeek(context: Context) {
                 itemDate!!.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             calendarItem.time = itemDate
             itemWeekIndex = localItemDate.dayOfWeek.value - 1
-            Log.d("GraphDataThisWeek","itemWeekIndex: $itemWeekIndex, itemWeek: ${localItemDate.dayOfWeek}")
 
             if (counter == 1) itemMonthPrevious = itemWeekIndex
             if (itemWeekIndex != itemMonthPrevious) {
-                Log.d("GraphDataThisMonth", "Clearing lists")
                 counter = 1
                 averageAngleList.clear()
                 distanceList.clear()
@@ -91,9 +84,10 @@ class GraphDataThisWeek(context: Context) {
                 "Time" -> {
                     val startTime = item.session.createdAt.time
                     val endTime = item.session.endedAt.time
-                    Log.d("GraphDataToday", "startTime: $startTime, endTime: $endTime")
-                    val duration = (String.format("%.3f", (((endTime - startTime).toFloat() / 1000) / 60))).toDouble()
-                    Log.d("GraphDataToday","duration: $duration minutes")
+                    val duration = (String.format(
+                        "%.3f",
+                        (((endTime - startTime).toFloat() / 1000) / 60)
+                    )).toDouble()
                     dayList[itemWeekIndex] += duration
                 }
                 "Calories" -> {
@@ -105,7 +99,6 @@ class GraphDataThisWeek(context: Context) {
                     val distance = tempDistanceList.maxOrNull() ?: 0.0f
                     val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
                     caloriesList.add(calories)
-                    Log.d("GraphDataToday", "caloriesList: $caloriesList")
                     dayList[itemWeekIndex] = caloriesList.sum().toDouble()
                 }
                 else -> Log.d("GraphDataThisWeek", "No action set for variable: $selectedVariable")

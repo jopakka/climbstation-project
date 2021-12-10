@@ -1,9 +1,7 @@
 package fi.climbstationsolutions.climbstation.graph
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -55,7 +53,6 @@ class GraphDataThisMonth(context: Context) {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun createGraphData(selectedVariable: String): BarGraphSeries<DataPoint> = withContext(
         Dispatchers.IO
     ) {
@@ -64,8 +61,6 @@ class GraphDataThisMonth(context: Context) {
         val localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
         val year = localDate.year
         val month = localDate.monthValue
-        val day = localDate.dayOfMonth
-        val currentYearMonthDay = year.toString() + month.toString() + day.toString()
 
         val beginningOfMonth = LocalDateTime.of(year, month, 1, 0, 0)
         val monthSelected = Date.from(beginningOfMonth.toInstant(ZoneOffset.UTC))
@@ -73,29 +68,23 @@ class GraphDataThisMonth(context: Context) {
 
         val sessionsThisMonth: List<SessionWithData> =
             sessionDao.getSessionWithDataBetween(monthSelected, nextMonth)
-        Log.d("graphDataThisMonth", "sessionsThisMonth: $sessionsThisMonth")
 
         val cal = Calendar.getInstance()
         var counter = 1
         var itemDayPrevious = 0
-        var itemDayIndex = 0
+        var itemDayIndex: Int
         val averageAngleList: MutableList<Int> = mutableListOf()
         val distanceList: MutableList<Float> = mutableListOf()
         val caloriesList: MutableList<Float> = mutableListOf()
 
         // assign items to hourList
         for (item in sessionsThisMonth) {
-//            Log.d("GraphDataThisMonth", "item: ${item}")
             val itemDate = item.session.endedAt
             val localItemDate = itemDate!!.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-            cal.time = itemDate!!
-//            itemDay = cal[Calendar.DAY_OF_MONTH]
+            cal.time = itemDate
             itemDayIndex = localItemDate.dayOfMonth - 1
-            Log.d("GraphDataThisMonth", "itemDay: $itemDayIndex, itemDayPrevious: $itemDayPrevious")
-            Log.d("GraphDataThisMonth", "Clearing lists1")
             if (counter == 1) itemDayPrevious = itemDayIndex
             if (itemDayIndex != itemDayPrevious) {
-                Log.d("GraphDataThisMonth", "Clearing lists")
                 counter = 1
                 averageAngleList.clear()
                 distanceList.clear()
@@ -119,12 +108,10 @@ class GraphDataThisMonth(context: Context) {
                 "Time" -> {
                     val startTime = item.session.createdAt.time
                     val endTime = item.session.endedAt.time
-                    Log.d("GraphDataToday", "startTime: $startTime, endTime: $endTime")
                     val duration = (String.format(
                         "%.3f",
                         (((endTime - startTime).toFloat() / 1000) / 60)
                     )).toDouble()
-                    Log.d("GraphDataToday", "duration: $duration minutes")
                     dayList[itemDayIndex] += duration
                 }
                 "Calories" -> {
@@ -136,10 +123,9 @@ class GraphDataThisMonth(context: Context) {
                     val distance = tempDistanceList.maxOrNull() ?: 0.0f
                     val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
                     caloriesList.add(calories)
-                    Log.d("GraphDataToday", "caloriesList: $caloriesList")
                     dayList[itemDayIndex] = caloriesList.sum().toDouble()
                 }
-                else -> Log.d("GraphDataThisMonth","No action set for variable: $selectedVariable")
+                else -> Log.d("GraphDataThisMonth", "No action set for variable: $selectedVariable")
             }
         }
 

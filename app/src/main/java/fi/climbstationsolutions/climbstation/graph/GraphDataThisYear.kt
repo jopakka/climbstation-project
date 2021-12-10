@@ -1,9 +1,7 @@
 package fi.climbstationsolutions.climbstation.graph
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -36,15 +34,11 @@ class GraphDataThisYear(context: Context) {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun createGraphData(selectedVariable: String): BarGraphSeries<DataPoint> =
         withContext(Dispatchers.IO) {
             val date = Date()
             val localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
             val year = localDate.year
-            val month = localDate.monthValue
-            val day = localDate.dayOfMonth
-            val currentYearMonthDay = year.toString() + month.toString() + day.toString()
 
             val beginningOfYear = LocalDateTime.of(year, 1, 1, 0, 0)
             val yearSelected = Date.from(beginningOfYear.toInstant(ZoneOffset.UTC))
@@ -56,7 +50,7 @@ class GraphDataThisYear(context: Context) {
             val cal = Calendar.getInstance()
             var counter = 1
             var itemMonthPrevious = 0
-            var itemMonthIndex = 0
+            var itemMonthIndex: Int
             val averageAngleList: MutableList<Int> = mutableListOf()
             val distanceList: MutableList<Float> = mutableListOf()
             val caloriesList: MutableList<Float> = mutableListOf()
@@ -65,12 +59,11 @@ class GraphDataThisYear(context: Context) {
                 val itemDate = item.session.endedAt
                 val localItemDate =
                     itemDate!!.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                cal.time = itemDate!!
+                cal.time = itemDate
                 itemMonthIndex = localItemDate.monthValue - 1
 
                 if (counter == 1) itemMonthPrevious = itemMonthIndex
                 if (itemMonthIndex != itemMonthPrevious) {
-                    Log.d("GraphDataThisMonth", "Clearing lists")
                     counter = 1
                     averageAngleList.clear()
                     distanceList.clear()
@@ -96,12 +89,10 @@ class GraphDataThisYear(context: Context) {
                     "Time" -> {
                         val startTime = item.session.createdAt.time
                         val endTime = item.session.endedAt.time
-                        Log.d("GraphDataToday", "startTime: $startTime, endTime: $endTime")
                         val duration = (String.format(
                             "%.3f",
                             (((endTime - startTime).toFloat() / 1000) / 60)
                         )).toDouble()
-                        Log.d("GraphDataToday", "duration: $duration minutes")
                         monthList[itemMonthIndex] += duration
                     }
                     "Calories" -> {
@@ -111,13 +102,14 @@ class GraphDataThisYear(context: Context) {
                             tempDistanceList.add((i.totalDistance).toFloat() / 1000)
                         }
                         val distance = tempDistanceList.maxOrNull() ?: 0.0f
-                        Log.d("GraphDataThisYear", "distanceCalories: $distance")
                         val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
                         caloriesList.add(calories)
-                        Log.d("GraphDataToday", "caloriesList: $caloriesList")
                         monthList[itemMonthIndex] = caloriesList.sum().toDouble()
                     }
-                    else -> Log.d("GraphDataThisYear", "No action set for variable: $selectedVariable")
+                    else -> Log.d(
+                        "GraphDataThisYear",
+                        "No action set for variable: $selectedVariable"
+                    )
                 }
             }
 

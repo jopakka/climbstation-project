@@ -1,9 +1,7 @@
 package fi.climbstationsolutions.climbstation.graph
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -48,7 +46,6 @@ class GraphDataToday(context: Context) {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun createGraphData(selectedVariable: String): BarGraphSeries<DataPoint> = withContext(
         Dispatchers.IO
     ) {
@@ -57,7 +54,6 @@ class GraphDataToday(context: Context) {
         val year = localDate.year
         val month = localDate.monthValue
         val day = localDate.dayOfMonth
-        val currentYearMonthDay = year.toString() + month.toString() + day.toString()
 
         val beginningOfDay = LocalDateTime.of(year, month, day, 0, 0)
         val daySelected = Date.from(beginningOfDay.toInstant(ZoneOffset.UTC))
@@ -65,12 +61,11 @@ class GraphDataToday(context: Context) {
 
         val sessionsToday: List<SessionWithData> =
             sessionDao.getSessionWithDataBetween(daySelected, nextDay)
-        Log.d("graphDataToday", "sessionsToday: $sessionsToday")
 
         val cal = Calendar.getInstance()
         var counter = 1
         var itemHourPrevious = 0
-        var itemHour = 0
+        var itemHour: Int
         val averageAngleList: MutableList<Int> = mutableListOf()
         val distanceList: MutableList<Float> = mutableListOf()
         val caloriesList: MutableList<Float> = mutableListOf()
@@ -105,12 +100,10 @@ class GraphDataToday(context: Context) {
                 "Time" -> {
                     val startTime = item.session.createdAt.time
                     val endTime = item.session.endedAt.time
-                    Log.d("GraphDataToday", "startTime: $startTime, endTime: $endTime")
                     val duration = (String.format(
                         "%.3f",
                         (((endTime - startTime).toFloat() / 1000) / 60)
                     )).toDouble()
-                    Log.d("GraphDataToday", "duration: $duration minutes")
                     hourList[itemHour] += duration
                 }
                 "Calories" -> {
@@ -122,7 +115,6 @@ class GraphDataToday(context: Context) {
                     val distance = tempDistanceList.maxOrNull() ?: 0.0f
                     val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
                     caloriesList.add(calories)
-                    Log.d("GraphDataToday", "caloriesList: $caloriesList")
                     hourList[itemHour] = caloriesList.sum().toDouble()
                 }
                 else -> Log.d("GraphDataToday", "No action set for variable: $selectedVariable")
