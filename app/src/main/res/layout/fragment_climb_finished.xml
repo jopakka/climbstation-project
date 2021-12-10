@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/darkened_mountain"
+        android:background="@color/fragment_background_color"
         android:theme="@style/CustomFont">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:autoSizeTextType="uniform"
                 android:text="@string/congratulations"
@@ -34,6 +34,7 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,12 +43,12 @@
                 layout="@layout/layout_climb_statistics"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/btnClimbAgain"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtCongrats"
+                app:layout_constraintTop_toBottomOf="@+id/textView28"
                 app:profile="@{viewModel.profileWithSteps}"
                 app:session="@{viewModel.sessionWithData}" />
 
@@ -86,6 +87,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btnClimbAgain" />
+
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:goal="@{viewModel.profileWithSteps.steps}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCongrats"
+                app:result="@{viewModel.sessionWithData.data}"
+                tools:text="you climbed %.1f meters\nfrom the %d-meter goal" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

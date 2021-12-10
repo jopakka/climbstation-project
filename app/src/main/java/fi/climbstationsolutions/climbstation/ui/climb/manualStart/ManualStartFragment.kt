@@ -26,8 +26,38 @@ import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.ManualStartViewModel
 import me.angrybyte.numberpicker.listener.OnValueChangeListener
+import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 
-class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
+import androidx.recyclerview.widget.SnapHelper
+
+import android.R.attr.name
+import fi.climbstationsolutions.climbstation.adapters.TestiAdapter
+import android.widget.Toast
+
+import android.widget.TextView
+
+import fi.climbstationsolutions.climbstation.ui.MainActivity
+
+import android.R.attr.name
+import org.w3c.dom.Text
+import android.util.DisplayMetrics
+
+import android.R.attr.name
+import android.view.ViewTreeObserver
+import androidx.core.view.setPadding
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import android.R.attr.name
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.R.attr.name
+
+
+
+
+
+class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener, PickerLayoutManager.onScrollStopListener {
     private lateinit var binding: FragmentManualStartBinding
     private lateinit var broadcastManager: LocalBroadcastManager
     private val TAG: String = ManualStartFragment::class.java.simpleName
@@ -49,6 +79,25 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         climbViewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
+
+        val pickerLayoutManager = PickerLayoutManager(context, PickerLayoutManager.HORIZONTAL, false)
+        pickerLayoutManager.apply {
+            isChangeAlpha = true
+            scaleDownBy = 0.99f
+            scaleDownDistance = 0.9f
+        }
+        val snapHelper: SnapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(binding.testiRv)
+
+        val list: MutableList<Int> = mutableListOf()
+        for (i in 1..100) {
+            list.add(i)
+        }
+        binding.testiRv.apply {
+            layoutManager = pickerLayoutManager
+            adapter = TestiAdapter(list)
+            smoothScrollBy(1, 0)
+        }
 
         return binding.root
     }
@@ -215,5 +264,10 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
     override fun onValueChanged(oldValue: Int, newValue: Int) {
         viewModel.setAngle(binding.adjustFragmentAnglePicker.value)
         viewModel.setLength(binding.adjustFragmentLengthPicker.value)
+    }
+
+    override fun selectedView(view: View?) {
+        view as TextView
+        Log.d("VALUE", view.text.toString())
     }
 }
