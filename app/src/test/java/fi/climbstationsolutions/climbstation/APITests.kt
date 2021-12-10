@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import fi.climbstationsolutions.climbstation.network.ClimbStationAPI
 import fi.climbstationsolutions.climbstation.network.LoginRequest
 import fi.climbstationsolutions.climbstation.network.LogoutRequest
-import fi.climbstationsolutions.climbstation.network.Service
+import fi.climbstationsolutions.climbstation.network.ClimbStationHttpService
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -17,7 +17,7 @@ import org.junit.Test
 
 class APITests {
     private var server = MockWebServer()
-    private lateinit var api: Service
+    private lateinit var api: ClimbStationHttpService
 
     @Before
     fun setup() {

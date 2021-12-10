@@ -17,6 +17,15 @@ class ProfileViewModel(context: Context) : ViewModel() {
     val sevenDayDistance = sessionDao.getSevenDayDistance()
     val sevenDateDuration = sessionDao.getSevenDayDuration()
 
+    private val _graphTime = MutableLiveData<String>()
+    val graphTime: LiveData<String> = _graphTime
+
+    private val _graphTime2 = MutableLiveData<String>()
+    val graphTime2: LiveData<String> = _graphTime2
+
+    private val _graphVariable = MutableLiveData<String>()
+    val graphVariable: LiveData<String> = _graphVariable
+
     private val mFilteredSessions: MutableLiveData<List<SessionWithData>> by lazy {
         MutableLiveData<List<SessionWithData>>()
     }
@@ -25,6 +34,18 @@ class ProfileViewModel(context: Context) : ViewModel() {
 
     init {
         showAllSessions()
+    }
+
+    fun setTime(time: String) {
+        _graphTime.value = time
+    }
+
+    fun setTime2(time: String) {
+        _graphTime2.value = time
+    }
+
+    fun setVariable(variable: String) {
+        _graphVariable.value = variable
     }
 
     fun filterList(start: Date, end: Date) {

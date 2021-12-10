@@ -5,6 +5,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbProfilesFragment
 import fi.climbstationsolutions.climbstation.ui.climb.manualStart.ManualStartFragment
 
+/**
+ * ViewPagerAdapter for climb fragment, where is displayed climbProfiles
+ * and manual start.
+ */
 class ClimbTabPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2

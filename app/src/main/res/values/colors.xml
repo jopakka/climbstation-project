@@ -26,6 +26,8 @@
     <color name="light_transparent">#D2FFFFFF</color>
     <color name="button_green">#21BE17</color>
 
+    <color name="graph_button_semitransparent">#25FFFFFF</color>
+
     <color name="list_child_title">#AAAAAA</color>
     <color name="list_group_title">#808080</color>
 </resources>

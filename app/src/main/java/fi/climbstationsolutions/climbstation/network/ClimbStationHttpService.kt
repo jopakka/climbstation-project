@@ -3,7 +3,10 @@ package fi.climbstationsolutions.climbstation.network
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface Service {
+/**
+ * Http queries for controlling ClimbStation
+ */
+interface ClimbStationHttpService {
     @POST("login")
     suspend fun login(@Body req: LoginRequest): LoginResponse
 

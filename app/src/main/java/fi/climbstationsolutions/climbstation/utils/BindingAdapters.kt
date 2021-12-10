@@ -169,40 +169,40 @@ fun bindAllTimeDistance(view: TextView, distance: Int) {
 
 @BindingAdapter("infoPopupTitle")
 fun bindInfoPopupTitle(view: TextView, title: String) {
-    when (title) {
+    view.text = when (title) {
         "How to climb" -> {
-            view.text = view.context.getString(R.string.info_popup_title_climb)
+            view.context.getString(R.string.info_popup_title_climb)
         }
         "How to connect to ClimbStation machine" -> {
-            view.text = view.context.getString(R.string.info_popup_title_connect)
+            view.context.getString(R.string.info_popup_title_connect)
         }
         "How to create custom climbing profiles" -> {
-            view.text =
-                view.context.getString(R.string.info_popup_title_create_custom_climb_profile)
+            view.context.getString(R.string.info_popup_title_create_custom_climb_profile)
         }
+        "Developers" -> view.context.getString(R.string.info_popup_title_developers)
         else -> {
-            view.text = "error"
             Log.d("bindInfoPopupTitle", "no such title: $title")
+            "error"
         }
     }
 }
 
 @BindingAdapter("infoPopupInstructions")
 fun bindInfoPopupInstructions(view: TextView, title: String) {
-    when (title) {
+    view.text = when (title) {
         "How to climb" -> {
-            view.text = view.context.getString(R.string.info_popup_instructions_climb)
+            view.context.getString(R.string.info_popup_instructions_climb)
         }
         "How to connect to ClimbStation machine" -> {
-            view.text = view.context.getString(R.string.info_popup_instructions_connect)
+            view.context.getString(R.string.info_popup_instructions_connect)
         }
         "How to create custom climbing profiles" -> {
-            view.text =
-                view.context.getString(R.string.info_popup_instructions_create_custom_profile)
+            view.context.getString(R.string.info_popup_instructions_create_custom_profile)
         }
+        "Developers" -> view.context.getString(R.string.info_popup_instructions_developers)
         else -> {
-            view.text = "error"
             Log.d("bindInfoPopupTitle", "no such instructions: $title")
+            "error"
         }
     }
 }

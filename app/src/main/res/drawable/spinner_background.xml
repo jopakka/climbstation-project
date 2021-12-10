@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <solid android:color="@color/climbstation_red"/>
+                    <corners android:radius="10dp" />
+                    <padding android:left="8dp" android:right="8dp" />
+                </shape>
+            </item>
+
+            <item android:drawable="@drawable/ic_arrow_drop_down_24_white" android:gravity="end|center_vertical" android:left="100dp"/>
+        </layer-list>
+    </item>
+</selector>

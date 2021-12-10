@@ -7,9 +7,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 abstract class ClimbStationAPI {
     companion object {
         @Volatile
-        private var mInstance: Service? = null
+        private var mInstance: ClimbStationHttpService? = null
 
-        fun get(baseUrl: String): Service {
+        /**
+         * Gets instance of [ClimbStationHttpService].
+         */
+        fun get(baseUrl: String): ClimbStationHttpService {
             return mInstance ?: synchronized(this) {
                 val client = OkHttpClient.Builder()
                     .addInterceptor(LoggerInterceptor())
@@ -21,7 +24,7 @@ abstract class ClimbStationAPI {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
-                retrofit.create(Service::class.java)
+                retrofit.create(ClimbStationHttpService::class.java)
             }
         }
     }

@@ -5,7 +5,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import fi.climbstationsolutions.climbstation.ui.climb.climbOn.StatsFragment
 import fi.climbstationsolutions.climbstation.ui.climb.climbOn.WallFragment
 
-class TabPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+/**
+ * ViewPagerAdapter for climbOn fragment, where is displayed wall profile
+ * and session statistics.
+ */
+class ClimbOnTabPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 2
 
