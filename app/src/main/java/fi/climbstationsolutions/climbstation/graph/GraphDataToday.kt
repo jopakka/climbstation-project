@@ -1,6 +1,5 @@
 package fi.climbstationsolutions.climbstation.graph
 
-import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.util.Log
@@ -10,7 +9,6 @@ import com.jjoe64.graphview.series.DataPoint
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.utils.CalorieCounter
-import fi.climbstationsolutions.climbstation.utils.Converters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
@@ -89,32 +87,45 @@ class GraphDataToday(context: Context) {
                 distanceList.clear()
                 caloriesList.clear()
             }
-            if (selectedVariable == "Distance") {
-                distanceList.add((item.data.first().totalDistance).toFloat() / 1000)
-                hourList[itemHour] = distanceList.sum().toDouble()
-            }
-            if (selectedVariable == "Avg angle") {
-                for (i in item.data) {
-                    averageAngleList.add(i.angle)
+            when (selectedVariable) {
+                "Distance" -> {
+                    val tempDistanceList = mutableListOf<Float>()
+                    for (i in item.data) {
+                        tempDistanceList.add((i.totalDistance).toFloat() / 1000)
+                    }
+                    distanceList.add(tempDistanceList.maxOrNull() ?: 0.0f)
+                    hourList[itemHour] = distanceList.sum().toDouble()
                 }
-                hourList[itemHour] = averageAngleList.average()
-            }
-            if (selectedVariable == "Time") {
-                val startTime = item.session.createdAt.time
-                val endTime = item.session.endedAt.time
-                Log.d("GraphDataToday", "startTime: $startTime, endTime: $endTime")
-                val duration = (String.format("%.3f", (((endTime - startTime).toFloat() / 1000) / 60))).toDouble()
-                Log.d("GraphDataToday","duration: $duration minutes")
-                hourList[itemHour] += duration
-            }
-
-            if(selectedVariable == "Calories") {
-                val userWeight = database.settingsDao().getBodyWeightById(1)?.weight
-                val distance = (item.data.first().totalDistance.toFloat() / 1000)
-                val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
-                caloriesList.add(calories)
-                Log.d("GraphDataToday", "caloriesList: $caloriesList")
-                hourList[itemHour] = caloriesList.sum().toDouble()
+                "Avg angle" -> {
+                    for (i in item.data) {
+                        averageAngleList.add(i.angle)
+                    }
+                    hourList[itemHour] = averageAngleList.average()
+                }
+                "Time" -> {
+                    val startTime = item.session.createdAt.time
+                    val endTime = item.session.endedAt.time
+                    Log.d("GraphDataToday", "startTime: $startTime, endTime: $endTime")
+                    val duration = (String.format(
+                        "%.3f",
+                        (((endTime - startTime).toFloat() / 1000) / 60)
+                    )).toDouble()
+                    Log.d("GraphDataToday", "duration: $duration minutes")
+                    hourList[itemHour] += duration
+                }
+                "Calories" -> {
+                    val userWeight = database.settingsDao().getBodyWeightById(1)?.weight
+                    val tempDistanceList = mutableListOf<Float>()
+                    for (i in item.data) {
+                        tempDistanceList.add((i.totalDistance).toFloat() / 1000)
+                    }
+                    val distance = tempDistanceList.maxOrNull() ?: 0.0f
+                    val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
+                    caloriesList.add(calories)
+                    Log.d("GraphDataToday", "caloriesList: $caloriesList")
+                    hourList[itemHour] = caloriesList.sum().toDouble()
+                }
+                else -> Log.d("GraphDataToday", "No action set for variable: $selectedVariable")
             }
         }
 

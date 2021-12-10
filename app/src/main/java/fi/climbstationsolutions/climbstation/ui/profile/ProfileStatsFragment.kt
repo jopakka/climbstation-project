@@ -23,6 +23,7 @@ import com.jjoe64.graphview.series.LineGraphSeries
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileStatsBinding
 import fi.climbstationsolutions.climbstation.graph.GraphDataHandler
+import fi.climbstationsolutions.climbstation.utils.CustomDateGenerator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -75,7 +76,7 @@ class ProfileStatsFragment : Fragment() {
 
         selectGraphButton(binding.profileGraphSelectDay)
         viewModel.setTime("Today")
-        viewModel.setTime2("08 Dec")
+        viewModel.setTime2(CustomDateGenerator.getToday())
 
         //Settings the data for the graph. Currently manual
         val dataPoints = arrayOf(
@@ -137,7 +138,7 @@ class ProfileStatsFragment : Fragment() {
             binding.profileGraphSelectDay -> {
                 selectGraphButton(it as MaterialButton)
                 viewModel.setTime("Today")
-                viewModel.setTime2("08 Dec")
+                viewModel.setTime2(CustomDateGenerator.getToday())
                 selectedTime = "Today"
                 Log.d("time selection1", "time selected: $selectedTime")
                 createGraph(binding.root, selectedVariable, selectedTime)
@@ -145,7 +146,7 @@ class ProfileStatsFragment : Fragment() {
             binding.profileGraphSelectWeek -> {
                 selectGraphButton(it as MaterialButton)
                 viewModel.setTime("This week")
-                viewModel.setTime2("06 - 12 Dec")
+                viewModel.setTime2(CustomDateGenerator.getThisWeek())
                 selectedTime = "This week"
                 Log.d("time selection2", "time selected: $selectedTime")
                 createGraph(binding.root, selectedVariable, selectedTime)
@@ -153,7 +154,7 @@ class ProfileStatsFragment : Fragment() {
             binding.profileGraphSelectMonth -> {
                 selectGraphButton(it as MaterialButton)
                 viewModel.setTime("This month")
-                viewModel.setTime2("December")
+                viewModel.setTime2(CustomDateGenerator.getThisMonth())
                 selectedTime = "This month"
                 Log.d("time selection3", "time selected: $selectedTime")
                 createGraph(binding.root, selectedVariable, selectedTime)
@@ -161,7 +162,7 @@ class ProfileStatsFragment : Fragment() {
             binding.profileGraphSelectYear -> {
                 selectGraphButton(it as MaterialButton)
                 viewModel.setTime("This year")
-                viewModel.setTime2("2021")
+                viewModel.setTime2(CustomDateGenerator.getThisYear())
                 selectedTime = "This year"
                 Log.d("time selection4", "time selected: $selectedTime")
                 createGraph(binding.root, selectedVariable, selectedTime)
@@ -256,6 +257,7 @@ class ProfileStatsFragment : Fragment() {
             }
             "This month" -> {
                 mainScope.launch {
+                    Log.d("createGraph","inside This month")
                     val series = gD.getGraphDataPointsOfThisMonth(selectedVariable)
                     series.isAnimated = true
                     series.color = ContextCompat.getColor(requireContext(), R.color.climbstation_red)
@@ -266,7 +268,7 @@ class ProfileStatsFragment : Fragment() {
 
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
-                    binding.graphView.viewport.setMaxX(32.0)
+                    binding.graphView.viewport.setMaxX(31.0)
                     binding.graphView.gridLabelRenderer.horizontalAxisTitle = "days of month"
                 }
             }
