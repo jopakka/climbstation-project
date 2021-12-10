@@ -222,4 +222,5 @@
 
     <string name="notification_title">Climbing in progress</string>
     <string name="notification_content">Click to see your climbing statistics</string>
+    <string name="goaltext">you climbed %.1f meters from\nthe %d-meter goal</string>
 </resources>

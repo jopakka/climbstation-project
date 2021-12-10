@@ -239,6 +239,7 @@
                     android:id="@+id/adjust_fragment_lengthpicker_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -299,6 +300,22 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/testiRv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:paddingStart="150dp"
+                    android:paddingEnd="150dp"
+                    android:clipToPadding="false"
+                    app:layout_constraintBottom_toTopOf="@+id/adjust_fragment_start_btn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_lengthpicker_container" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/adjust_fragment_start_btn"
                     android:layout_width="match_parent"
@@ -317,7 +334,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_lengthpicker_container" />
+                    app:layout_constraintTop_toBottomOf="@+id/testiRv" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

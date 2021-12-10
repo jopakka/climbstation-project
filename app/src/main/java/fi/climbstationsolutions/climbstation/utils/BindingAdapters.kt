@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
+import fi.climbstationsolutions.climbstation.database.Data
 import fi.climbstationsolutions.climbstation.database.Session
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import java.text.DateFormat
@@ -261,9 +263,23 @@ fun bindFilterMonthYear(view: TextView, month: String?, year: Int?) {
 @BindingAdapter("isDefaultProfileHeader")
 fun bindIsDefaultProfileHeader(view: TextView, default: Boolean) {
     val context = view.context
-    view.text = if(default) {
+    view.text = if (default) {
         context.getString(R.string.profiles_default)
     } else {
         context.getString(R.string.profiles_custom)
     }
+}
+
+@BindingAdapter("result", "goal")
+fun bindResultAndGoal(view: TextView, result: List<Data>?, goal: List<ClimbStep>?) {
+    val distanceGoal = if (goal?.isNotEmpty() == true) Calculators.calculateDistance(goal)
+    else 0
+
+    var distanceResult = 0f
+
+    if (result?.size != 0) {
+        distanceResult = result?.last()?.totalDistance?.div(1000f) ?: 0f
+    }
+
+    view.text = view.context.getString(R.string.goaltext, distanceResult, distanceGoal)
 }
