@@ -31,33 +31,21 @@ import androidx.recyclerview.widget.LinearSnapHelper
 
 import androidx.recyclerview.widget.SnapHelper
 
-import android.R.attr.name
 import fi.climbstationsolutions.climbstation.adapters.TestiAdapter
-import android.widget.Toast
 
 import android.widget.TextView
+import android.widget.Toast
 
 import fi.climbstationsolutions.climbstation.ui.MainActivity
 
 import android.R.attr.name
-import org.w3c.dom.Text
-import android.util.DisplayMetrics
-
-import android.R.attr.name
 import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.*
 import androidx.core.view.setPadding
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import android.R.attr.name
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.R.attr.name
+import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager.onScrollStopListener
 
 
-
-
-
-class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener, PickerLayoutManager.onScrollStopListener {
+class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
     private lateinit var binding: FragmentManualStartBinding
     private lateinit var broadcastManager: LocalBroadcastManager
     private val TAG: String = ManualStartFragment::class.java.simpleName
@@ -80,26 +68,60 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
         binding.viewModel = viewModel
         climbViewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
-        val pickerLayoutManager = PickerLayoutManager(context, PickerLayoutManager.HORIZONTAL, false)
-        pickerLayoutManager.apply {
+        setNumberPicker()
+
+        return binding.root
+    }
+
+    private fun setNumberPicker() {
+        val pickerLayoutManagerLength =
+            PickerLayoutManager(context, PickerLayoutManager.HORIZONTAL, false)
+        val pickerLayoutManagerAngle =
+            PickerLayoutManager(context, PickerLayoutManager.HORIZONTAL, false)
+
+        pickerLayoutManagerLength.apply {
             isChangeAlpha = true
             scaleDownBy = 0.99f
             scaleDownDistance = 0.9f
         }
-        val snapHelper: SnapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.testiRv)
-
-        val list: MutableList<Int> = mutableListOf()
-        for (i in 1..100) {
-            list.add(i)
+        pickerLayoutManagerAngle.apply {
+            isChangeAlpha = true
+            scaleDownBy = 0.99f
+            scaleDownDistance = 0.9f
         }
+
+        val snapHelperLength: SnapHelper = LinearSnapHelper()
+        val snapHelperAngle: SnapHelper = LinearSnapHelper()
+
+        snapHelperLength.attachToRecyclerView(binding.testiRv)
+        snapHelperAngle.attachToRecyclerView(binding.testiRv2)
+
+        val lengthList = (1..1000).toList()
+        val angleList = (-45..15).toList()
+
         binding.testiRv.apply {
-            layoutManager = pickerLayoutManager
-            adapter = TestiAdapter(list)
+            layoutManager = pickerLayoutManagerLength
+            adapter = TestiAdapter(lengthList)
             smoothScrollBy(1, 0)
         }
+        binding.testiRv2.apply {
+            layoutManager = pickerLayoutManagerAngle
+            adapter = TestiAdapter(angleList)
+            smoothScrollBy(1, 0)
+            smoothScrollToPosition(45)
+        }
 
-        return binding.root
+        pickerLayoutManagerLength.setOnScrollStopListener {
+            it as TextView
+
+            it.text.toString().toIntOrNull()?.let { it1 -> viewModel.setLength(it1) }
+            Log.d("VIEWMODEL", viewModel.climbLength.toString())
+        }
+        pickerLayoutManagerAngle.setOnScrollStopListener {
+            it as TextView
+            it.text.toString().toIntOrNull()?.let { it1 -> viewModel.setAngle(it1) }
+            Log.d("VIEWMODEL", viewModel.climbAngle.toString())
+        }
     }
 
     override fun onResume() {
@@ -139,7 +161,10 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(it, viewModel.getTime() ?: -1)
+                    val startAction = ClimbFragmentDirections.actionClimbToClimbOnFragment(
+                        it,
+                        viewModel.getTime() ?: -1
+                    )
                     findNavController().navigate(startAction)
                 }
             }
@@ -172,6 +197,17 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
         binding.adjustFragmentAnglePicker.setListener(this)
         binding.adjustFragmentLengthPicker.setListener(this)
         binding.adjustFragmentStartBtn.setOnClickListener(clickListener)
+
+        binding.testiRv.addOnLayoutChangeListener { rv, _, _, _, _, _, _, _, _ ->
+            rv.setPadding(rv.width / 2, 0, rv.width / 2, 0)
+            binding.testiRv.smoothScrollToPosition(0)
+            Log.d("moroo", rv.width.toString())
+        }
+
+        binding.testiRv2.addOnLayoutChangeListener { rv, _, _, _, _, _, _, _, _ ->
+            rv.setPadding(rv.width / 2, 0, rv.width / 2, 0)
+            binding.testiRv2.smoothScrollToPosition(45)
+        }
     }
 
     private fun initializeSelectedAngle() {
@@ -235,10 +271,10 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
         val activity = activity ?: return
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
 
-        viewModel.profileWithSteps.observe(viewLifecycleOwner) {profile ->
-            if(profile == null) return@observe
+        viewModel.profileWithSteps.observe(viewLifecycleOwner) { profile ->
+            if (profile == null) return@observe
             val timer = viewModel.getTime()
-            Log.d("profileadjust","profile: $profile")
+            Log.d("profileadjust", "profile: $profile")
 
             Intent(context, ClimbStationService::class.java).also {
                 it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
@@ -264,10 +300,5 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
     override fun onValueChanged(oldValue: Int, newValue: Int) {
         viewModel.setAngle(binding.adjustFragmentAnglePicker.value)
         viewModel.setLength(binding.adjustFragmentLengthPicker.value)
-    }
-
-    override fun selectedView(view: View?) {
-        view as TextView
-        Log.d("VALUE", view.text.toString())
     }
 }
