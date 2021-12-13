@@ -102,7 +102,7 @@ class GraphDataToday(context: Context) {
                     val endTime = item.session.endedAt.time
                     val duration = (String.format(
                         "%.3f",
-                        (((endTime - startTime).toFloat() / 1000) / 60)
+                        (((endTime - startTime).toFloat() / 1000) / 60), Locale.US
                     )).toDouble()
                     hourList[itemHour] += duration
                 }
