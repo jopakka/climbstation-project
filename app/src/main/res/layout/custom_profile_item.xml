@@ -12,31 +12,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rv_background_layout"
-        android:foreground="?attr/selectableItemBackground"
-        android:theme="@style/CustomFont"
-        android:padding="8dp">
+        style="@style/Theme.ClimbStation.ListItem.CustomProfile">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/customProfileContainer1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/rv_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/customProfileTitle"
+                style="@style/Theme.ClimbStation.Text.Black.Title1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@{customProfileItem.profile.name}"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="26sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline9"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -47,18 +39,14 @@
 
             <TextView
                 android:id="@+id/customProfileDate"
+                style="@style/Theme.ClimbStation.Text.Black.Text2"
                 sessionDate="@{customProfileItem.profile.createdAt}"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:textColor="@color/black"
-                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline9"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
                 tools:text="10. nov 2021" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -82,9 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             android:background="@color/climbstation_red"
-            app:layout_constraintBottom_toTopOf="@+id/customProfileContainer2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,9 +78,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/customProfileContainer2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,30 +99,26 @@
 
                 <TextView
                     android:id="@+id/customProfileStepsTitle"
+                    style="@style/Theme.ClimbStation.Text.Gray.Title1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Steps"
-                    android:textColor="#757575"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toTopOf="@+id/customProfileSteps"
+                    android:text="@string/steps"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/customProfileSteps"
+                    style="@style/Theme.ClimbStation.Text.Black.Text1"
+                    stepsCount="@{customProfileItem.steps}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    stepsCount="@{customProfileItem.steps}"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/customProfileStepsTitle"
                     tools:text="5" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline8"
                 android:layout_width="wrap_content"
@@ -155,12 +137,10 @@
                 android:id="@+id/customProfileEditBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:text="@string/edit"
                 app:icon="@drawable/ic_baseline_arrow_forward_ios_24"
                 app:iconGravity="end"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline10"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

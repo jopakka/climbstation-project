@@ -44,7 +44,7 @@
             android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|screenLayout"
             android:exported="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/Theme.ClimbStation.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
