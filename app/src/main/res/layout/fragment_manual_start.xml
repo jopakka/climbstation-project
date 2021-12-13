@@ -185,11 +185,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
                         android:text="@string/fragment_adjust_angle"
                         android:textColor="@color/black"
                         android:textSize="24sp"
-                        app:layout_constraintBottom_toTopOf="@id/adjust_fragment_angle_picker"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -202,6 +200,7 @@
                         app:bar_color="@color/climbstation_red"
                         app:bar_width="1dp"
                         app:bars_count="13"
+                        android:visibility="gone"
                         app:controls_color="@color/black"
                         app:draw_over_controls="true"
                         app:draw_over_text="false"
@@ -223,15 +222,17 @@
                         app:text_size="24sp"
                         app:value="0" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:layout_marginStart="50dp"
-                        android:layout_marginEnd="50dp"
-                        android:background="@color/climbstation_red"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/testiRv2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:clipToPadding="false"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_angle_picker" />
+                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_angle" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -239,8 +240,8 @@
                     android:id="@+id/adjust_fragment_lengthpicker_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginTop="10dp"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/adjust_fragment_anglepicker_container">
@@ -250,11 +251,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
                         android:text="@string/fragment_adjust_length"
                         android:textColor="@color/black"
                         android:textSize="24sp"
-                        app:layout_constraintBottom_toTopOf="@id/adjust_fragment_length_picker"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -264,6 +263,7 @@
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:background="@color/white"
+                        android:visibility="gone"
                         app:bar_color="@color/climbstation_red"
                         app:bar_width="1dp"
                         app:bars_count="13"
@@ -288,33 +288,19 @@
                         app:text_size="24sp"
                         app:value="0" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3dp"
-                        android:layout_marginStart="50dp"
-                        android:layout_marginEnd="50dp"
-                        android:background="@color/climbstation_red"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/testiRv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:clipToPadding="false"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_length_picker" />
+                        app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_length" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/testiRv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:paddingStart="150dp"
-                    android:paddingEnd="150dp"
-                    android:clipToPadding="false"
-                    app:layout_constraintBottom_toTopOf="@+id/adjust_fragment_start_btn"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_lengthpicker_container" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/adjust_fragment_start_btn"
@@ -334,7 +320,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/testiRv" />
+                    app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_lengthpicker_container" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
