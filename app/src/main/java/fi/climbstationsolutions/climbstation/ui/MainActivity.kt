@@ -3,6 +3,7 @@ package fi.climbstationsolutions.climbstation.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ExpandableListAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -70,6 +71,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        val spinnerList: MutableList<String> = ArrayList()
+        spinnerList.add("Distance")
+        spinnerList.add("Avg angle")
+        spinnerList.add("Time")
+        spinnerList.add("Calories")
+
+        val customSpinnerAdapter = ArrayAdapter(
+            this.applicationContext,
+            R.layout.custom_spinner_item,
+            spinnerList
+        )
+
     }
 
     override fun onBackPressed() {
@@ -180,6 +194,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 "Text to speech" -> {
                     Log.d("MainActivity_menuChildClick", "tts clicked")
+                    MenuActions().toggleTts(this)
+                    (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
                 }
                 else -> {
                     Log.d("MainActivity_menuChildClick", "No actions set for child: $childItem")

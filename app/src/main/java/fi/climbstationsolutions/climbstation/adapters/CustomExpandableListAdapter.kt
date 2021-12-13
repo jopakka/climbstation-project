@@ -1,7 +1,6 @@
 package fi.climbstationsolutions.climbstation.adapters
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import fi.climbstationsolutions.climbstation.R
+import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.TTS_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -123,8 +125,17 @@ class CustomExpandableListAdapter(
                 txtChild.compoundDrawablePadding = 20
             }
             "Text to speech" -> {
-                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_off_24, 0)
+//                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_off_24, 0)
                 txtChild.compoundDrawablePadding = 20
+                val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
+                val isTtsOn: Boolean = prefs[TTS_PREF_NAME]
+                Log.d("CELA","prefs: ${isTtsOn}")
+                if(isTtsOn) {
+                    txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_done_24, 0)
+                }
+                if(!isTtsOn) {
+                    txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_off_24, 0)
+                }
             }
             "How to connect to ClimbStation machine" -> {
                 txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_24, 0, 0, 0)
