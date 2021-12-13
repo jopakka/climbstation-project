@@ -5,7 +5,8 @@
     <string name="top_app_bar_overflow_title">more</string>
 
     <!--Menu strings-->
-    <string name="child_item_title">%s: %.1f kg</string>
+    <string name="child_item_title_weight">%s: %.1f kg</string>
+    <string name="child_item_title_speed">%s: %s</string>
 
     <!--Info popup strings-->
     <string name="info_popup_title_climb">How to climb</string>

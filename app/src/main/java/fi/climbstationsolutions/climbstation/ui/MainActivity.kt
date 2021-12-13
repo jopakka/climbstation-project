@@ -190,7 +190,12 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 "Machine speed" -> {
-                    Log.d("MainActivity_menuChildClick", "Machine speed clicked")
+                    MenuActions().updateSpeed(this) {
+                        val speed = it
+                        viewModel.setSpeed(this, speed) {
+                            (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
+                        }
+                    }
                 }
                 "Text to speech" -> {
                     Log.d("MainActivity_menuChildClick", "tts clicked")

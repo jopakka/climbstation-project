@@ -117,24 +117,43 @@ class CustomExpandableListAdapter(
                 txtChild.compoundDrawablePadding = 20
                 GlobalScope.launch(Dispatchers.Main) {
                     txtChild.text =
-                        context.getString(R.string.child_item_title, title, viewModel.getWeight())
+                        context.getString(
+                            R.string.child_item_title_weight,
+                            title,
+                            viewModel.getWeight()
+                        )
                 }
             }
             "Machine speed" -> {
                 txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_speed_24, 0, 0, 0)
                 txtChild.compoundDrawablePadding = 20
+                GlobalScope.launch(Dispatchers.Main) {
+                    txtChild.text = context.getString(
+                        R.string.child_item_title_speed,
+                        title,
+                        viewModel.getSpeed(context)
+                    )
+                }
             }
             "Text to speech" -> {
-//                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_off_24, 0)
                 txtChild.compoundDrawablePadding = 20
                 val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
                 val isTtsOn: Boolean = prefs[TTS_PREF_NAME]
-                Log.d("CELA","prefs: ${isTtsOn}")
-                if(isTtsOn) {
-                    txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_done_24, 0)
+                if (isTtsOn) {
+                    txtChild.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_tts_24,
+                        0,
+                        R.drawable.ic_done_24,
+                        0
+                    )
                 }
-                if(!isTtsOn) {
-                    txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_off_24, 0)
+                if (!isTtsOn) {
+                    txtChild.setCompoundDrawablesWithIntrinsicBounds(
+                        R.drawable.ic_tts_24,
+                        0,
+                        R.drawable.ic_off_24,
+                        0
+                    )
                 }
             }
             "How to connect to ClimbStation machine" -> {

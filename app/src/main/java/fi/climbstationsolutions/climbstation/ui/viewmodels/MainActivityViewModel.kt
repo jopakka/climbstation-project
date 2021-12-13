@@ -7,6 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.BodyWeight
+import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.SPEED_PREF_NAME
 import kotlinx.coroutines.*
 
 class MainActivityViewModel(context: Context) : ViewModel() {
@@ -33,10 +38,31 @@ class MainActivityViewModel(context: Context) : ViewModel() {
         }
     }
 
+    fun setSpeed(context: Context, speed: Int? = null, callBack: () -> Unit = {}) {
+        if(speed != null) {
+            val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
+            prefs[SPEED_PREF_NAME] = speed
+            callBack()
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getWeight(): Float? = withContext(Dispatchers.IO){
             val userWeight = settingsDao.getBodyWeightById(1)
         return@withContext userWeight?.weight
+    }
+
+    fun getSpeed(context: Context): String {
+        val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
+        val speed: Int = prefs[SPEED_PREF_NAME]
+        val speedString: String = when(speed) {
+            4 -> "Slow"
+            8 -> "Normal"
+            12 -> "Fast"
+            16 -> "Very fast"
+            else -> "Normal"
+        }
+        return speedString
     }
 }
 

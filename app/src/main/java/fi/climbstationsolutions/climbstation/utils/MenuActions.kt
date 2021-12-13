@@ -6,6 +6,8 @@ import android.util.Log
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
+import fi.climbstationsolutions.climbstation.sharedprefs.SPEED_PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.TTS_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
 import java.io.IOException
@@ -26,15 +28,19 @@ class MenuActions {
         }
     }
 
+    fun updateSpeed(context: Context, positiveAction: (userInput: Int) -> Unit = {}) {
+        return PopupHandlers().editSpeedPopup(context, positiveAction)
+    }
+
     fun toggleTts(context: Context) {
         val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
         val isTtsOn: Boolean = prefs[TTS_PREF_NAME]
         if (isTtsOn) {
             Log.d("toggleTts", "isOn")
-            prefs[TTS_PREF_NAME, false]
+            prefs[TTS_PREF_NAME] = false
         } else if (!isTtsOn) {
             Log.d("toggleTts", "isNotOn")
-            prefs[TTS_PREF_NAME, true]
+            prefs[TTS_PREF_NAME] = true
 
         }
     }
