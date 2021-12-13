@@ -109,25 +109,35 @@ class CustomExpandableListAdapter(
 
         txtChild.text = title
 //        txtChild.setTextColor("#000000")
-        if (title == "Bodyweight") {
-            txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_scale_24, 0, 0, 0)
-            txtChild.compoundDrawablePadding = 20
-            GlobalScope.launch(Dispatchers.Main) {
-                txtChild.text =
-                    context.getString(R.string.child_item_title, title, viewModel.getWeight())
+        when (title) {
+            "Bodyweight" -> {
+                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_scale_24, 0, 0, 0)
+                txtChild.compoundDrawablePadding = 20
+                GlobalScope.launch(Dispatchers.Main) {
+                    txtChild.text =
+                        context.getString(R.string.child_item_title, title, viewModel.getWeight())
+                }
             }
-        }
-        if (title == "How to connect to ClimbStation machine") {
-            txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_24, 0, 0, 0)
-            txtChild.compoundDrawablePadding = 20
-        }
-        if (title == "How to climb") {
-            txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_stairs_24, 0, 0, 0)
-            txtChild.compoundDrawablePadding = 20
-        }
-        if (title == "How to create custom climbing profiles") {
-            txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_24, 0, 0, 0)
-            txtChild.compoundDrawablePadding = 20
+            "Machine speed" -> {
+                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_speed_24, 0, 0, 0)
+                txtChild.compoundDrawablePadding = 20
+            }
+            "Text to speech" -> {
+                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_tts_24, 0, R.drawable.ic_off_24, 0)
+                txtChild.compoundDrawablePadding = 20
+            }
+            "How to connect to ClimbStation machine" -> {
+                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_24, 0, 0, 0)
+                txtChild.compoundDrawablePadding = 20
+            }
+            "How to climb" -> {
+                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_stairs_24, 0, 0, 0)
+                txtChild.compoundDrawablePadding = 20
+            }
+            "How to create custom climbing profiles" -> {
+                txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit_24, 0, 0, 0)
+                txtChild.compoundDrawablePadding = 20
+            }
         }
         return convertView
     }

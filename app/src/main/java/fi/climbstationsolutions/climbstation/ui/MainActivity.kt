@@ -168,12 +168,23 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity_menuChildClick", "childItem: $childItem")
             Log.d("MainActivity_menuChildClick", "groupKey: $groupKey")
 
-            if (childItem == "Bodyweight") {
-                MenuActions().updateUserWeight(this) {
-                    val weight = it.toFloatOrNull()
-                    viewModel.setWeight(weight) {
-                        (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
+            when (childItem) {
+                "Bodyweight" -> {
+                    MenuActions().updateUserWeight(this) {
+                        val weight = it.toFloatOrNull()
+                        viewModel.setWeight(weight) {
+                            (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
+                        }
                     }
+                }
+                "Machine speed" -> {
+                    Log.d("MainActivity_menuChildClick", "Machine speed clicked")
+                }
+                "Text to speech" -> {
+                    Log.d("MainActivity_menuChildClick", "tts clicked")
+                }
+                else -> {
+                    Log.d("MainActivity_menuChildClick", "No actions set for child: $childItem")
                 }
             }
             when (groupKey) {
@@ -181,7 +192,7 @@ class MainActivity : AppCompatActivity() {
                     MenuActions().showInfoPopup(childItem, this, infoViewModel)
                 }
                 else -> {
-                    Log.d("MainActivity_menuChildClick", "No actions set for $childItem")
+                    Log.d("MainActivity_menuChildClick", "No actions set for group: $groupKey")
                 }
             }
             false

@@ -14,6 +14,8 @@ internal object ExpandableListData {
 
             expandableListDetail["Connect"] = listOf()
             settingsItems.add("Bodyweight")
+            settingsItems.add("Machine speed")
+            settingsItems.add("Text to speech")
             expandableListDetail["Settings"] = settingsItems
 
             infoItems.add("How to connect to ClimbStation machine")

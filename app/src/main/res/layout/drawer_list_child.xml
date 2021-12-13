@@ -13,5 +13,4 @@
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
         android:textColor="@color/list_group_title" />
-
 </LinearLayout>
