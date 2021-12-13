@@ -10,7 +10,7 @@ class UtilTests {
 
     @Test
     fun calorieCounter() {
-        Assert.assertEquals(1.7f, CalorieCounter().countCalories(20.3f, 80.9f))
+        Assert.assertEquals(1.71672f, CalorieCounter().countCalories(20.3f, 80.9f))
     }
 
     @Test
