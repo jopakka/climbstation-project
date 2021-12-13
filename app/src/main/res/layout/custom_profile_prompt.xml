@@ -3,17 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:theme="@style/CustomFont">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/custom_profile_dialog_title"
+        style="@style/Theme.ClimbStation.Text.Black.Title2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/content_description_weight_title"
-        android:text="Enter Name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        app:layout_constraintBottom_toTopOf="@+id/custom_profile_dialog_editText"
+        android:text="@string/enter_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +22,7 @@
         android:id="@+id/custom_profile_dialog_editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/content_description_weight_input"
-        android:hint="Add name to your custom profile"
+        android:hint="@string/give_name_to_custom_profile"
         android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

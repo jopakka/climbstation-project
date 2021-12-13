@@ -12,9 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/fragment_background_color"
-        android:theme="@style/CustomFont">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout11"
@@ -23,20 +21,16 @@
 
             <TextView
                 android:id="@+id/txtCongrats"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
+                style="@style/Theme.ClimbStation.Text.White.AutoTitle1"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:autoSizeTextType="uniform"
                 android:text="@string/congratulations"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:textColor="@color/black" />
 
             <include
                 android:id="@+id/finished_stats"
@@ -59,11 +53,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                style="@style/Theme.ClimbStation.Button.Normal"
                 android:text="@string/climb_again"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnFinish"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -76,13 +67,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/button_green"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                style="@style/Theme.ClimbStation.Button.Normal.Green"
                 android:text="@string/finish"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -90,20 +76,19 @@
 
             <TextView
                 android:id="@+id/textView28"
-                android:layout_width="wrap_content"
+                style="@style/Theme.ClimbStation.Text.White.Text2"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="20sp"
                 app:goal="@{viewModel.profileWithSteps.steps}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtCongrats"
                 app:result="@{viewModel.sessionWithData.data}"
-                tools:text="you climbed %.1f meters\nfrom the %d-meter goal" />
+                tools:text="@string/goaltext"
+                tools:textColor="@color/black" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

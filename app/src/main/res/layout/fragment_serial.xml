@@ -15,9 +15,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/darkened_mountain"
-        tools:context=".ui.init.InitActivity"
-        android:theme="@style/CustomFont">
+        tools:background="@color/fragment_background_color">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -95,6 +93,7 @@
 
             <Button
                 android:id="@+id/btnContinue"
+                style="@style/Theme.ClimbStation.Button.Normal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -108,12 +107,12 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            tools:visibility="gone"
             android:id="@+id/loadingSpinner"
             layout="@layout/loading_layout"
-            app:isVisible="@{viewModel.loading}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:isVisible="@{viewModel.loading}"
+            tools:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

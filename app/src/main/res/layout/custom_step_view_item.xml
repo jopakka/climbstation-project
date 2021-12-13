@@ -9,8 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:animateLayoutChanges="true"
-        android:background="@drawable/rv_background_layout"
-        android:theme="@style/CustomFont">
+        android:background="@drawable/rv_background_layout">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -36,8 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="24sp"
+            style="@style/Theme.ClimbStation.Text.Black.Text1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,8 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
+                    style="@style/Theme.ClimbStation.Text.Black.Text2"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/Length_subtitle"
@@ -103,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
-                    android:text="Angle"
+                    android:text="@string/angle"
                     android:textColor="@color/super_grey"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -113,8 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
+                    style="@style/Theme.ClimbStation.Text.Black.Text2"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/angle_subtitle"
