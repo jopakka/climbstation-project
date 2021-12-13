@@ -12,6 +12,11 @@ import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.*
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
+import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.SPEED_PREF_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.TTS_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.MainActivity
 import kotlinx.coroutines.*
 import java.util.*
@@ -61,6 +66,7 @@ class ClimbStationService : Service() {
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var profileWithSteps: ClimbProfileWithSteps
     private var localBroadcastManager: LocalBroadcastManager? = null
+    private val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
 
     // Values which control how often text-to-speech will notify user
     private val distanceNotifyRange = 5 // by meters
@@ -75,7 +81,10 @@ class ClimbStationService : Service() {
             stopService()
         } else {
             intent?.extras?.let {
-                val profile = it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps
+                val profile = (it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps)?.also { p ->
+                    val speed = pref[SPEED_PREF_NAME, -1]
+                    if(speed != -1) p.profile.speed = speed
+                }
                 initTts()
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, null),
@@ -410,6 +419,7 @@ class ClimbStationService : Service() {
      * is greater than [nextDistanceToNotify]
      */
     private fun distanceNotifier(distance: Int) {
+        if (!checkTts()) return
         val meters = floor(distance / 1000f).toInt()
         if (meters >= nextDistanceToNotify) {
             nextDistanceToNotify = meters + distanceNotifyRange
@@ -427,6 +437,7 @@ class ClimbStationService : Service() {
      * is greater than [nextTimeToNotify]
      */
     private fun timeNotifier(time: Long) {
+        if (!checkTts()) return
         val minutes = (TimeUnit.MILLISECONDS.toMinutes(time) % TimeUnit.HOURS.toMinutes(1)).toInt()
         if (minutes >= nextTimeToNotify) {
             nextTimeToNotify = (minutes + timeNotifyRange)
@@ -447,5 +458,12 @@ class ClimbStationService : Service() {
         return if (t != null && t > 0) {
             elapsed >= t
         } else false
+    }
+
+    /**
+     * Checks if tts is enabled on sharedPreferences
+     */
+    private fun checkTts(): Boolean {
+        return pref[TTS_PREF_NAME, true]
     }
 }
