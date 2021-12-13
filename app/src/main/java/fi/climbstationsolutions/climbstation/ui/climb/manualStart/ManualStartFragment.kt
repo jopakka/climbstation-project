@@ -45,7 +45,7 @@ import androidx.core.view.setPadding
 import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager.onScrollStopListener
 
 
-class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnValueChangeListener {
+class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {
     private lateinit var binding: FragmentManualStartBinding
     private lateinit var broadcastManager: LocalBroadcastManager
     private val TAG: String = ManualStartFragment::class.java.simpleName
@@ -68,61 +68,9 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
         binding.viewModel = viewModel
         climbViewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
-        setNumberPicker()
-
         return binding.root
     }
 
-    private fun setNumberPicker() {
-        val pickerLayoutManagerLength =
-            PickerLayoutManager(context, PickerLayoutManager.HORIZONTAL, false)
-        val pickerLayoutManagerAngle =
-            PickerLayoutManager(context, PickerLayoutManager.HORIZONTAL, false)
-
-        pickerLayoutManagerLength.apply {
-            isChangeAlpha = true
-            scaleDownBy = 0.99f
-            scaleDownDistance = 0.9f
-        }
-        pickerLayoutManagerAngle.apply {
-            isChangeAlpha = true
-            scaleDownBy = 0.99f
-            scaleDownDistance = 0.9f
-        }
-
-        val snapHelperLength: SnapHelper = LinearSnapHelper()
-        val snapHelperAngle: SnapHelper = LinearSnapHelper()
-
-        snapHelperLength.attachToRecyclerView(binding.testiRv)
-        snapHelperAngle.attachToRecyclerView(binding.testiRv2)
-
-        val lengthList = (1..1000).toList()
-        val angleList = (-45..15).toList()
-
-        binding.testiRv.apply {
-            layoutManager = pickerLayoutManagerLength
-            adapter = TestiAdapter(lengthList)
-            smoothScrollBy(1, 0)
-        }
-        binding.testiRv2.apply {
-            layoutManager = pickerLayoutManagerAngle
-            adapter = TestiAdapter(angleList)
-            smoothScrollBy(1, 0)
-            smoothScrollToPosition(45)
-        }
-
-        pickerLayoutManagerLength.setOnScrollStopListener {
-            it as TextView
-
-            it.text.toString().toIntOrNull()?.let { it1 -> viewModel.setLength(it1) }
-            Log.d("VIEWMODEL", viewModel.climbLength.toString())
-        }
-        pickerLayoutManagerAngle.setOnScrollStopListener {
-            it as TextView
-            it.text.toString().toIntOrNull()?.let { it1 -> viewModel.setAngle(it1) }
-            Log.d("VIEWMODEL", viewModel.climbAngle.toString())
-        }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -194,20 +142,8 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
 
         Log.d("SF1", "selected values: ${viewModel.getClimbProfileWithSteps()}")
 
-        binding.adjustFragmentAnglePicker.setListener(this)
-        binding.adjustFragmentLengthPicker.setListener(this)
         binding.adjustFragmentStartBtn.setOnClickListener(clickListener)
 
-        binding.testiRv.addOnLayoutChangeListener { rv, _, _, _, _, _, _, _, _ ->
-            rv.setPadding(rv.width / 2, 0, rv.width / 2, 0)
-            binding.testiRv.smoothScrollToPosition(0)
-            Log.d("moroo", rv.width.toString())
-        }
-
-        binding.testiRv2.addOnLayoutChangeListener { rv, _, _, _, _, _, _, _, _ ->
-            rv.setPadding(rv.width / 2, 0, rv.width / 2, 0)
-            binding.testiRv2.smoothScrollToPosition(45)
-        }
     }
 
     private fun initializeSelectedAngle() {
@@ -241,11 +177,21 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
             value = viewModel.timer.value?.second ?: 0
         }
 
-        binding.apply {
-            adjustFragmentAnglePicker.value = viewModel?.climbAngle ?: 0
-            adjustFragmentLengthPicker.value = viewModel?.climbLength ?: 0
+        binding.pickerLength.apply {
+            minValue = 0
+            maxValue = 1000
+            setOnValueChangedListener(this@ManualStartFragment)
         }
-
+        binding.pickerAngle.apply {
+            minValue = 0
+            maxValue = 60
+            val list = (15 downTo -45).toList().map {
+                it.toString()
+            }.toTypedArray()
+            displayedValues = list
+            value = 15
+            setOnValueChangedListener(this@ManualStartFragment)
+        }
         angleListWidth =
             context?.resources?.getDimensionPixelSize(R.dimen.string_list_layout_width)
         lengthListWidth =
@@ -253,12 +199,18 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
     }
 
     override fun onValueChange(p0: NumberPicker?, p1: Int, p2: Int) {
-        when (val tag = p0?.tag) {
-            "minute" -> {
+        when (p0?.id) {
+            binding.adjustFragmentTimepickerMinute.id -> {
                 viewModel.setMinute(p2)
             }
-            "second" -> {
+            binding.adjustFragmentTimepickerSecond.id -> {
                 viewModel.setSecond(p2)
+            }
+            binding.pickerLength.id -> {
+                viewModel.setLength(p2)
+            }
+            binding.pickerAngle.id -> {
+                viewModel.setAngle(15 - p2)
             }
             else -> {
                 Log.d("NumberPicker_onValueChange", "no NumberPicker with tag: $tag found")
@@ -295,10 +247,5 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener, OnVa
                 startClimbing()
             }
         }
-    }
-
-    override fun onValueChanged(oldValue: Int, newValue: Int) {
-        viewModel.setAngle(binding.adjustFragmentAnglePicker.value)
-        viewModel.setLength(binding.adjustFragmentLengthPicker.value)
     }
 }
