@@ -218,7 +218,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setSpeedToPrefs(speed: Int) {
         val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
-        prefs[SPEED_PREF_NAME, speed]
+        prefs[SPEED_PREF_NAME] = speed
     }
 
     /**
@@ -226,6 +226,6 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setTtsToPrefs(tts: Boolean) {
         val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
-        prefs[TTS_PREF_NAME, tts]
+        prefs[TTS_PREF_NAME] = tts
     }
 }
