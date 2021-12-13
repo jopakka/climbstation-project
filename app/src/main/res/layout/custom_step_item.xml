@@ -14,11 +14,9 @@
         android:id="@+id/single_df_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:animateLayoutChanges="true"
-        android:background="@drawable/rv_background_layout"
-        android:clickable="true"
-        android:theme="@style/CustomFont">
+        style="@style/Theme.ClimbStation.ListItem"
+        android:clickable="true">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
@@ -44,8 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="24sp"
+            style="@style/Theme.ClimbStation.Text.Black.Text1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dif_rv_title_separator"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,12 +70,12 @@
 
                 <TextView
                     android:id="@+id/Length_subtitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:text="@string/fragment_climb_dif_rv_length_title"
-                    android:textColor="@color/super_grey"
+                    android:text="@string/length"
+                    style="@style/Theme.ClimbStation.Text.Black.Title3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -87,13 +84,9 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/lengthEditTextLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Theme.ClimbStation.EditText.Step"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
                     app:hintAnimationEnabled="false"
                     app:hintEnabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -105,7 +98,7 @@
                         android:id="@+id/lengthEditText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="numberDecimal|numberSigned" />
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -122,12 +115,12 @@
 
                 <TextView
                     android:id="@+id/angle_subtitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:text="Angle"
-                    android:textColor="@color/super_grey"
+                    android:text="@string/angle"
+                    style="@style/Theme.ClimbStation.Text.Black.Title3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -135,13 +128,9 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/angleEditTextLayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Theme.ClimbStation.EditText.Step"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
                     app:hintAnimationEnabled="false"
                     app:hintEnabled="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -153,7 +142,7 @@
                         android:id="@+id/angleEditText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="numberDecimal|numberSigned" />
+                        android:inputType="numberSigned" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
