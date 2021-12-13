@@ -65,7 +65,7 @@ data class BodyWeight(
 data class ClimbProfile(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val name: String,
-    val speed: Int = 10,
+    var speed: Int = 10,
     val createdAt: Date? = null,
     val isDefault: Boolean = false
 ) : Parcelable

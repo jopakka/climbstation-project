@@ -14,11 +14,9 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
-import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
-import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
+import fi.climbstationsolutions.climbstation.sharedprefs.*
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
-import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.init.GetSerial
 import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
@@ -197,5 +195,21 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
+    }
+
+    /**
+     * Save [speed] to shared preferences
+     */
+    private fun setSpeedToPrefs(speed: Int) {
+        val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
+        prefs[SPEED_PREF_NAME, speed]
+    }
+
+    /**
+     * Save [tts] to shared preferences
+     */
+    private fun setTtsToPrefs(tts: Boolean) {
+        val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
+        prefs[TTS_PREF_NAME, tts]
     }
 }

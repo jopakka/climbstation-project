@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 
 const val PREF_NAME = "ClimbStationPrefs"
 const val SERIAL_NO_PREF_NAME = "serialNo"
+const val TTS_PREF_NAME = "tts"
+const val SPEED_PREF_NAME = "speed"
 
 object PreferenceHelper {
     fun customPrefs(context: Context, name: String): SharedPreferences =

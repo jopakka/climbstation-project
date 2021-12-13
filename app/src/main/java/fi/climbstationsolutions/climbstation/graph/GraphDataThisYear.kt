@@ -90,6 +90,7 @@ class GraphDataThisYear(context: Context) {
                         val startTime = item.session.createdAt.time
                         val endTime = item.session.endedAt.time
                         val duration = (String.format(
+                            Locale.US,
                             "%.3f",
                             (((endTime - startTime).toFloat() / 1000) / 60)
                         )).toDouble()
