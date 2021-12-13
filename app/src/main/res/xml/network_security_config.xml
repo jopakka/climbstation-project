@@ -5,7 +5,7 @@
         <domain includeSubdomains="true">192.168.3.1</domain>
 
         <!--Put your ip here for testing purposes, remember to remove after use-->
-        <domain includeSubdomains="true">192.168.86.228</domain>
+        <domain includeSubdomains="true">192.168.100.18</domain>
         <domain includeSubdomains="true">192.168.100.22</domain>
         <domain includeSubdomains="true">192.168.1.13</domain>
     </domain-config>

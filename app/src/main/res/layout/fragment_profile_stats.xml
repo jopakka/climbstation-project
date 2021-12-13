@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/profile_graph_container">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/constraintLayout13"
@@ -247,14 +247,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:background="@color/white"
-                app:layout_constraintTop_toBottomOf="@id/profile_stats_container" />
+                app:layout_constraintTop_toBottomOf="@id/profile_graph_container" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/profile_graph_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                app:layout_constraintTop_toBottomOf="@id/profile_stats_graph_separator">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/profile_graph_guideline1"

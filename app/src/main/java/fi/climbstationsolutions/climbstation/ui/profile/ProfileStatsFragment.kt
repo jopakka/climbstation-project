@@ -1,6 +1,8 @@
 package fi.climbstationsolutions.climbstation.ui.profile
 
 import android.graphics.Color
+import android.graphics.CornerPathEffect
+import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -73,47 +75,9 @@ class ProfileStatsFragment : Fragment() {
         viewModel.setTime("Today")
         viewModel.setTime2(CustomDateGenerator.getToday())
 
-        //Settings the data for the graph. Currently manual
-        val dataPoints = arrayOf(
-            DataPoint(0.0, 22.0),
-            DataPoint(1.0, 60.0),
-            DataPoint(2.0, 30.0),
-            DataPoint(3.0, 40.0),
-            DataPoint(4.0, 90.0),
-            DataPoint(5.0, 60.0),
-            DataPoint(6.0, 70.0),
-            DataPoint(7.0, 120.0),
-            DataPoint(8.0, 70.0),
-            DataPoint(9.0, 85.0),
-            DataPoint(10.0, 100.0),
-            DataPoint(11.0, 10.0),
-            DataPoint(12.0, 35.0),
-            DataPoint(13.0, 25.0),
-            DataPoint(14.0, 10.0),
-            DataPoint(15.0, 70.0),
-            DataPoint(16.0, 2.0),
-            DataPoint(17.0, 3.0),
-            DataPoint(18.0, 5.0),
-            DataPoint(19.0, 30.0),
-            DataPoint(20.0, 40.0),
-            DataPoint(21.0, 55.0),
-            DataPoint(22.0, 22.0),
-            DataPoint(23.0, 70.0),
-        )
-        val series = BarGraphSeries(dataPoints)
-        series.color = ContextCompat.getColor(requireContext(), R.color.climbstation_red)
-        series.spacing = 5
-        series.isDrawValuesOnTop = true
-        series.valuesOnTopColor = Color.WHITE
-        binding.graphView.addSeries(series)
-        series.valuesOnTopSize = 25F
-
         // Settings graph UI
         binding.graphView.gridLabelRenderer.numHorizontalLabels = 7
         binding.graphView.gridLabelRenderer.gridStyle = GridLabelRenderer.GridStyle.NONE
-        binding.graphView.viewport.setDrawBorder(true)
-        binding.graphView.gridLabelRenderer.gridColor =
-            ContextCompat.getColor(requireContext(), R.color.white)
         binding.graphView.gridLabelRenderer.verticalLabelsColor =
             ContextCompat.getColor(requireContext(), R.color.white)
         binding.graphView.gridLabelRenderer.horizontalLabelsColor =
@@ -211,34 +175,72 @@ class ProfileStatsFragment : Fragment() {
             "Today" -> {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfToday(selectedVariable)
+//                    val series = BarGraphSeries(
+//                        arrayOf(
+//                            DataPoint(0.0, 1.0),
+//                            DataPoint(1.0, 2.0),
+//                            DataPoint(2.0, 3.0),
+//                            DataPoint(3.0, 3.0),
+//                            DataPoint(4.0, 3.0),
+//                            DataPoint(5.0, 50.0),
+//                            DataPoint(6.0, 3.0),
+//                            DataPoint(7.0, 3.0),
+//                            DataPoint(8.0, 80.0),
+//                            DataPoint(9.0, 3.0),
+//                            DataPoint(10.0, 22.0),
+//                            DataPoint(11.0, 48.0),
+//                            DataPoint(12.0, 3.0),
+//                            DataPoint(13.0, 3.0),
+//                            DataPoint(14.0, 3.0),
+//                            DataPoint(15.0, 0.0),
+//                            DataPoint(16.0, 0.0),
+//                            DataPoint(17.0, 78.0),
+//                            DataPoint(18.0, 12.0),
+//                            DataPoint(19.0, 88.0),
+//                            DataPoint(20.0, 3.0),
+//                            DataPoint(21.0, 3.0),
+//                            DataPoint(22.0, 3.0),
+//                            DataPoint(23.0, 42.0),
+//                        )
+//                    )
                     series.isAnimated = true
-                    series.color =
-                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true
-                    series.valuesOnTopColor = Color.WHITE
-                    series.valuesOnTopSize = 25F
+                    series.customPaint = getPaint(15f)
 
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(25.0)
+                    binding.graphView.viewport.isYAxisBoundsManual = true
+                    binding.graphView.viewport.setMaxY(series.highestValueY)
+                    binding.graphView.viewport.setMinY(series.lowestValueY)
+                    Log.d("PSF","max y: ${series.highestValueY} min y: ${series.lowestValueY}")
                     binding.graphView.gridLabelRenderer.horizontalAxisTitle = "hours of day"
                 }
             }
             "This week" -> {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfThisWeek(selectedVariable)
+//                    val series = BarGraphSeries(
+//                        arrayOf(
+//                            DataPoint(1.0, 100.0),
+//                            DataPoint(2.0, 5.0),
+//                            DataPoint(3.0, 0.0),
+//                            DataPoint(4.0, 80.0),
+//                            DataPoint(5.0, 250.0),
+//                            DataPoint(6.0, 0.0),
+//                            DataPoint(7.0, 7.0)
+//                        )
+//                    )
                     series.isAnimated = true
-                    series.color =
-                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true
-                    series.valuesOnTopColor = Color.WHITE
-                    series.valuesOnTopSize = 25F
+                    series.customPaint = getPaint(30f)
 
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(7.0)
+                    binding.graphView.viewport.isYAxisBoundsManual = true
+                    binding.graphView.viewport.setMaxY(series.highestValueY)
+                    binding.graphView.viewport.setMinY(series.lowestValueY)
                     binding.graphView.gridLabelRenderer.horizontalAxisTitle = "days of week"
                 }
             }
@@ -246,16 +248,15 @@ class ProfileStatsFragment : Fragment() {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfThisMonth(selectedVariable)
                     series.isAnimated = true
-                    series.color =
-                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true
-                    series.valuesOnTopColor = Color.WHITE
-                    series.valuesOnTopSize = 25F
+                    series.customPaint = getPaint(15f)
 
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(31.0)
+                    binding.graphView.viewport.isYAxisBoundsManual = true
+                    binding.graphView.viewport.setMaxY(series.highestValueY)
+                    binding.graphView.viewport.setMinY(series.lowestValueY)
                     binding.graphView.gridLabelRenderer.horizontalAxisTitle = "days of month"
                 }
             }
@@ -263,16 +264,15 @@ class ProfileStatsFragment : Fragment() {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfThisYear(selectedVariable)
                     series.isAnimated = true
-                    series.color =
-                        ContextCompat.getColor(requireContext(), R.color.climbstation_red)
                     series.spacing = 5
-                    series.isDrawValuesOnTop = true
-                    series.valuesOnTopColor = Color.WHITE
-                    series.valuesOnTopSize = 25F
+                    series.customPaint = getPaint(30f)
 
                     binding.graphView.addSeries(series)
                     binding.graphView.viewport.isXAxisBoundsManual = true
                     binding.graphView.viewport.setMaxX(13.0)
+                    binding.graphView.viewport.isYAxisBoundsManual = true
+                    binding.graphView.viewport.setMaxY(series.highestValueY)
+                    binding.graphView.viewport.setMinY(series.lowestValueY)
                     binding.graphView.gridLabelRenderer.horizontalAxisTitle = "months of year"
                 }
             }
@@ -280,6 +280,19 @@ class ProfileStatsFragment : Fragment() {
                 Log.d("createGraph", "no action set for time: $selectedTime")
             }
         }
+    }
+
+    private fun getPaint(radius: Float): Paint {
+        val paint = Paint()
+        paint.color = ContextCompat.getColor(
+            requireContext(),
+            R.color.climbstation_red
+        );                                                  // set the color
+        paint.isDither = true                               // set the dither to true
+        paint.style = Paint.Style.FILL                      // set to FILL
+        paint.pathEffect = CornerPathEffect(radius)      // set the path effect when they join.
+        paint.isAntiAlias = true                            // set anti alias so it smooths
+        return paint
     }
 
     private fun resetButtonSelection() {
