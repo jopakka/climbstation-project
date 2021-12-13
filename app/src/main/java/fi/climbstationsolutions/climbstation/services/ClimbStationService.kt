@@ -66,7 +66,6 @@ class ClimbStationService : Service() {
     private lateinit var sessionDao: SessionWithDataDao
     private lateinit var profileWithSteps: ClimbProfileWithSteps
     private var localBroadcastManager: LocalBroadcastManager? = null
-    private val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
 
     // Values which control how often text-to-speech will notify user
     private val distanceNotifyRange = 5 // by meters
@@ -82,6 +81,7 @@ class ClimbStationService : Service() {
         } else {
             intent?.extras?.let {
                 val profile = (it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps)?.also { p ->
+                    val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
                     val speed = pref[SPEED_PREF_NAME, -1]
                     if(speed != -1) p.profile.speed = speed
                 }
@@ -464,6 +464,7 @@ class ClimbStationService : Service() {
      * Checks if tts is enabled on sharedPreferences
      */
     private fun checkTts(): Boolean {
+        val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
         return pref[TTS_PREF_NAME, true]
     }
 }
