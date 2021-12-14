@@ -1,10 +1,7 @@
 package fi.climbstationsolutions.climbstation.ui.history
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.database.SessionWithData
@@ -40,5 +37,15 @@ class ClimbHistoryViewModel(application: Application) : AndroidViewModel(applica
                 mProfileWithSteps.postValue(profileDao.getProfileWithSteps(it.session.profileId))
             }
         }
+    }
+
+    private val mLoading: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().also { it.value = false }
+    }
+    val loading: LiveData<Boolean>
+        get() = mLoading
+
+    fun setLoading(value: Boolean) {
+        mLoading.value = value
     }
 }

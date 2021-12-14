@@ -70,14 +70,12 @@
 
                 <TextView
                     android:id="@+id/Length_subtitle"
-                    android:layout_width="0dp"
+                    style="@style/Theme.ClimbStation.Text.Black.Title3"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
                     android:text="@string/length"
-                    style="@style/Theme.ClimbStation.Text.Black.Title3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,6 +96,7 @@
                         android:id="@+id/lengthEditText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:imeOptions="actionDone"
                         android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -115,14 +114,12 @@
 
                 <TextView
                     android:id="@+id/angle_subtitle"
-                    android:layout_width="0dp"
+                    style="@style/Theme.ClimbStation.Text.Black.Title3"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
                     android:text="@string/angle"
-                    style="@style/Theme.ClimbStation.Text.Black.Title3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -142,6 +139,7 @@
                         android:id="@+id/angleEditText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:imeOptions="actionDone"
                         android:inputType="numberSigned" />
 
                 </com.google.android.material.textfield.TextInputLayout>

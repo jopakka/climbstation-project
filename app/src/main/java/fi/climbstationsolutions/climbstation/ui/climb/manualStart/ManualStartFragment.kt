@@ -48,7 +48,6 @@ import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager.onScrollSto
 class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {
     private lateinit var binding: FragmentManualStartBinding
     private lateinit var broadcastManager: LocalBroadcastManager
-    private val TAG: String = ManualStartFragment::class.java.simpleName
 
     private val viewModel: ManualStartViewModel by viewModels()
     private val climbViewModel: ClimbViewModel by viewModels(
