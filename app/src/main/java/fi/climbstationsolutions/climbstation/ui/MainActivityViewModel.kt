@@ -3,6 +3,8 @@ package fi.climbstationsolutions.climbstation.ui
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fi.climbstationsolutions.climbstation.database.AppDatabase
@@ -20,6 +22,16 @@ class MainActivityViewModel(context: Context) : ViewModel() {
     private val parentJob = Job()
     private val ioScope = CoroutineScope(Dispatchers.IO + parentJob)
     private var userBodyWeightDefault: Float = 70.00F
+
+    private val mSpeed: MutableLiveData<Int> by lazy {
+        MutableLiveData<Int>().also {
+            val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
+            it.value = prefs[SPEED_PREF_NAME]
+        }
+    }
+
+    val speed: LiveData<Int>
+        get() = mSpeed
 
     fun setWeight(inputWeight: Float? = null, callBack: () -> Unit = {}) {
         ioScope.launch {
@@ -40,6 +52,7 @@ class MainActivityViewModel(context: Context) : ViewModel() {
 
     fun setSpeed(context: Context, speed: Int? = null, callBack: () -> Unit = {}) {
         if (speed != null) {
+            mSpeed.value = speed
             val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
             prefs[SPEED_PREF_NAME] = speed
             callBack()

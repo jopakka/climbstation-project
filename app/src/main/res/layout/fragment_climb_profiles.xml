@@ -10,6 +10,10 @@
         <variable
             name="viewModel"
             type="fi.climbstationsolutions.climbstation.ui.climb.climbSetup.ClimbViewModel" />
+
+        <variable
+            name="mainViewModel"
+            type="fi.climbstationsolutions.climbstation.ui.MainActivityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -154,7 +158,7 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/textView5"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:speed="@{viewModel.profileWithSteps.profile.speed}"
+                        app:speed="@{mainViewModel.speed}"
                         tools:text="10 m/min" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

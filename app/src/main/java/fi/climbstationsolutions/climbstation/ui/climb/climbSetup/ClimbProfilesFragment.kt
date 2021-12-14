@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
+import fi.climbstationsolutions.climbstation.ui.MainActivityViewModel
 
 class ClimbProfilesFragment : Fragment(), CellClickListener {
     private lateinit var binding: FragmentClimbProfilesBinding
@@ -34,6 +36,7 @@ class ClimbProfilesFragment : Fragment(), CellClickListener {
     private val viewModel: ClimbViewModel by viewModels(
         ownerProducer = { requireParentFragment() }
     )
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +46,7 @@ class ClimbProfilesFragment : Fragment(), CellClickListener {
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+        binding.mainViewModel = mainViewModel
         viewModel.setLoading(ClimbStationService.SERVICE_RUNNING)
 
         binding.difficultyRv.apply {
