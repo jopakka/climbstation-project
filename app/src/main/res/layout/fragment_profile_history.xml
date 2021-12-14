@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/climbstation_red"
+            app:borderWidth="0dp"
             android:clickable="true"
             android:contentDescription="@string/filter_list"
             app:layout_constraintBottom_toBottomOf="parent"
