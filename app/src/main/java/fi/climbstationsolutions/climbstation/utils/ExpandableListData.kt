@@ -3,6 +3,10 @@ package fi.climbstationsolutions.climbstation.utils
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * @author Oskar Wiiala
+ * Just holds data such as group and child lists for an ExpandableListView
+ */
 internal object ExpandableListData {
     val data: LinkedHashMap<String, List<String>>
         get() {
