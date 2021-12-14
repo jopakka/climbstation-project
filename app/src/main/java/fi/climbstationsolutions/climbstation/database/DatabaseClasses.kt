@@ -67,7 +67,8 @@ data class ClimbProfile(
     val name: String,
     var speed: Int = 10,
     val createdAt: Date? = null,
-    val isDefault: Boolean = false
+    val isDefault: Boolean = false,
+    val manual: Boolean = false
 ) : Parcelable
 
 /**
