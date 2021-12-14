@@ -151,8 +151,11 @@ fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
 
 @BindingAdapter("stepsAverageAngle")
 fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
-    val avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
+    var avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
     else 0f
+
+    if (avgAngle.isNaN())
+        avgAngle = 0f
 
     view.text = view.resources.getString(R.string.angleShort, avgAngle)
 }
