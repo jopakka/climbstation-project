@@ -77,6 +77,6 @@ wallProfile.sessionWithData = SessionWithData()
 ```
 
 ## Developers
-Oskar Wiiala
-Patrik Pölkki
+Oskar Wiiala\
+Patrik Pölkki\
 Joonas Niemi
