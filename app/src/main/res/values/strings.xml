@@ -139,7 +139,7 @@
     <string name="share">Share</string>
     <string name="not_valid_profile">Not a valid profile</string>
 
-    <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press.</string>
+    <string name="wifi_into_text">Make sure that you are connected to ClimbStations wifi network.\n\nThen press NEXT.</string>
 
     <string name="length">Length</string>
     <string name="speed">Speed</string>
@@ -205,6 +205,5 @@
     <string name="adjustments">Adjustments</string>
 
     <string name="connect_to_the_climbstation">Connect to the ClimbStation</string>
-    <string name="or">Or</string>
     <string name="select_speed">Select speed</string>
 </resources>
