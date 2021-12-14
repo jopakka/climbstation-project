@@ -80,53 +80,59 @@ class GraphDataThisMonth(context: Context) {
         // assign items to hourList
         for (item in sessionsThisMonth) {
             val itemDate = item.session.endedAt
-            val localItemDate = itemDate!!.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-            cal.time = itemDate
-            itemDayIndex = localItemDate.dayOfMonth - 1
-            if (counter == 1) itemDayPrevious = itemDayIndex
-            if (itemDayIndex != itemDayPrevious) {
-                counter = 1
-                averageAngleList.clear()
-                distanceList.clear()
-                caloriesList.clear()
-            }
-            when (selectedVariable) {
-                "Distance" -> {
-                    val tempDistanceList = mutableListOf<Float>()
-                    for (i in item.data) {
-                        tempDistanceList.add((i.totalDistance).toFloat() / 1000)
+            if(itemDate != null) {
+                val localItemDate =
+                    itemDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                cal.time = itemDate
+                itemDayIndex = localItemDate.dayOfMonth - 1
+                if (counter == 1) itemDayPrevious = itemDayIndex
+                if (itemDayIndex != itemDayPrevious) {
+                    counter = 1
+                    averageAngleList.clear()
+                    distanceList.clear()
+                    caloriesList.clear()
+                }
+                when (selectedVariable) {
+                    "Distance" -> {
+                        val tempDistanceList = mutableListOf<Float>()
+                        for (i in item.data) {
+                            tempDistanceList.add((i.totalDistance).toFloat() / 1000)
+                        }
+                        distanceList.add(tempDistanceList.maxOrNull() ?: 0.0f)
+                        dayList[itemDayIndex] = distanceList.sum().toDouble()
                     }
-                    distanceList.add(tempDistanceList.maxOrNull() ?: 0.0f)
-                    dayList[itemDayIndex] = distanceList.sum().toDouble()
-                }
-                "Avg angle" -> {
-                    for (i in item.data) {
-                        averageAngleList.add(i.angle)
+                    "Avg angle" -> {
+                        for (i in item.data) {
+                            averageAngleList.add(i.angle)
+                        }
+                        dayList[itemDayIndex] = averageAngleList.average()
                     }
-                    dayList[itemDayIndex] = averageAngleList.average()
-                }
-                "Time" -> {
-                    val startTime = item.session.createdAt.time
-                    val endTime = item.session.endedAt.time
-                    val duration = (String.format(
-                        Locale.US,
-                        "%.3f",
-                        (((endTime - startTime).toFloat() / 1000) / 60)
-                    )).toDouble()
-                    dayList[itemDayIndex] += duration
-                }
-                "Calories" -> {
-                    val userWeight = database.settingsDao().getBodyWeightById(1)?.weight
-                    val tempDistanceList = mutableListOf<Float>()
-                    for (i in item.data) {
-                        tempDistanceList.add((i.totalDistance).toFloat() / 1000)
+                    "Time" -> {
+                        val startTime = item.session.createdAt.time
+                        val endTime = item.session.endedAt.time
+                        val duration = (String.format(
+                            Locale.US,
+                            "%.3f",
+                            (((endTime - startTime).toFloat() / 1000) / 60)
+                        )).toDouble()
+                        dayList[itemDayIndex] += duration
                     }
-                    val distance = tempDistanceList.maxOrNull() ?: 0.0f
-                    val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
-                    caloriesList.add(calories)
-                    dayList[itemDayIndex] = caloriesList.sum().toDouble()
+                    "Calories" -> {
+                        val userWeight = database.settingsDao().getBodyWeightById(1)?.weight
+                        val tempDistanceList = mutableListOf<Float>()
+                        for (i in item.data) {
+                            tempDistanceList.add((i.totalDistance).toFloat() / 1000)
+                        }
+                        val distance = tempDistanceList.maxOrNull() ?: 0.0f
+                        val calories = CalorieCounter().countCalories(distance, userWeight ?: 70.0f)
+                        caloriesList.add(calories)
+                        dayList[itemDayIndex] = caloriesList.sum().toDouble()
+                    }
+                    else -> Log.d(
+                        "GraphDataThisMonth",
+                        "No action set for variable: $selectedVariable"
+                    )
                 }
-                else -> Log.d("GraphDataThisMonth", "No action set for variable: $selectedVariable")
             }
         }
 
