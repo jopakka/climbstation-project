@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.create
+package fi.climbstationsolutions.climbstation.ui.create.customStep
 
 import android.app.Application
 import androidx.lifecycle.*

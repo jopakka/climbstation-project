@@ -7,29 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.databinding.CustomStepItemBinding
-import fi.climbstationsolutions.climbstation.ui.create.CustomStepFocusListener
+import fi.climbstationsolutions.climbstation.ui.create.customStep.CustomStepFocusListener
 import androidx.core.content.ContextCompat.getSystemService
 
-import android.graphics.Rect
-
-import android.widget.EditText
-
-import android.view.MotionEvent
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getSystemService
 
 data class DuplicateValues(
     val distance: Int,
     val angle: Int
 )
 
-class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusListener, private val context: Context) :
+class CustomStepsAdapter(
+    private val customStepFocusListener: CustomStepFocusListener,
+    private val context: Context
+) :
     RecyclerView.Adapter<CustomStepsAdapter.ViewHolder>() {
 
     private val customStepsList: MutableList<ClimbStep> = mutableListOf()
@@ -50,10 +46,14 @@ class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusLis
 
             binding.stepRvTitle.text = this.itemView.context.getString(R.string.Step, position + 1)
 
-            binding.lengthEditText.hint =
-                this.itemView.context.getString(R.string.distanceShort, item.distance.toFloat())
-            binding.angleEditText.hint =
-                this.itemView.context.getString(R.string.angleShortInt, item.angle)
+            binding.lengthEditText.apply {
+                text = null
+                hint = itemView.context.getString(R.string.distanceShort, item.distance.toFloat())
+            }
+            binding.angleEditText.apply {
+                text = null
+                hint = itemView.context.getString(R.string.angleShortInt, item.angle)
+            }
 
             binding.lengthEditText.doOnTextChanged { text, _, _, _ ->
                 text.toString().toIntOrNull().let {
@@ -66,7 +66,7 @@ class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusLis
             }
             binding.angleEditText.doOnTextChanged { text, _, _, _ ->
                 text.toString().toIntOrNull().let {
-                    if (it in (-45..15) || it == null ) {
+                    if (it in (-45..15) || it == null) {
                         binding.angleEditTextLayout.error = null
                     } else {
                         binding.angleEditTextLayout.error =
@@ -106,7 +106,7 @@ class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusLis
         }
 
         private val imeDoneListener = TextView.OnEditorActionListener { textView, i, _ ->
-            when(textView) {
+            when (textView) {
                 binding.angleEditText -> {
                     if (i == EditorInfo.IME_ACTION_DONE) {
                         hideKeyboard(textView)
@@ -128,6 +128,7 @@ class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusLis
                 }
             }
         }
+
         private fun hideKeyboard(view: View) {
             getSystemService(context, InputMethodManager::class.java)
                 ?.hideSoftInputFromWindow(view.windowToken, 0)

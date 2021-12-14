@@ -1,12 +1,9 @@
 package fi.climbstationsolutions.climbstation.utils
 
-import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputEditText
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.database.Data
@@ -17,7 +14,12 @@ import java.time.YearMonth
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * @author Patrik Pölkki
+ * @author Joonas Niemi
+ * @author Oskar Wiiala
+ * Binding adapters for various views
+ */
 @BindingAdapter("stepsToDistance")
 fun bindStepsToDistance(view: TextView, steps: List<ClimbStep>?) {
     val distance = if (steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)
@@ -149,8 +151,11 @@ fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
 
 @BindingAdapter("stepsAverageAngle")
 fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
-    val avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
+    var avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
     else 0f
+
+    if (avgAngle.isNaN())
+        avgAngle = 0f
 
     view.text = view.resources.getString(R.string.angleShort, avgAngle)
 }

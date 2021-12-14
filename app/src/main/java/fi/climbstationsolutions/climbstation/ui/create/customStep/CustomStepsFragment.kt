@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.create
+package fi.climbstationsolutions.climbstation.ui.create.customStep
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,8 +29,10 @@ class CustomStepsFragment : Fragment(R.layout.fragment_custom_steps), CustomStep
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCustomStepsBinding.inflate(layoutInflater)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
         viewModel.getProfileWithSteps(args.id)
 
         binding.customStepsRv.apply {
@@ -38,19 +40,30 @@ class CustomStepsFragment : Fragment(R.layout.fragment_custom_steps), CustomStep
             adapter = CustomStepsAdapter(this@CustomStepsFragment, context)
         }
 
+        setSwipeHandler()
         setCustomStepsToRecyclerView()
 
+        binding.floatingActionButton.setOnClickListener(fabListener)
+        return binding.root
+    }
+
+    private fun setSwipeHandler() {
         val swipeHandler = object : SwipeToDelete(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.customStepsRv.adapter as CustomStepsAdapter
-                when(direction) {
+                when (direction) {
                     ItemTouchHelper.LEFT -> {
                         val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
                         viewModel.deleteStep(id)
                     }
                     ItemTouchHelper.RIGHT -> {
-                        val duplicateValues = adapter.duplicateStep(viewHolder.bindingAdapterPosition)
-                        viewModel.duplicateStep(args.id, duplicateValues.distance, duplicateValues.angle)
+                        val duplicateValues =
+                            adapter.duplicateStep(viewHolder.bindingAdapterPosition)
+                        viewModel.duplicateStep(
+                            args.id,
+                            duplicateValues.distance,
+                            duplicateValues.angle
+                        )
                     }
                 }
             }
@@ -58,8 +71,6 @@ class CustomStepsFragment : Fragment(R.layout.fragment_custom_steps), CustomStep
 
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(binding.customStepsRv)
-        binding.floatingActionButton.setOnClickListener(fabListener)
-        return binding.root
     }
 
     private fun setCustomStepsToRecyclerView() {

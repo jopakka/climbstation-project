@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.create
+package fi.climbstationsolutions.climbstation.ui.create.customProfile
 
 
 interface CustomProfileClickListener {

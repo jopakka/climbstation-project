@@ -14,9 +14,15 @@ import fi.climbstationsolutions.climbstation.databinding.FragmentClimbFinishedBi
 import fi.climbstationsolutions.climbstation.databinding.InfoPopupBinding
 import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
 
+/**
+ * @author Oskar Wiiala
+ */
 class PopupHandlers {
     private lateinit var binding: InfoPopupBinding
 
+    /**
+     * For tutorials, such as "How to create custom profiles"
+     */
     fun showInfoDialog(title: String, context: Context, viewModel: InfoPopupViewModel) {
         binding = InfoPopupBinding.inflate(LayoutInflater.from(context))
         binding.viewModel = viewModel

@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.button.MaterialButton
 import com.jjoe64.graphview.GridLabelRenderer
-import com.jjoe64.graphview.series.BarGraphSeries
-import com.jjoe64.graphview.series.DataPoint
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileStatsBinding
 import fi.climbstationsolutions.climbstation.graph.GraphDataHandler
@@ -25,6 +23,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * @author Patrik Pölkki
+ * @author Joonas Niemi
+ * @author Oskar Wiiala
+ * Fragment for displaying bar graph and other statistics of user's completed climbing sessions
+ */
 class ProfileStatsFragment : Fragment() {
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var binding: FragmentProfileStatsBinding
@@ -50,6 +54,7 @@ class ProfileStatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Holds variable names for AppCompatSpinner
         val spinnerList: MutableList<String> = ArrayList()
         spinnerList.add("Distance")
         spinnerList.add("Avg angle")
@@ -75,7 +80,7 @@ class ProfileStatsFragment : Fragment() {
         viewModel.setTime("Today")
         viewModel.setTime2(CustomDateGenerator.getToday())
 
-        // Settings graph UI
+        // Setting up initial graph UI
         binding.graphView.gridLabelRenderer.numHorizontalLabels = 7
         binding.graphView.gridLabelRenderer.gridStyle = GridLabelRenderer.GridStyle.NONE
         binding.graphView.gridLabelRenderer.verticalLabelsColor =
@@ -91,6 +96,10 @@ class ProfileStatsFragment : Fragment() {
         binding.graphView.gridLabelRenderer.horizontalAxisTitleColor = Color.WHITE
     }
 
+    /**
+     * ClickListener for time period selection buttons
+     * Calls for graph data generation
+     */
     private val clickListener = View.OnClickListener {
         resetButtonSelection()
         when (it) {
@@ -125,6 +134,11 @@ class ProfileStatsFragment : Fragment() {
         }
     }
 
+    /**
+     * Listens for variable selection changes for AppCompatSpinner
+     * Calls for graph data generation
+     * @param [spinnerList] contains a list of spinner variable names
+     */
     private fun selectVariable(
         spinnerList: MutableList<String>
     ) {
@@ -155,6 +169,12 @@ class ProfileStatsFragment : Fragment() {
             }
     }
 
+    /**
+     * Creates graph data based on selected variable and time period
+     * Also does some UI styling for graph
+     * @param [selectedVariable] such as "Distance" or "Calories"
+     * @param [selectedTime] such as "Today" or "This month"
+     */
     private fun createGraph(
         selectedVariable: String = "Distance",
         selectedTime: String = "Today"
@@ -175,34 +195,6 @@ class ProfileStatsFragment : Fragment() {
             "Today" -> {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfToday(selectedVariable)
-//                    val series = BarGraphSeries(
-//                        arrayOf(
-//                            DataPoint(0.0, 1.0),
-//                            DataPoint(1.0, 2.0),
-//                            DataPoint(2.0, 3.0),
-//                            DataPoint(3.0, 3.0),
-//                            DataPoint(4.0, 3.0),
-//                            DataPoint(5.0, 50.0),
-//                            DataPoint(6.0, 3.0),
-//                            DataPoint(7.0, 3.0),
-//                            DataPoint(8.0, 80.0),
-//                            DataPoint(9.0, 3.0),
-//                            DataPoint(10.0, 22.0),
-//                            DataPoint(11.0, 48.0),
-//                            DataPoint(12.0, 3.0),
-//                            DataPoint(13.0, 3.0),
-//                            DataPoint(14.0, 3.0),
-//                            DataPoint(15.0, 0.0),
-//                            DataPoint(16.0, 0.0),
-//                            DataPoint(17.0, 78.0),
-//                            DataPoint(18.0, 12.0),
-//                            DataPoint(19.0, 88.0),
-//                            DataPoint(20.0, 3.0),
-//                            DataPoint(21.0, 3.0),
-//                            DataPoint(22.0, 3.0),
-//                            DataPoint(23.0, 42.0),
-//                        )
-//                    )
                     series.isAnimated = true
                     series.spacing = 5
                     series.customPaint = getPaint(15f)
@@ -213,24 +205,13 @@ class ProfileStatsFragment : Fragment() {
                     binding.graphView.viewport.isYAxisBoundsManual = true
                     binding.graphView.viewport.setMaxY(series.highestValueY)
                     binding.graphView.viewport.setMinY(series.lowestValueY)
-                    Log.d("PSF","max y: ${series.highestValueY} min y: ${series.lowestValueY}")
+                    Log.d("PSF", "max y: ${series.highestValueY} min y: ${series.lowestValueY}")
                     binding.graphView.gridLabelRenderer.horizontalAxisTitle = "hours of day"
                 }
             }
             "This week" -> {
                 mainScope.launch {
                     val series = gD.getGraphDataPointsOfThisWeek(selectedVariable)
-//                    val series = BarGraphSeries(
-//                        arrayOf(
-//                            DataPoint(1.0, 100.0),
-//                            DataPoint(2.0, 5.0),
-//                            DataPoint(3.0, 0.0),
-//                            DataPoint(4.0, 80.0),
-//                            DataPoint(5.0, 250.0),
-//                            DataPoint(6.0, 0.0),
-//                            DataPoint(7.0, 7.0)
-//                        )
-//                    )
                     series.isAnimated = true
                     series.spacing = 5
                     series.customPaint = getPaint(30f)
@@ -282,6 +263,11 @@ class ProfileStatsFragment : Fragment() {
         }
     }
 
+    /**
+     * Custom paint for graph DataPoint series
+     * Adds red color + rounding to corners
+     * @param [radius] is the desired amount of rounding
+     */
     private fun getPaint(radius: Float): Paint {
         val paint = Paint()
         paint.color = ContextCompat.getColor(
@@ -295,6 +281,9 @@ class ProfileStatsFragment : Fragment() {
         return paint
     }
 
+    /**
+     * Resets time period button selection to avoid multiple buttons from appearing selected
+     */
     private fun resetButtonSelection() {
         binding.profileGraphSelectDay.setBackgroundColor(
             ContextCompat.getColor(
@@ -346,6 +335,9 @@ class ProfileStatsFragment : Fragment() {
         )
     }
 
+    /**
+     * Styles time period button when selected
+     */
     private fun selectGraphButton(view: MaterialButton) {
         view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.climbstation_red))
         view.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))

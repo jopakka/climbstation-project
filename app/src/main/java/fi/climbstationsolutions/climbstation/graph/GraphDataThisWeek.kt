@@ -14,6 +14,10 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.util.*
 
+/**
+ * @author Oskar Wiiala
+ * Generates DataPoints of this week based on variable
+ */
 class GraphDataThisWeek(context: Context) {
     // This holds data to be inserted into DataPoints
     private val dayList: MutableList<Double> = mutableListOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
@@ -21,6 +25,10 @@ class GraphDataThisWeek(context: Context) {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
 
+    /**
+     * @param [selectedVariable] is the variable which graph data is based on, such as "Distance" or "Calories"
+     * @return [BarGraphSeries] contains DataPoints required to generate graph data
+     */
     suspend fun createGraphData(selectedVariable: String): BarGraphSeries<DataPoint> = withContext(
         Dispatchers.IO
     ) {

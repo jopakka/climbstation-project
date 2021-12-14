@@ -4,6 +4,10 @@ import android.content.Context
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 
+/**
+ * @author Oskar Wiiala
+ * This class acts as a middleman for fetching DataPoints of selected variables and time periods
+ */
 class GraphDataHandler(context: Context) {
     private val appContext = context
 
