@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="fi.climbstationsolutions.climbstation.ui.create.CustomStepsViewModel" />
+            type="fi.climbstationsolutions.climbstation.ui.create.customStep.CustomStepsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.create
+package fi.climbstationsolutions.climbstation.ui.create.customProfile
 
 import android.app.Application
 import android.util.Log

@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.create
+package fi.climbstationsolutions.climbstation.ui.create.customStep
 
 import android.os.Bundle
 import android.view.LayoutInflater
