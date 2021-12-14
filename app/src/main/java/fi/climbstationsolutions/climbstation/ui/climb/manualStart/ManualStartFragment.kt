@@ -25,24 +25,8 @@ import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.ManualStartViewModel
-import me.angrybyte.numberpicker.listener.OnValueChangeListener
-import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 
-import androidx.recyclerview.widget.SnapHelper
-
-import fi.climbstationsolutions.climbstation.adapters.TestiAdapter
-
-import android.widget.TextView
-import android.widget.Toast
-
-import fi.climbstationsolutions.climbstation.ui.MainActivity
-
-import android.R.attr.name
-import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.*
-import androidx.core.view.setPadding
-import travel.ithaka.android.horizontalpickerlib.PickerLayoutManager.onScrollStopListener
 
 
 class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {

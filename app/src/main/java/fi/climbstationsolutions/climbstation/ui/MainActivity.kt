@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupCustomExpandableList() {
         val listData = data
-        Log.d("listData1", "listData1: ${listData}")
+        Log.d("listData1", "listData1: $listData")
         Log.d("HashMap_data", "data: $listData")
         titleList = ArrayList(listData.keys)
         adapter = CustomExpandableListAdapter(
@@ -218,19 +218,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Save [speed] to shared preferences
-     */
-    private fun setSpeedToPrefs(speed: Int) {
-        val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
-        prefs[SPEED_PREF_NAME] = speed
-    }
-
-    /**
-     * Save [tts] to shared preferences
-     */
-    private fun setTtsToPrefs(tts: Boolean) {
-        val prefs = PreferenceHelper.customPrefs(this, PREF_NAME)
-        prefs[TTS_PREF_NAME] = tts
-    }
 }

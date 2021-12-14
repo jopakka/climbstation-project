@@ -287,7 +287,7 @@ class ProfileStatsFragment : Fragment() {
         paint.color = ContextCompat.getColor(
             requireContext(),
             R.color.climbstation_red
-        );                                                  // set the color
+        )                                                  // set the color
         paint.isDither = true                               // set the dither to true
         paint.style = Paint.Style.FILL                      // set to FILL
         paint.pathEffect = CornerPathEffect(radius)      // set the path effect when they join.
