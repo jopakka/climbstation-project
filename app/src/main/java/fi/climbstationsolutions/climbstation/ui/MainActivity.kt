@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
+        initSharedPref()
+
         // sets ClimbStation drawer menu logo to expandableListView
         val listHeaderView =
             layoutInflater.inflate(R.layout.overflow_menu_header_layout, binding.root, false)
@@ -67,19 +69,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        val spinnerList: MutableList<String> = ArrayList()
-        spinnerList.add("Distance")
-        spinnerList.add("Avg angle")
-        spinnerList.add("Time")
-        spinnerList.add("Calories")
-
-        val customSpinnerAdapter = ArrayAdapter(
-            this.applicationContext,
-            R.layout.custom_spinner_item,
-            spinnerList
-        )
-
     }
 
     override fun onBackPressed() {
@@ -89,6 +78,13 @@ class MainActivity : AppCompatActivity() {
             } else {
                 super.onBackPressed()
             }
+        }
+    }
+
+    private fun initSharedPref() {
+        val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
+        if(pref.get<Int>(SPEED_PREF_NAME) == -1) {
+            pref[SPEED_PREF_NAME] = 8
         }
     }
 
