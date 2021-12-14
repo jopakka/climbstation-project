@@ -22,7 +22,7 @@ interface ProfileDao {
     @Query("DELETE FROM ClimbStep WHERE id = :id AND (SELECT isDefault FROM ClimbProfile WHERE id = ClimbStep.profileId) = 0")
     suspend fun deleteStep(id: Long)
 
-    @Query("SELECT * FROM ClimbProfile")
+    @Query("SELECT * FROM ClimbProfile WHERE manual = 0")
     fun getAllProfiles(): LiveData<List<ClimbProfileWithSteps>>
 
     @Query("SELECT * FROM ClimbProfile WHERE id = :id")
@@ -31,7 +31,7 @@ interface ProfileDao {
     @Query("SELECT * FROM ClimbProfile WHERE id = :id")
     fun getCustomProfileWithSteps(id: Long): LiveData<ClimbProfileWithSteps>
 
-    @Query("SELECT * FROM ClimbProfile WHERE isDefault = 0")
+    @Query("SELECT * FROM ClimbProfile WHERE isDefault = 0 AND manual = 0")
     fun getAllCustomProfiles(): LiveData<List<ClimbProfileWithSteps>>
 
     @Query("UPDATE ClimbStep SET distance = :distance WHERE id = :id")

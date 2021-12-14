@@ -1,15 +1,19 @@
 package fi.climbstationsolutions.climbstation.ui.climb.manualStart
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.ClimbProfile
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.database.ClimbStep
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ManualStartViewModel : ViewModel() {
-    private val profileId = 1000L
+class ManualStartViewModel(application: Application) : AndroidViewModel(application) {
+    private val db = AppDatabase.get(getApplication())
+    private val profileDao = db.profileDao()
+
     private val mAdjustMutableLiveData: MutableLiveData<Timer> = MutableLiveData(Timer())
     val timer: LiveData<Timer>
         get() = mAdjustMutableLiveData
@@ -71,13 +75,12 @@ class ManualStartViewModel : ViewModel() {
     }
 
     fun setClimbProfileWithSteps() {
-//        val testProfile = ClimbProfile(profileId, "Manual", 10)
-//        val testSteps = listOf(ClimbStep(1, profileId, 0, 0))
-        mProfileWithSteps.value = ClimbProfileWithSteps(
-            ClimbProfile(profileId, "Manual", 10),
-            listOf(ClimbStep(1, profileId, climbLength, climbAngle))
-        )
-        Log.d("setClimbProfileWithSteps", "value: ${profileWithSteps.value}")
+        viewModelScope.launch(Dispatchers.IO) {
+            val profId = profileDao.insertProfile(ClimbProfile(0, "Manual", manual = true))
+            profileDao.insertStep(ClimbStep(0, profId, climbLength, climbAngle))
+            val profile = profileDao.getProfileWithSteps(profId)
+            mProfileWithSteps.postValue(profile)
+        }
     }
 
     fun getTime(): Int? {
