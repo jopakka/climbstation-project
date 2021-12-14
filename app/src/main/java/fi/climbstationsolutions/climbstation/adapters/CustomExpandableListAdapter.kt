@@ -18,7 +18,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
+/**
+ * @author Oskar Wiiala
+ * Adapter for ExpandableListView in MainActivity
+ */
 class CustomExpandableListAdapter(
     private var context: Context,
     private var listTitles: List<String>,
@@ -54,6 +57,12 @@ class CustomExpandableListAdapter(
         return false
     }
 
+
+    /**
+     * Gets a group of an ExpandableListView.
+     * Setting group names and some styling such as icons are handled here
+     * @return [View]
+     */
     override fun getGroupView(p0: Int, p1: Boolean, p2: View?, p3: ViewGroup?): View {
         val title: String = getGroup(p0) as String
         var convertView = p2
@@ -66,10 +75,9 @@ class CustomExpandableListAdapter(
         val txtTitle: TextView = convertView!!.findViewById(R.id.listTitle)
         val txtArrow: ImageView = convertView.findViewById(R.id.ivGroupIndicator)
         val txtSelectedColor: ImageView = convertView.findViewById(R.id.ivGroupColorIndicator)
-//        txtTitle.setTypeface(null, Typeface.BOLD)
         txtTitle.text = title
 
-        // icon
+        // icons
         when (title) {
             "Settings" -> {
                 txtTitle.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_settings_24, 0, 0, 0)
@@ -84,7 +92,7 @@ class CustomExpandableListAdapter(
 
         txtTitle.compoundDrawablePadding = 20
 
-        // sets arrow icon up or down depending on if it is selected
+        // sets arrow icon up or down depending on if group is selected or not
         if (title != "Connect") {
             txtArrow.isSelected = p1
             txtSelectedColor.isSelected = p1
@@ -95,6 +103,11 @@ class CustomExpandableListAdapter(
         return convertView
     }
 
+    /**
+     * Gets a child of a group of an ExpandableListView.
+     * Setting child names and some styling such as icons are handled here
+     * @return [View]
+     */
     override fun getChildView(p0: Int, p1: Int, p2: Boolean, p3: View?, p4: ViewGroup?): View {
         val title: String = getChild(p0, p1) as String
         var convertView = p3
@@ -110,7 +123,8 @@ class CustomExpandableListAdapter(
         txtChild.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
 
         txtChild.text = title
-//        txtChild.setTextColor("#000000")
+
+        // Setting icons and text for children of group
         when (title) {
             "Bodyweight" -> {
                 txtChild.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_scale_24, 0, 0, 0)
