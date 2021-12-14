@@ -40,6 +40,16 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
             adapter = CustomProfileAdapter(this@CustomProfileFragment)
         }
 
+        setSwipeHandler()
+        setCustomProfilesToRecyclerView()
+
+        binding.floatingActionButton.setOnClickListener(fabListener)
+
+        registerForContextMenu(binding.customProfileRv)
+        return binding.root
+    }
+
+    private fun setSwipeHandler() {
         val swipeHandler = object : SwipeToDelete(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.customProfileRv.adapter as CustomProfileAdapter
@@ -62,14 +72,8 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
                 }
             }
         }
-
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(binding.customProfileRv)
-
-        setCustomProfilesToRecyclerView()
-        binding.floatingActionButton.setOnClickListener(fabListener)
-        registerForContextMenu(binding.customProfileRv)
-        return binding.root
     }
 
     private fun setCustomProfilesToRecyclerView() {
