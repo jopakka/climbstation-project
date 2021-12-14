@@ -1,24 +1,35 @@
 package fi.climbstationsolutions.climbstation.adapters
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputLayout
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.databinding.CustomStepItemBinding
 import fi.climbstationsolutions.climbstation.ui.create.CustomStepFocusListener
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.graphics.Rect
+
+import android.widget.EditText
+
+import android.view.MotionEvent
+import android.widget.TextView
+import androidx.core.content.ContextCompat.getSystemService
 
 data class DuplicateValues(
     val distance: Int,
     val angle: Int
 )
 
-class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusListener) :
+class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusListener, private val context: Context) :
     RecyclerView.Adapter<CustomStepsAdapter.ViewHolder>() {
 
     private val customStepsList: MutableList<ClimbStep> = mutableListOf()
@@ -69,6 +80,7 @@ class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusLis
                     binding.lengthEditText.text.toString().toIntOrNull()?.let {
                         if (it != item.distance) {
                             if (it >= 0) {
+                                Log.d("UPDATE", "WORKS")
                                 customStepFocusListener.onCustomStepDistanceListener(it, item.id)
                             }
                         }
@@ -80,12 +92,45 @@ class CustomStepsAdapter(private val customStepFocusListener: CustomStepFocusLis
                 if (!focus) {
                     binding.angleEditText.text.toString().toIntOrNull()?.let {
                         if (it in (-45..10)) {
+                            Log.d("UPDATE", "WORKS")
                             customStepFocusListener.onCustomStepAngleListener(it, item.id)
                         }
                     }
                 }
             }
+
+            binding.lengthEditText.setOnEditorActionListener(imeDoneListener)
+            binding.angleEditText.setOnEditorActionListener(imeDoneListener)
+
             binding.executePendingBindings()
+        }
+
+        private val imeDoneListener = TextView.OnEditorActionListener { textView, i, _ ->
+            when(textView) {
+                binding.angleEditText -> {
+                    if (i == EditorInfo.IME_ACTION_DONE) {
+                        hideKeyboard(textView)
+                        binding.angleEditText.clearFocus()
+                        return@OnEditorActionListener true
+                    }
+                    false
+                }
+                binding.lengthEditText -> {
+                    if (i == EditorInfo.IME_ACTION_DONE) {
+                        hideKeyboard(textView)
+                        binding.lengthEditText.clearFocus()
+                        return@OnEditorActionListener true
+                    }
+                    false
+                }
+                else -> {
+                    return@OnEditorActionListener true
+                }
+            }
+        }
+        private fun hideKeyboard(view: View) {
+            getSystemService(context, InputMethodManager::class.java)
+                ?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

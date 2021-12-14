@@ -176,7 +176,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:padding">@dimen/button_normal_padding</item>
     </style>
-    <style name="Theme.ClimbStation.Button.Normal.Text" parent="Widget.MaterialComponents.Button.TextButton" >
+    <style name="Theme.ClimbStation.Button.Normal.Text" parent="Widget.MaterialComponents.Button.OutlinedButton" >
         <item name="android:textSize">@dimen/button_normal_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">@dimen/button_normal_padding</item>
