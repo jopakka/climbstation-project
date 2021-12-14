@@ -21,54 +21,26 @@
 
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
-    <string name="bottom_nav_statistics">Statistics</string>
     <string name="bottom_nav_profile">Profile</string>
-    <string name="bottom_nav_settings">Settings</string>
 
     <!--fragment_climb strings-->
-    <string name="fragment_climb_dif_rv_title">test</string>
     <string name="fragment_climb_dif_rv_length_title">Length</string>
-    <string name="fragment_climb_dif_rv_length_value">0 m</string>
     <string name="fragment_climb_dif_rv_average_angle_title">Average angle</string>
-    <string name="fragment_climb_dif_rv_average_angle_value">0 deg</string>
-    <string name="fragment_climb_manual_start_btn">manual start</string>
     <string name="error_connect">\n\nMake sure you have wifi turned on and are connected to ClimbStation machine. Make sure to follow the instructions in the top bar menu info section</string>
 
     <!--fragment_climb_on strings-->
     <string name="stop_watch">%02d:%02d:%02d</string>
 
     <!--fragment_climb_finished strings-->
-    <string name="fragment_climb_finished_result_title">%s</string>
-    <string name="fragment_climb_finished_result_detail">You climbed %.1f m of your %.1f m goal</string>
-    <string name="fragment_climb_finished_difficulty_start">Start difficulty: %s</string>
-    <string name="fragment_climb_finished_difficulty_end">End difficulty: %s</string>
-    <string name="fragment_climb_finished_mode">Mode: %s</string>
-    <string name="fragment_climb_finished_time_title">TIME</string>
-    <string name="fragment_climb_finished_time_value">%s</string>
-    <string name="fragment_climb_finished_length_title">LENGTH</string>
-    <string name="fragment_climb_finished_length_value">%.1f m</string>
-    <string name="fragment_climb_finished_calories_title">CALORIES</string>
-    <string name="fragment_climb_finished_calories_value">%.1f kcal</string>
-    <string name="fragment_climb_finished_speed_title">SPEED</string>
-    <string name="fragment_climb_finished_speed_value">%.1f</string>
-    <string name="fragment_climb_finished_view_earlier_results">View earlier results</string>
 
     <!--fragment_adjust strings-->
     <string name="fragment_adjust_title">MANUAL START</string>
-    <string name="fragment_adjust_length">Distance / m:</string>
-    <string name="fragment_adjust_speed">Speed: %d m / min</string>
-    <string name="fragment_adjust_mode">Mode:</string>
     <string name="fragment_adjust_start">Start</string>
     <string name="fragment_adjust_duration">Duration</string>
-    <string name="fragment_adjust_angle">Angle / °</string>
 
     <!--statistics_session_history_item strings-->
-    <string name="stat_sess_history_item_date">5.11.2021</string>
-    <string name="stat_sess_history_item_profile">Athlete</string>
     <string name="stat_sess_history_item_duration_title">Time</string>
-    <string name="stat_sess_history_item_duration_value">00:14:57</string>
     <string name="stat_sess_history_item_distance_title">Distance</string>
-    <string name="stat_sess_history_item_distance_value">28.3 m</string>
 
     <!--fragment_settings strings-->
     <string name="fragment_settings_title">SETTINGS</string>
@@ -83,14 +55,10 @@
     <string name="content_description_overflow_icon">top navigation menu</string>
 
     <!--Accessibility for ClimbStation sprites-->
-    <string name="content_description_climbstation_logo_image">ClimbStation logo</string>
 
     <!--Accessibility for fragment_climb_finished-->
-    <string name="content_description_fragment_climb_finished_graph">Graph displaying climbing angles</string>
-    <string name="content_description_fragment_climb_finished_btn_to_statistics">View earlier results</string>
 
     <!--Accessibility for fragment_statistics-->
-    <string name="content_description_history_delete">Delete history item</string>
 
     <!--Accessibility for fragment_adjust-->
     <string name="content_description_fragment_adjust_start_btn">Start climbing session</string>
@@ -119,7 +87,6 @@
     <string name="year_short">Y</string>
 
     <string name="error_while_connecting">We have troubles to connect ClimbStation. Please try again.</string>
-    <string name="error_no_profile_selected">No profile selected.</string>
     <string name="error_while_getting_info">We have troubles to get info from ClimbStation.</string>
     <string name="error_no_serial">No serial number set</string>
 
@@ -131,7 +98,6 @@
     <string name="next_txt">Next</string>
 
     <!-- View pager tabs -->
-    <string name="wall">Wall</string>
     <string name="stats">Stats</string>
     <string name="history">History</string>
     <string name="manual">Manual</string>
@@ -159,7 +125,6 @@
     <string name="month">Month</string>
     <string name="year">Year</string>
     <string name="filter">Filter</string>
-    <string name="clear">Clear</string>
     <string name="filter_month_year">%s %d</string>
 
     <string name="share">Share</string>
@@ -176,9 +141,6 @@
     <string name="difficulty_profiles">Difficulty profiles</string>
 
     <!--units-->
-    <string name="speedLong">%d m/min</string>
-    <string name="distanceLong">%.1f meters</string>
-    <string name="angleLong">%.1f degrees</string>
     <string name="meter_short">m</string>
     <string name="kcal">kcal</string>
     <string name="meters_per_minutes">m/min</string>
@@ -186,7 +148,6 @@
     <!--unit abbreviations-->
     <string name="speedShort">%d m/min</string>
     <string name="distanceShort">%.0f m</string>
-    <string name="caloriesShort">%.3f kcal</string>
     <string name="angleShort">%.1f°</string>
     <string name="angleShortInt">%d°</string>
     <string name="float_single_decimal">%.1f</string>
@@ -200,16 +161,11 @@
 
     <!-- QR fragment -->
     <string name="read_qr">Read QR-code from ClimbStation</string>
-    <string name="click_here_to_enter_serial">Or click here to enter serial number here</string>
 
     <!-- Speech -->
     <plurals name="speech_time_climbed_plural">
         <item quantity="one">You have climbed %d minute</item>
         <item quantity="other">You have climbed %d minutes</item>
-    </plurals>
-    <plurals name="speech_distance_climbed_plural">
-        <item quantity="one">You have climbed %d meter</item>
-        <item quantity="other">You have climbed %d meters</item>
     </plurals>
 
     <string name="session_list_year_month">%s %d</string>
