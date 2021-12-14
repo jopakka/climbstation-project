@@ -6,7 +6,7 @@ Android application to control ClimbStation device.
 
 ## Usage
 ### How to connect the App to the ClimbStation 
-Menu can be found by clicking on the dotted menu button on the top right corner of the app.
+Menu can be found by clicking on the dotted menu button on the top right corner of the app.\
 First, search and connect to the same WIFI network as the ClimbStation. 
 Then either input the device serial number in the input field and click next, 
 or scan the QR code located on the ClimbStation machine.
@@ -36,21 +36,21 @@ Navigate to the "Profile" and select the "History" tab on the top right (or swip
 Then click on of the sessions in the list. If you want, you can also climb the particular session again by clicking "CLIMB AGAIN" button.
 
 ### Body weight
-Used in calorie calculation.
+Used in calorie calculation.\
 
-Menu can be found by clicking on the dotted menu button on the top right corner of the app.
+Menu can be found by clicking on the dotted menu button on the top right corner of the app.\
 First, click on "SETTINGS" item, then click on the "BODYWEIGHT" item.
 Enter you weight in kilograms to input field and press "SAVE".
 
 ### ClimbStation engine speed
-Average speed of the ClimbStation.
+Average speed of the ClimbStation.\
 
 Menu can be found by clicking on the dotted menu button on the top right corner of the app.
 First, click on "SETTINGS" item, then click on the "MACHINE SPEED" item.
 Select your desired speed from the dropdown menu and click "SAVE".
 
 ### Text-to-speech
-Text to speech informs user of climbed time and distance during climbing session.
+Text to speech informs user of climbed time and distance during climbing session.\
 
 Menu can be found by clicking on the dotted menu button on the top right corner of the app.
 First, click on "SETTINGS" item, then click on the "TEXT TO SPEECH" to toggle it ON or OFF.

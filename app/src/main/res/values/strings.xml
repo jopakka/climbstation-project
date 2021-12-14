@@ -14,9 +14,25 @@
     <string name="info_popup_title_create_custom_climb_profile">How to create custom climb profile</string>
     <string name="info_popup_title_developers">Developers</string>
 
-    <string name="info_popup_instructions_climb">First you must navigate to the \"Climb\" view from the bottom navigation menu. You will then see a screen with multiple items.\n\nOn the top left there is a wall profile which previews all the changes in the ClimbStation machine angles. On the top right you can see a preview of the difficulty level and its components. Under the components there is a \"start\" button which starts the ClimbStation machine.\n\nMake sure you are connected to the ClimbStation machine first before starting the session.\n\nAt the bottom middle of the screen you can select difficulty profiles.\n\nIf you click on the \"manual start\" -button there is also another screen in which you can set a static angle, distance and timer for the climbing session in case you do not want the ClimbStation machine to change the angle during your session.\n\nThat is all, happy climbing!</string>
-    <string name="info_popup_instructions_connect">In this menu there is a \"Connect\" section. Click it and it will take you to a view in which the device connection is handled.\n\nFirst make sure you are connected to the interned by WIFI. Then you either input the device serial number in the input field and click next or scan the QR code on the side of the ClimbStation machine.\n\nOnce you are connected, you will be taken to the \"Climb\" view in which you can start your climbing session. </string>
-    <string name="info_popup_instructions_create_custom_profile">Navigate to the \"Create\" view via the bottom navigation. Add a new profile by clicking the \"ADD PROFILE\" button. It will generate a new item in the view. Next, click on that item and it will take you to another view.\n\nThe climbing profiles are created using steps. You can add a new step by clicking the \"ADD NEW STEP\" button. Each step has a length and angle. You can edit these values by clicking on them. You can add as many steps as you want.\n\nYou can use these newly created custom climbing profiles in the \"Climb\" view of the app. You should see your custom created profiles in the list of routes.</string>
+    <string name="info_popup_instructions_climb">
+        On the top left, a wall profile previews the ClimbStation terrain profile.
+        On the right side, you can see the difficulty levels. The "start" button prepares
+        the ClimbStation machine ready to start climbing.\n\nSelect various difficulty terrain
+        profiles and difficulty levels. If you click the "manual" -button, another screen appears,
+        here you may adjust a static angle, distance, and timer for the climbing session.\n\nEnjoy climbing!
+    </string>
+    <string name="info_popup_instructions_connect">
+        First, search and connect to the same WIFI network as the ClimbStation.
+        Then either input the device serial number in the input field and click next,
+        or scan the QR code located on the ClimbStation machine.
+    </string>
+    <string name="info_popup_instructions_create_custom_profile">Name your challenge and start creating the profile by clicking the "EDIT" -button.
+        From here you can add climbing phases also known as steps.
+        Add a new step by clicking the "ADD NEW STEP" button.\n\n
+        Add as many steps as you want to make your ideal challenge.\n\n
+        Once created, go to the "Climb" view and choose your created profile in the list of difficulty terrain profiles.\n\n
+        Start and enjoy your created climbing profile!
+    </string>
     <string name="info_popup_instructions_developers">Oskar Wiiala\nJoonas Niemi\nPatrik Pölkki</string>
 
     <!--Bottom navigation strings-->
@@ -30,8 +46,6 @@
 
     <!--fragment_climb_on strings-->
     <string name="stop_watch">%02d:%02d:%02d</string>
-
-    <!--fragment_climb_finished strings-->
 
     <!--fragment_adjust strings-->
     <string name="fragment_adjust_title">MANUAL START</string>
@@ -53,12 +67,6 @@
 
     <!--Accessibility for top app bar-->
     <string name="content_description_overflow_icon">top navigation menu</string>
-
-    <!--Accessibility for ClimbStation sprites-->
-
-    <!--Accessibility for fragment_climb_finished-->
-
-    <!--Accessibility for fragment_statistics-->
 
     <!--Accessibility for fragment_adjust-->
     <string name="content_description_fragment_adjust_start_btn">Start climbing session</string>
