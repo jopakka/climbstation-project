@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.viewmodels
+package fi.climbstationsolutions.climbstation.ui.climb.manualStart
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -21,9 +21,7 @@ class ManualStartViewModel : ViewModel() {
         get() = mProfileWithSteps
 
     private var climbAngle = 0
-        private set
     private var climbLength = 0
-        private set
 
     // amount of numbers in angle picker
     private val angleAmount = 45

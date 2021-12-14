@@ -150,9 +150,10 @@
     <string name="difficulty_profiles">Difficulty profiles</string>
 
     <!--units-->
-    <string name="meter_short">m</string>
+    <string name="meter_unit_short">m</string>
     <string name="kcal">kcal</string>
     <string name="meters_per_minutes">m/min</string>
+    <string name="angle_unit_short">°</string>
 
     <!--unit abbreviations-->
     <string name="speedShort">%d m/min</string>
@@ -192,4 +193,18 @@
     <string name="notification_title">Climbing in progress</string>
     <string name="notification_content">Click to see your climbing statistics</string>
     <string name="goaltext">You climbed %.1f meters from the %d-meter goal</string>
+
+    <string name="custom_climb_profile">Custom climb profile</string>
+    <string name="add_first_profile">Add your first climbing profile</string>
+    <string name="add_profile">Add profile</string>
+    <string name="add_steps_to_your_profile">Add steps to your climbing profile</string>
+    <string name="add_new_step">Add new step</string>
+
+    <string name="minute_short">min</string>
+    <string name="second_short">sec</string>
+    <string name="adjustments">Adjustments</string>
+
+    <string name="connect_to_the_climbstation">Connect to the ClimbStation</string>
+    <string name="or">Or</string>
+    <string name="select_speed">Select speed</string>
 </resources>

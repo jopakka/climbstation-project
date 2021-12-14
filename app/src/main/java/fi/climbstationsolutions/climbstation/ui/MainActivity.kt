@@ -18,8 +18,6 @@ import fi.climbstationsolutions.climbstation.sharedprefs.*
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
 import fi.climbstationsolutions.climbstation.ui.init.GetSerial
-import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
-import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
 import fi.climbstationsolutions.climbstation.utils.ExpandableListData.data
 import fi.climbstationsolutions.climbstation.utils.MenuActions
 

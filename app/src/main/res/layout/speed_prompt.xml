@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/speed_prompt_title"
-        android:text="Select speed"
+        android:text="@string/select_speed"
         android:textSize="24sp"
         android:paddingTop="25dp"
         app:layout_constraintTop_toTopOf="parent"

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="fi.climbstationsolutions.climbstation.ui.viewmodels.ManualStartViewModel" />
+            type="fi.climbstationsolutions.climbstation.ui.climb.manualStart.ManualStartViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,7 +117,7 @@
                             android:id="@+id/textView32"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="min"
+                            android:text="@string/minute_short"
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -139,7 +139,7 @@
                             android:id="@+id/textView33"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="sec"
+                            android:text="@string/second_short"
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="24dp"
-                    android:text="Adjustments"
+                    android:text="@string/adjustments"
                     android:textColor="@color/black"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -236,7 +236,7 @@
                             android:id="@+id/textView31"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="m"
+                            android:text="@string/meter_unit_short"
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -282,7 +282,7 @@
                             android:id="@+id/textView30"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="°"
+                            android:text="@string/angle_unit_short"
                             android:textColor="@color/black"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"

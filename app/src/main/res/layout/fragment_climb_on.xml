@@ -280,7 +280,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="@string/meter_short"
+                    android:text="@string/meter_unit_short"
                     style="@style/Theme.ClimbStation.Text.White.Text3"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView11"
                     app:layout_constraintStart_toEndOf="@+id/textView11" />
