@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.profile
+package fi.climbstationsolutions.climbstation.ui.profile.history
 
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import java.time.YearMonth

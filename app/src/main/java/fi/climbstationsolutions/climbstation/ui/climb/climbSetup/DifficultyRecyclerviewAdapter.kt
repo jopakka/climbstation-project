@@ -11,8 +11,8 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.databinding.DifficultyListHeader2Binding
 import fi.climbstationsolutions.climbstation.databinding.SingleDifficultyItemBinding
-import fi.climbstationsolutions.climbstation.ui.climb.CellClickListener
-import fi.climbstationsolutions.climbstation.ui.climb.DifficultyProfileDataItem
+import fi.climbstationsolutions.climbstation.ui.climb.climbSetup.CellClickListener
+import fi.climbstationsolutions.climbstation.ui.climb.climbSetup.DifficultyProfileDataItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

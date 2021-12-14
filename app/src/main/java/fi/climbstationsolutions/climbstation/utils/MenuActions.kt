@@ -7,7 +7,7 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
 import fi.climbstationsolutions.climbstation.sharedprefs.TTS_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
+import fi.climbstationsolutions.climbstation.ui.InfoPopupViewModel
 
 /**
  * @author Oskar Wiiala

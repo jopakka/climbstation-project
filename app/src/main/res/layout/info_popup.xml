@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel" />
+            type="fi.climbstationsolutions.climbstation.ui.InfoPopupViewModel" />
     </data>
 
     <LinearLayout

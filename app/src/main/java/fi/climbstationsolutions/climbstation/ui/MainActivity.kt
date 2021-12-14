@@ -12,14 +12,12 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.CustomExpandableListAdapter
 import fi.climbstationsolutions.climbstation.databinding.ActivityMainBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.sharedprefs.*
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
 import fi.climbstationsolutions.climbstation.ui.init.GetSerial
-import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.MainActivityViewModelFactory
 import fi.climbstationsolutions.climbstation.utils.ExpandableListData.data

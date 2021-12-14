@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.CustomProfileAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentCustomProfileBinding
 import fi.climbstationsolutions.climbstation.utils.ProfileSharer
 import fi.climbstationsolutions.climbstation.utils.SwipeToDelete

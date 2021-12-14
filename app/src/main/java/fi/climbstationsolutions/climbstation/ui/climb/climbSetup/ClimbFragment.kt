@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb
+package fi.climbstationsolutions.climbstation.ui.climb.climbSetup
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.ClimbTabPagerAdapter
+import fi.climbstationsolutions.climbstation.ui.climb.ClimbTabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbBinding
 
 class ClimbFragment : Fragment() {

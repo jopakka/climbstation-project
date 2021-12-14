@@ -1,8 +1,8 @@
-package fi.climbstationsolutions.climbstation.adapters
+package fi.climbstationsolutions.climbstation.ui.climb
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbProfilesFragment
+import fi.climbstationsolutions.climbstation.ui.climb.climbSetup.ClimbProfilesFragment
 import fi.climbstationsolutions.climbstation.ui.climb.manualStart.ManualStartFragment
 
 /**

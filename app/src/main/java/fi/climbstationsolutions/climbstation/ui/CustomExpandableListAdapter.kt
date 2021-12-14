@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.adapters
+package fi.climbstationsolutions.climbstation.ui
 
 import android.content.Context
 import android.util.Log

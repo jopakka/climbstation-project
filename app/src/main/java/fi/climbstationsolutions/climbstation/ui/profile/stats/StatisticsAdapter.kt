@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.adapters
+package fi.climbstationsolutions.climbstation.ui.profile.stats
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +10,8 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.SessionWithData
 import fi.climbstationsolutions.climbstation.databinding.SessionListHeaderBinding
 import fi.climbstationsolutions.climbstation.databinding.StatisticsSessionHistoryItemBinding
-import fi.climbstationsolutions.climbstation.ui.profile.DataItem
-import fi.climbstationsolutions.climbstation.ui.profile.SessionClickListener
+import fi.climbstationsolutions.climbstation.ui.profile.history.DataItem
+import fi.climbstationsolutions.climbstation.ui.profile.history.SessionClickListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,9 +1,9 @@
-package fi.climbstationsolutions.climbstation.adapters
+package fi.climbstationsolutions.climbstation.ui.profile
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import fi.climbstationsolutions.climbstation.ui.profile.ProfileHistoryFragment
-import fi.climbstationsolutions.climbstation.ui.profile.ProfileStatsFragment
+import fi.climbstationsolutions.climbstation.ui.profile.history.ProfileHistoryFragment
+import fi.climbstationsolutions.climbstation.ui.profile.stats.ProfileStatsFragment
 
 /**
  * ViewPagerAdapter for profile fragment, where is displayed stats

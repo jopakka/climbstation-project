@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/climb"
-        android:name="fi.climbstationsolutions.climbstation.ui.climb.ClimbFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.climb.climbSetup.ClimbFragment"
         android:label="ClimbFragment"
         tools:layout="@layout/fragment_climb">
         <action
@@ -23,11 +23,6 @@
             android:id="@+id/action_create_to_customStepsFragment"
             app:destination="@id/customStepsFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/settings"
-        android:name="fi.climbstationsolutions.climbstation.ui.settings.SettingsFragment"
-        android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/climbOnFragment"
         android:name="fi.climbstationsolutions.climbstation.ui.climb.climbOn.ClimbOnFragment"

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.CustomStepsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentCustomStepsBinding
 import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
 import kotlinx.coroutines.Dispatchers

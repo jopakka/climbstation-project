@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb
+package fi.climbstationsolutions.climbstation.ui.climb.climbSetup
 
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
@@ -27,7 +27,6 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.init.WifiInfoFragmentDirections
 
 class ClimbProfilesFragment : Fragment(), CellClickListener {
     private lateinit var binding: FragmentClimbProfilesBinding

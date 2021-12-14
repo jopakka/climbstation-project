@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.profile
+package fi.climbstationsolutions.climbstation.ui.profile.stats
 
 import android.graphics.Color
 import android.graphics.CornerPathEffect
@@ -18,6 +18,7 @@ import com.jjoe64.graphview.GridLabelRenderer
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileStatsBinding
 import fi.climbstationsolutions.climbstation.graph.GraphDataHandler
+import fi.climbstationsolutions.climbstation.ui.profile.ProfileViewModel
 import fi.climbstationsolutions.climbstation.utils.CustomDateGenerator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

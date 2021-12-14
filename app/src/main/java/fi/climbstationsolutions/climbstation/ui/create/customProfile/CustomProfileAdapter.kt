@@ -1,11 +1,10 @@
-package fi.climbstationsolutions.climbstation.adapters
+package fi.climbstationsolutions.climbstation.ui.create.customProfile
 
 import android.view.*
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.databinding.CustomProfileItemBinding
-import fi.climbstationsolutions.climbstation.ui.create.customProfile.CustomProfileClickListener
 
 class CustomProfileAdapter(private val customProfileClickListener: CustomProfileClickListener) :
     RecyclerView.Adapter<CustomProfileAdapter.ViewHolder>() {

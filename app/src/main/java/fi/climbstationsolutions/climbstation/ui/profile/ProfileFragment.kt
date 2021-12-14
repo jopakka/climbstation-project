@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.ProfileTabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {

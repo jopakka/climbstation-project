@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver.*
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,11 +23,9 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbFragmentDirections
-import fi.climbstationsolutions.climbstation.ui.climb.ClimbViewModel
+import fi.climbstationsolutions.climbstation.ui.climb.climbSetup.ClimbFragmentDirections
+import fi.climbstationsolutions.climbstation.ui.climb.climbSetup.ClimbViewModel
 import fi.climbstationsolutions.climbstation.ui.viewmodels.ManualStartViewModel
-
-import android.view.ViewTreeObserver.*
 
 /**
  * @author Oskar Wiiala

@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb
+package fi.climbstationsolutions.climbstation.ui.climb.climbSetup
 
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 

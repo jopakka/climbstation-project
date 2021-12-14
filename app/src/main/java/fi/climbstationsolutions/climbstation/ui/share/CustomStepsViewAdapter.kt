@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.adapters
+package fi.climbstationsolutions.climbstation.ui.share
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

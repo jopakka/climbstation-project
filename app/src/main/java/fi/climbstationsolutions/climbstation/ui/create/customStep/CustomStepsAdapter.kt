@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.adapters
+package fi.climbstationsolutions.climbstation.ui.create.customStep
 
 import android.content.Context
 import android.util.Log
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.databinding.CustomStepItemBinding
-import fi.climbstationsolutions.climbstation.ui.create.customStep.CustomStepFocusListener
 import androidx.core.content.ContextCompat.getSystemService
 
 import android.widget.TextView

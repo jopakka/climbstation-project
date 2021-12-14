@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.profile
+package fi.climbstationsolutions.climbstation.ui.profile.history
 
 import android.app.Dialog
 import android.os.Bundle

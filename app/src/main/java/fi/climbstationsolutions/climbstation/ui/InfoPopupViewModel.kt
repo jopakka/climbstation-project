@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.viewmodels
+package fi.climbstationsolutions.climbstation.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

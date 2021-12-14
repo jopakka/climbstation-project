@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.climb
+package fi.climbstationsolutions.climbstation.ui.climb.climbSetup
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

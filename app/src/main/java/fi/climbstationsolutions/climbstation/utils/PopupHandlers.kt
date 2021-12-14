@@ -10,9 +10,8 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.appcompat.widget.AppCompatSpinner
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.databinding.FragmentClimbFinishedBinding
 import fi.climbstationsolutions.climbstation.databinding.InfoPopupBinding
-import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
+import fi.climbstationsolutions.climbstation.ui.InfoPopupViewModel
 
 /**
  * @author Oskar Wiiala
