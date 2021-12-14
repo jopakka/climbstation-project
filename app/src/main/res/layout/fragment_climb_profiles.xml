@@ -81,8 +81,8 @@
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="4dp"
-                    android:background="@color/climbstation_red"
+                    android:layout_height="3dp"
+                    android:background="@drawable/divider_background_red"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtClimbTitle" />
@@ -113,9 +113,9 @@
 
                     <TextView
                         android:id="@+id/textView4"
+                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -130,6 +130,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -138,10 +139,10 @@
 
                     <TextView
                         android:id="@+id/textView5"
+                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/speed"
-                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/textView6"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -150,9 +151,9 @@
 
                     <TextView
                         android:id="@+id/textView6"
+                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -167,6 +168,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -175,10 +177,10 @@
 
                     <TextView
                         android:id="@+id/textView7"
+                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/angle"
-                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/textView8"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -187,9 +189,9 @@
 
                     <TextView
                         android:id="@+id/textView8"
+                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Theme.ClimbStation.Text.White.Text4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -202,14 +204,16 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/startBtn"
+                    style="@style/Theme.ClimbStation.Button.Normal.Green"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:clickable="@{viewModel.loading ? false : true}"
+                    android:paddingBottom="0dp"
                     android:text="@string/start"
-                    style="@style/Theme.ClimbStation.Button.Normal.Green"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
@@ -241,7 +245,9 @@
                 android:id="@+id/difficulty_rv"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

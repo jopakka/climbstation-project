@@ -2,6 +2,7 @@ package fi.climbstationsolutions.climbstation.utils
 
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import fi.climbstationsolutions.climbstation.R
@@ -260,4 +261,10 @@ fun bindResultAndGoal(view: TextView, result: List<Data>?, goal: List<ClimbStep>
     }
 
     view.text = view.context.getString(R.string.goaltext, distanceResult, distanceGoal)
+}
+
+@BindingAdapter("isManual")
+fun bindIsManual(view: Button, isManual: Boolean?) {
+    if (isManual != null)
+        view.isEnabled = !isManual
 }
