@@ -18,7 +18,7 @@
         On the top left, a wall profile previews the ClimbStation terrain profile.
         On the right side, you can see the difficulty levels. The "start" button prepares
         the ClimbStation machine ready to start climbing.\n\nSelect various difficulty terrain
-        profiles and difficulty levels. If you click the "manual" -button, another screen appears,
+        profiles and difficulty levels. If you click the \"MANUAL\" -button, another screen appears,
         here you may adjust a static angle, distance, and timer for the climbing session.\n\nEnjoy climbing!
     </string>
     <string name="info_popup_instructions_connect">
@@ -26,11 +26,12 @@
         Then either input the device serial number in the input field and click next,
         or scan the QR code located on the ClimbStation machine.
     </string>
-    <string name="info_popup_instructions_create_custom_profile">Name your challenge and start creating the profile by clicking the "EDIT" -button.
+    <string name="info_popup_instructions_create_custom_profile">
+        Name your challenge and start creating the profile by clicking the \"EDIT\" -button.
         From here you can add climbing phases also known as steps.
-        Add a new step by clicking the "ADD NEW STEP" button.\n\n
+        Add a new step by clicking the \"ADD NEW STEP\" button.\n\n
         Add as many steps as you want to make your ideal challenge.\n\n
-        Once created, go to the "Climb" view and choose your created profile in the list of difficulty terrain profiles.\n\n
+        Once created, go to the \"CLIMB\" view and choose your created profile in the list of difficulty terrain profiles.\n\n
         Start and enjoy your created climbing profile!
     </string>
     <string name="info_popup_instructions_developers">Oskar Wiiala\nJoonas Niemi\nPatrik Pölkki</string>
