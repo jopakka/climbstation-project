@@ -15,9 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.ClimbOnTabPagerAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 

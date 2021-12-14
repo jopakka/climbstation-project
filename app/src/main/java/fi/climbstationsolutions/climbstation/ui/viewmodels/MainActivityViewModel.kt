@@ -54,8 +54,7 @@ class MainActivityViewModel(context: Context) : ViewModel() {
 
     fun getSpeed(context: Context): String {
         val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
-        val speed: Int = prefs[SPEED_PREF_NAME]
-        val speedString: String = when(speed) {
+        val speedString: String = when(prefs[SPEED_PREF_NAME, -1]) {
             4 -> "Slow"
             8 -> "Normal"
             12 -> "Fast"

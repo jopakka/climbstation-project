@@ -20,9 +20,9 @@ class ManualStartViewModel : ViewModel() {
     val profileWithSteps: LiveData<ClimbProfileWithSteps>
         get() = mProfileWithSteps
 
-    var climbAngle = 0
+    private var climbAngle = 0
         private set
-    var climbLength = 0
+    private var climbLength = 0
         private set
 
     // amount of numbers in angle picker

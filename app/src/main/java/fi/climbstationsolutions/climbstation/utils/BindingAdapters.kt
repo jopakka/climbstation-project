@@ -147,12 +147,6 @@ fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
     view.text = view.context.getString(R.string.fragment_settings_weight, userWeight)
 }
 
-// Adjust fragment
-@BindingAdapter("adjustSpeed")
-fun bindAdjustSpeed(view: TextView, speed: Int?) {
-    view.text = view.context.getString(R.string.fragment_adjust_speed, speed)
-}
-
 @BindingAdapter("stepsAverageAngle")
 fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
     val avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
@@ -229,21 +223,6 @@ fun bindStepsCount(view: TextView, steps: List<ClimbStep>?) {
     if (steps != null) {
         view.text = "${steps.count()}"
     }
-}
-
-@BindingAdapter("stepNumber")
-fun bindStepNumber(view: TextView, step: ClimbStep) {
-    view.text = "${step.id}"
-}
-
-@BindingAdapter("stepDistance")
-fun bindStepDistance(view: TextInputEditText, step: ClimbStep?) {
-    view.text = Editable.Factory.getInstance().newEditable((step?.distance ?: 0).toString())
-}
-
-@BindingAdapter("stepAngle")
-fun bindStepAngle(view: TextInputEditText, step: ClimbStep?) {
-    view.text = Editable.Factory.getInstance().newEditable((step?.angle ?: 0).toString())
 }
 
 @BindingAdapter("filterMonth", "filterYear")

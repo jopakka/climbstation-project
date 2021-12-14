@@ -22,8 +22,8 @@ object CustomDateGenerator {
         val week = cal[Calendar.WEEK_OF_YEAR]
 
         cal.clear()
-        cal.set(Calendar.WEEK_OF_YEAR, week);
-        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.WEEK_OF_YEAR, week)
+        cal.set(Calendar.YEAR, year)
         var firstDayOfWeek = cal[Calendar.DAY_OF_MONTH].toString()
         if (firstDayOfWeek.toInt() < 10) firstDayOfWeek = "0$firstDayOfWeek"
 

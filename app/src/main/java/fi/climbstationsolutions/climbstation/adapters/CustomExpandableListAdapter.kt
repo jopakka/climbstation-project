@@ -64,8 +64,8 @@ class CustomExpandableListAdapter(
             convertView = layoutInflater.inflate(R.layout.drawer_list_group, null)
         }
         val txtTitle: TextView = convertView!!.findViewById(R.id.listTitle)
-        val txtArrow: ImageView = convertView!!.findViewById(R.id.ivGroupIndicator)
-        val txtSelectedColor: ImageView = convertView!!.findViewById(R.id.ivGroupColorIndicator)
+        val txtArrow: ImageView = convertView.findViewById(R.id.ivGroupIndicator)
+        val txtSelectedColor: ImageView = convertView.findViewById(R.id.ivGroupColorIndicator)
 //        txtTitle.setTypeface(null, Typeface.BOLD)
         txtTitle.text = title
 
