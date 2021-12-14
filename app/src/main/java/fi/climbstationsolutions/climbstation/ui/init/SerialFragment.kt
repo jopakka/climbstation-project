@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,14 +24,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentSerialBinding
-import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
-import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
-import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
-import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.init.qr.QrCamera
 import kotlinx.coroutines.launch
 
@@ -105,7 +99,7 @@ class SerialFragment : Fragment(), ViewTreeObserver.OnGlobalLayoutListener, View
     }
 
     override fun onClick(view: View?) {
-        when(view) {
+        when (view) {
             binding.sheetLayout -> setBottomSheetVisibility(true)
         }
     }

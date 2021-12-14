@@ -1,7 +1,6 @@
 package fi.climbstationsolutions.climbstation.ui.climb.climbOn
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
@@ -9,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
-
 
 class ClimbOnViewModel(context: Context) : ViewModel() {
 

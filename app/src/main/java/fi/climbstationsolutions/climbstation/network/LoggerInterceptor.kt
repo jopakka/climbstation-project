@@ -20,7 +20,7 @@ class LoggerInterceptor : Interceptor {
         val body = response.peekBody(2048).string()
 
         val lastChar = body.lastOrNull()
-        if(lastChar != '}') {
+        if (lastChar != '}') {
             val newBody = "$body}".toResponseBody()
             return response.newBuilder()
                 .headers(response.headers)

@@ -65,7 +65,7 @@ class GraphDataThisYear(context: Context) {
 
             for (item in sessionsThisYear) {
                 val itemDate = item.session.endedAt
-                if(itemDate != null) {
+                if (itemDate != null) {
                     val localItemDate =
                         itemDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                     cal.time = itemDate

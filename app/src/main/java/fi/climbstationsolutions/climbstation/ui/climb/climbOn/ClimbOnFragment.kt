@@ -42,7 +42,10 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
                     errorBroadcastReceiver,
                     IntentFilter(ClimbStationService.BROADCAST_ERROR_CLIMB)
                 )
-                registerReceiver(finishedBroadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_FINISHED))
+                registerReceiver(
+                    finishedBroadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_FINISHED)
+                )
             }
         }
 
@@ -125,7 +128,8 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
             showErrorDialog(message) {
                 try {
                     findNavController().navigateUp()
-                } catch (e: Exception) {}
+                } catch (e: Exception) {
+                }
             }
         }
     }
@@ -139,8 +143,12 @@ class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private fun navigateToFinished() {
         val id = viewModel.sessionWithData.value?.session?.id
         val profile = viewModel.profileWithSteps.value
-        val action = if(id != null && profile != null) {
-            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(id, profile, args.timer)
+        val action = if (id != null && profile != null) {
+            ClimbOnFragmentDirections.actionClimbOnFragmentToClimbFinishedFragment(
+                id,
+                profile,
+                args.timer
+            )
         } else null
         if (action != null) {
             this.findNavController().navigate(action)

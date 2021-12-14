@@ -11,14 +11,12 @@ import fi.climbstationsolutions.climbstation.R
 abstract class SwipeToDelete(context: Context) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-
     private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete_24)
     private val intrinsicWidth = deleteIcon?.intrinsicWidth
     private val intrinsicHeight = deleteIcon?.intrinsicHeight
     private val background = ColorDrawable()
     private val backgroundColor = Color.parseColor("#f44336")
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
-
 
     override fun onChildDraw(
         c: Canvas,
@@ -35,7 +33,13 @@ abstract class SwipeToDelete(context: Context) :
         val isCanceled = dX == 0f && !isCurrentlyActive
 
         if (isCanceled) {
-            clearCanvas(c, itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
+            clearCanvas(
+                c,
+                itemView.right + dX,
+                itemView.top.toFloat(),
+                itemView.right.toFloat(),
+                itemView.bottom.toFloat()
+            )
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             return
         }

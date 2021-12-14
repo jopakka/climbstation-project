@@ -7,14 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.databinding.CustomStepItemBinding
-import androidx.core.content.ContextCompat.getSystemService
-
-import android.widget.TextView
 
 data class DuplicateValues(
     val distance: Int,

@@ -30,7 +30,10 @@ class DifficultyRecyclerviewAdapter(private val cellClickListener: CellClickList
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addHeaderAndSubmitList(list: List<ClimbProfileWithSteps>?, listener: (sProfId: Long) -> Unit) {
+    fun addHeaderAndSubmitList(
+        list: List<ClimbProfileWithSteps>?,
+        listener: (sProfId: Long) -> Unit
+    ) {
         adapterScope.launch {
             val items = when (list?.isNullOrEmpty()) {
                 null, true -> listOf(DifficultyProfileDataItem.DifficultyHeader1Item)

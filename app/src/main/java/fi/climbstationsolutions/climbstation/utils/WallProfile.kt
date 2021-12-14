@@ -59,7 +59,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private var wallOutlineColor: Int
     private var wallOutlineThickness: Float = 0f
         set(value) {
-            if(value < 0f) return
+            if (value < 0f) return
             field = value
         }
 
@@ -147,7 +147,7 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
      * returns those coordinates
      */
     private fun calculateAndDrawLine(p: Path, s: ClimbStep): Pair<Float, Float> {
-        val dist = if(s.distance == 0) 1 else s.distance
+        val dist = if (s.distance == 0) 1 else s.distance
         val a = (cos(Math.toRadians(-s.angle.toDouble())) * dist).toFloat()
         val b = (sin(Math.toRadians(-s.angle.toDouble())) * dist).toFloat()
         p.rLineTo(b, a)

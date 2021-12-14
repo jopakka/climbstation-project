@@ -88,7 +88,7 @@ class GraphDataThisMonth(context: Context) {
         // assign items to hourList
         for (item in sessionsThisMonth) {
             val itemDate = item.session.endedAt
-            if(itemDate != null) {
+            if (itemDate != null) {
                 val localItemDate =
                     itemDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                 cal.time = itemDate

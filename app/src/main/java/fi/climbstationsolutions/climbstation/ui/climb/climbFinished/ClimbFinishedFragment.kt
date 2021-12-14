@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +54,10 @@ class ClimbFinishedFragment : Fragment() {
     private fun setBroadcastManager() {
         context?.let {
             broadcastManager = LocalBroadcastManager.getInstance(it).apply {
-                registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
+                registerReceiver(
+                    broadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_ID_NAME)
+                )
             }
         }
     }
@@ -74,7 +76,10 @@ class ClimbFinishedFragment : Fragment() {
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimbOnFragment(it)
+                    val startAction =
+                        ClimbFinishedFragmentDirections.actionClimbFinishedFragmentToClimbOnFragment(
+                            it
+                        )
                     findNavController().navigate(startAction)
                 }
             }
@@ -88,7 +93,7 @@ class ClimbFinishedFragment : Fragment() {
         val serial = PreferenceHelper.customPrefs(context, PREF_NAME)[SERIAL_NO_PREF_NAME, ""]
 
         viewModel.profileWithSteps.observe(viewLifecycleOwner) { profile ->
-            if(profile == null) return@observe
+            if (profile == null) return@observe
 
             Intent(context, ClimbStationService::class.java).also {
                 it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
@@ -98,7 +103,7 @@ class ClimbFinishedFragment : Fragment() {
                 )
 
                 val timer = args.timer
-                if(timer != -1) {
+                if (timer != -1) {
                     it.putExtra(ClimbStationService.TIMER_EXTRA, timer)
                 }
                 activity.startForegroundService(it)

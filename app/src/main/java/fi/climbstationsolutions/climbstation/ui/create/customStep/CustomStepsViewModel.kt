@@ -1,7 +1,10 @@
 package fi.climbstationsolutions.climbstation.ui.create.customStep
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.viewModelScope
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.database.ClimbStep

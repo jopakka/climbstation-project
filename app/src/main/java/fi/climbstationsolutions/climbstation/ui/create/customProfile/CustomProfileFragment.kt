@@ -3,10 +3,8 @@ package fi.climbstationsolutions.climbstation.ui.create.customProfile
 import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.*
+import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

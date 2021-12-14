@@ -31,7 +31,7 @@ class WifiInfoFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        when(view) {
+        when (view) {
             binding.btnNext -> nextBtnAction()
             binding.btnSkip -> skipBtnAction()
         }

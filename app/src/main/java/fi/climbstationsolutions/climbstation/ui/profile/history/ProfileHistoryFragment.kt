@@ -9,10 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
-import fi.climbstationsolutions.climbstation.ui.profile.stats.StatisticsAdapter
 import fi.climbstationsolutions.climbstation.databinding.FragmentProfileHistoryBinding
 import fi.climbstationsolutions.climbstation.ui.profile.ProfileFragmentDirections
 import fi.climbstationsolutions.climbstation.ui.profile.ProfileViewModel
+import fi.climbstationsolutions.climbstation.ui.profile.stats.StatisticsAdapter
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*

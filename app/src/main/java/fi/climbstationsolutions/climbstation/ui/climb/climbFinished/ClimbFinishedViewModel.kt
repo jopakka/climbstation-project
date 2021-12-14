@@ -1,13 +1,13 @@
 package fi.climbstationsolutions.climbstation.ui.climb.climbFinished
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.database.SessionWithData
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-
 
 class ClimbFinishedViewModel(application: Application) : AndroidViewModel(application) {
     private val database = AppDatabase.get(getApplication())

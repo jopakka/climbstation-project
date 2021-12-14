@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import fi.climbstationsolutions.climbstation.database.AppDatabase
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 
-class ClimbViewModel(application: Application): AndroidViewModel(application) {
+class ClimbViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDatabase.get(getApplication())
     private val profileDao = db.profileDao()
 

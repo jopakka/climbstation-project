@@ -82,7 +82,7 @@ class ClimbProfilesFragment : Fragment(), CellClickListener {
             val adapter = binding.difficultyRv.adapter as DifficultyRecyclerviewAdapter
             adapter.addHeaderAndSubmitList(list) { id ->
                 val prof = list.firstOrNull { it.profile.id == id }
-                if(prof != null)
+                if (prof != null)
                     setProfile(prof)
             }
         }

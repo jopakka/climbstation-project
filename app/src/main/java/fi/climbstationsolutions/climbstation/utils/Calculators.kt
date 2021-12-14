@@ -29,6 +29,4 @@ object Calculators {
         return height
 
     }
-
-
 }

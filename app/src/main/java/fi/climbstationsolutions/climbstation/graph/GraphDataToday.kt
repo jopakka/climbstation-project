@@ -81,7 +81,7 @@ class GraphDataToday(context: Context) {
         // assign items to hourList
         for (item in sessionsToday) {
             val itemDate = item.session.endedAt
-            if(itemDate != null) {
+            if (itemDate != null) {
                 cal.time = itemDate
                 itemHour = cal[Calendar.HOUR_OF_DAY]
                 if (counter == 1) itemHourPrevious = itemHour

@@ -21,7 +21,6 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-import fi.climbstationsolutions.climbstation.ui.climb.climbFinished.ClimbFinishedFragmentDirections
 
 class ClimbHistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding

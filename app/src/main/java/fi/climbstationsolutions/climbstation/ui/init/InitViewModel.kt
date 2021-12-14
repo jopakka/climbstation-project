@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import fi.climbstationsolutions.climbstation.BuildConfig
 import fi.climbstationsolutions.climbstation.network.ClimbStationRepository
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class InitViewModel : ViewModel() {
     private val mLoading: MutableLiveData<Boolean> by lazy {
@@ -35,7 +34,7 @@ class InitViewModel : ViewModel() {
 
         val response = viewModelScope.async {
             val (result, message) = isLoginOk(serialNo)
-            if(result) setSerial(serialNo)
+            if (result) setSerial(serialNo)
             setLoading(false)
             message
         }
@@ -47,7 +46,8 @@ class InitViewModel : ViewModel() {
         var message: String? = null
 
         try {
-            val key = ClimbStationRepository.login(serialNo,
+            val key = ClimbStationRepository.login(
+                serialNo,
                 BuildConfig.USERNAME,
                 BuildConfig.PASSWORD
             )
