@@ -80,11 +80,12 @@ class ClimbStationService : Service() {
             stopService()
         } else {
             intent?.extras?.let {
-                val profile = (it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps)?.also { p ->
-                    val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
-                    val speed = pref[SPEED_PREF_NAME, -1]
-                    if(speed != -1) p.profile.speed = speed
-                }
+                val profile =
+                    (it.getParcelable(PROFILE_EXTRA) as? ClimbProfileWithSteps)?.also { p ->
+                        val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
+                        val speed = pref[SPEED_PREF_NAME, -1]
+                        if (speed != -1) p.profile.speed = speed
+                    }
                 initTts()
                 initService(
                     it.getString(CLIMB_STATION_SERIAL_EXTRA, null),
@@ -419,10 +420,10 @@ class ClimbStationService : Service() {
      * is greater than [nextDistanceToNotify]
      */
     private fun distanceNotifier(distance: Int) {
-        if (!checkTts()) return
         val meters = floor(distance / 1000f).toInt()
         if (meters >= nextDistanceToNotify) {
             nextDistanceToNotify = meters + distanceNotifyRange
+            if (!checkTts()) return
             tts?.speak(
                 resources.getQuantityString(
                     R.plurals.speech_time_climbed_plural,
@@ -437,10 +438,10 @@ class ClimbStationService : Service() {
      * is greater than [nextTimeToNotify]
      */
     private fun timeNotifier(time: Long) {
-        if (!checkTts()) return
         val minutes = (TimeUnit.MILLISECONDS.toMinutes(time) % TimeUnit.HOURS.toMinutes(1)).toInt()
         if (minutes >= nextTimeToNotify) {
             nextTimeToNotify = (minutes + timeNotifyRange)
+            if (!checkTts()) return
             tts?.speak(
                 resources.getQuantityString(
                     R.plurals.speech_time_climbed_plural,
@@ -465,6 +466,6 @@ class ClimbStationService : Service() {
      */
     private fun checkTts(): Boolean {
         val pref = PreferenceHelper.customPrefs(this, PREF_NAME)
-        return pref[TTS_PREF_NAME, true]
+        return pref[TTS_PREF_NAME]
     }
 }

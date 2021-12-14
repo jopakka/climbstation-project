@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 class ClimbFinishedViewModel(application: Application) : AndroidViewModel(application) {
     private val database = AppDatabase.get(getApplication())
     private val sessionDao = database.sessionDao()
-    private val profileDao = database.profileDao()
 
     private val liveDataMerger: MediatorLiveData<SessionWithData> =
         MediatorLiveData<SessionWithData>()
