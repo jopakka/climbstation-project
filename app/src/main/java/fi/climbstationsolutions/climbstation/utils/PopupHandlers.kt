@@ -11,6 +11,10 @@ import android.widget.EditText
 import androidx.appcompat.widget.AppCompatSpinner
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.InfoPopupBinding
+import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
+import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
+import fi.climbstationsolutions.climbstation.sharedprefs.SPEED_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.InfoPopupViewModel
 
 /**
@@ -83,13 +87,16 @@ class PopupHandlers {
         builder.setView(promptsView)
         builder.setCancelable(true)
 
-        var selectedSpeed = "Normal"
+        val pref = PreferenceHelper.customPrefs(context, PREF_NAME)
+        val selectedSpeedID = when(pref.get<Int>(SPEED_PREF_NAME)) {
+            4 -> 0
+            8 -> 1
+            12 -> 2
+            else -> 3
+        }
+        var selectedSpeed = ""
 
-        val spinnerList: MutableList<String> = ArrayList()
-        spinnerList.add("Slow")
-        spinnerList.add("Normal")
-        spinnerList.add("Fast")
-        spinnerList.add("Very fast")
+        val spinnerList = arrayListOf("Slow", "Normal", "Fast", "Very fast")
 
         val customSpinnerAdapter = ArrayAdapter(
             context.applicationContext,
@@ -98,6 +105,7 @@ class PopupHandlers {
         )
 
         speedSpinner.adapter = customSpinnerAdapter
+        speedSpinner.setSelection(selectedSpeedID)
 
         speedSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
