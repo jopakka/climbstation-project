@@ -84,7 +84,8 @@
             app:argType="long" />
         <action
             android:id="@+id/action_climbHistory_to_climbOnFragment"
-            app:destination="@id/climbOnFragment" />
+            app:destination="@id/climbOnFragment"
+            app:popUpTo="@id/climb" />
     </fragment>
     <fragment
         android:id="@+id/customStepsFragment"
