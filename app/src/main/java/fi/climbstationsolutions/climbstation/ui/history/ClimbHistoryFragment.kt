@@ -1,5 +1,6 @@
 package fi.climbstationsolutions.climbstation.ui.history
 
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentHistoryBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
@@ -41,9 +43,29 @@ class ClimbHistoryFragment : Fragment() {
 
         binding.button.setOnClickListener(climbAgainAction)
 
-        setBroadcastManager()
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        context?.let {
+            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
+                registerReceiver(
+                    broadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_ID_NAME)
+                )
+                registerReceiver(
+                    errorsBroadcastReceiver,
+                    IntentFilter(ClimbStationService.BROADCAST_ERROR)
+                )
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        broadcastManager?.unregisterReceiver(broadcastReceiver)
+        broadcastManager?.unregisterReceiver(errorsBroadcastReceiver)
     }
 
     private fun startClimbing() {
@@ -63,14 +85,6 @@ class ClimbHistoryFragment : Fragment() {
         }
     }
 
-    private fun setBroadcastManager() {
-        context?.let {
-            broadcastManager = LocalBroadcastManager.getInstance(it).apply {
-                registerReceiver(broadcastReceiver, IntentFilter(ClimbStationService.BROADCAST_ID_NAME))
-            }
-        }
-    }
-
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getLongExtra("id", -1L)
@@ -78,10 +92,33 @@ class ClimbHistoryFragment : Fragment() {
             if (id != -1L) {
                 // Navigate to new fragment
                 viewModel.profileWithSteps.value?.let {
-                    val startAction = ClimbHistoryFragmentDirections.actionClimbHistoryToClimbOnFragment(it)
+                    val startAction =
+                        ClimbHistoryFragmentDirections.actionClimbHistoryToClimbOnFragment(it)
                     findNavController().navigate(startAction)
                 }
             }
+        }
+    }
+
+    private val errorsBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val error = intent.getStringExtra(ClimbStationService.EXTRA_ERROR) ?: return
+            showAlertDialog(error)
+            viewModel.setLoading(false)
+        }
+    }
+
+    private fun showAlertDialog(message: String) {
+        activity?.let {
+            val builder = AlertDialog.Builder(it).apply {
+                setTitle(R.string.error)
+                setMessage(message)
+                setPositiveButton(android.R.string.ok) { d, _ ->
+                    d.cancel()
+                }
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
     }
 
