@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/create"
-        android:name="fi.climbstationsolutions.climbstation.ui.create.CustomProfileFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.create.customProfile.CustomProfileFragment"
         android:label="fragment_create"
         tools:layout="@layout/fragment_custom_profile"
         >
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/customStepsFragment"
-        android:name="fi.climbstationsolutions.climbstation.ui.create.CustomStepsFragment"
+        android:name="fi.climbstationsolutions.climbstation.ui.create.customStep.CustomStepsFragment"
         android:label="CustomStepsFragment" >
         <argument
             android:name="id"

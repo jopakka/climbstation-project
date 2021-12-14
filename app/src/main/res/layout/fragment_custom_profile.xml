@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="fi.climbstationsolutions.climbstation.ui.create.CustomProfileViewModel" />
+            type="fi.climbstationsolutions.climbstation.ui.create.customProfile.CustomProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
