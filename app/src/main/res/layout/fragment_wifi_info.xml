@@ -73,12 +73,15 @@
 
     <TextView
         android:id="@+id/textView34"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Connect to ClimbStation"
+        android:layout_marginEnd="8dp"
+        android:text="@string/connect_to_the_climbstation"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="30sp"
+        android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -88,7 +91,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="OR"
+        android:text="@string/or"
+        android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
