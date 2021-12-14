@@ -83,6 +83,9 @@
         <argument
             android:name="sessionId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_climbHistory_to_climbOnFragment"
+            app:destination="@id/climbOnFragment" />
     </fragment>
     <fragment
         android:id="@+id/customStepsFragment"

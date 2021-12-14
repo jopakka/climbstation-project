@@ -35,7 +35,7 @@ class CustomStepsFragment : Fragment(R.layout.fragment_custom_steps), CustomStep
 
         binding.customStepsRv.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = CustomStepsAdapter(this@CustomStepsFragment)
+            adapter = CustomStepsAdapter(this@CustomStepsFragment, context)
         }
 
         setCustomStepsToRecyclerView()
