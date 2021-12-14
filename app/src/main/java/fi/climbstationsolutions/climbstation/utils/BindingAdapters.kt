@@ -14,7 +14,12 @@ import java.time.YearMonth
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * @author Patrik Pölkki
+ * @author Joonas Niemi
+ * @author Oskar Wiiala
+ * Binding adapters for various views
+ */
 @BindingAdapter("stepsToDistance")
 fun bindStepsToDistance(view: TextView, steps: List<ClimbStep>?) {
     val distance = if (steps?.isNotEmpty() == true) Calculators.calculateDistance(steps)

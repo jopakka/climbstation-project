@@ -28,7 +28,12 @@ import fi.climbstationsolutions.climbstation.ui.viewmodels.ManualStartViewModel
 
 import android.view.ViewTreeObserver.*
 
-
+/**
+ * @author Oskar Wiiala
+ * @author Patrik Pölkki
+ * Fragment for setting timer, distance and angle for climbing session manually
+ * Also starts climbing session
+ */
 class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {
     private lateinit var binding: FragmentManualStartBinding
     private lateinit var broadcastManager: LocalBroadcastManager
@@ -102,6 +107,10 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {
         }
     }
 
+    /**
+     * Displays alert dialog when an error occurs
+     * @param [message] is error message
+     */
     private fun showAlertDialog(message: String) {
         activity?.let {
             val builder = AlertDialog.Builder(it).apply {
@@ -201,6 +210,9 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {
         }
     }
 
+    /**
+     * Activates climbing session via Service
+     */
     private fun startClimbing() {
         val context = context ?: return
         val activity = activity ?: return
@@ -209,7 +221,6 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {
         viewModel.profileWithSteps.observe(viewLifecycleOwner) { profile ->
             if (profile == null) return@observe
             val timer = viewModel.getTime()
-            Log.d("profileadjust", "profile: $profile")
 
             Intent(context, ClimbStationService::class.java).also {
                 it.putExtra(ClimbStationService.CLIMB_STATION_SERIAL_EXTRA, serial)
@@ -223,7 +234,6 @@ class ManualStartFragment : Fragment(), NumberPicker.OnValueChangeListener {
     private val clickListener = View.OnClickListener {
         when (it) {
             binding.adjustFragmentStartBtn -> {
-                Log.d("STARTBTN", "Works")
                 climbViewModel.setLoading(true)
                 viewModel.setClimbProfileWithSteps()
                 viewModel.getTime()

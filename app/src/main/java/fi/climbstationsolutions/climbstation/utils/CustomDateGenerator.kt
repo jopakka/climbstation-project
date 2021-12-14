@@ -3,6 +3,10 @@ package fi.climbstationsolutions.climbstation.utils
 import java.time.ZoneId
 import java.util.*
 
+/**
+ * @author Oskar Wiiala
+ * Generates some custom dates used with the graph
+ */
 object CustomDateGenerator {
     fun getToday(): String {
         val date = Date()

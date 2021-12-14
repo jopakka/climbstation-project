@@ -8,6 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * @author Joonas Niemi
+ * @author Patrik Pölkki
+ * @author Oskar Wiiala
+ * Handles various actions of ProfileHistoryFragment and ProfileStatsFragment
+ */
 class ProfileViewModel(context: Context) : ViewModel() {
     private val database = AppDatabase.get(context)
     private val sessionDao = database.sessionDao()
@@ -36,18 +42,22 @@ class ProfileViewModel(context: Context) : ViewModel() {
         showAllSessions()
     }
 
+    // Time period for graph data generation
     fun setTime(time: String) {
         _graphTime.value = time
     }
 
+    // Time period to display current date
     fun setTime2(time: String) {
         _graphTime2.value = time
     }
 
+    // Variable for graph data generation
     fun setVariable(variable: String) {
         _graphVariable.value = variable
     }
 
+    // filters sessions based on start and end date
     fun filterList(start: Date, end: Date) {
         viewModelScope.launch(Dispatchers.IO) {
             val sessions = sessionDao.getSessionWithDataBetween(start, end)

@@ -1,17 +1,18 @@
 package fi.climbstationsolutions.climbstation.utils
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.set
-import fi.climbstationsolutions.climbstation.sharedprefs.SPEED_PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.TTS_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.viewmodels.InfoPopupViewModel
-import java.io.IOException
 
+/**
+ * @author Oskar Wiiala
+ * Handles most actions in the top app bar side menu
+ */
 class MenuActions {
     fun updateUserWeight(context: Context, positiveAction: (userInput: String) -> Unit = {}) {
         return PopupHandlers().editWeightPopup(context, positiveAction)
@@ -24,7 +25,7 @@ class MenuActions {
             "How to connect to ClimbStation machine",
             "How to create custom climbing profiles",
             "Developers" -> handler.showInfoDialog(infoRequest, context, viewModel)
-            else -> Log.d("MenuActions", "No such info popup available")
+            else -> Log.d("MenuActions", "No such info popup available: $infoRequest")
         }
     }
 
