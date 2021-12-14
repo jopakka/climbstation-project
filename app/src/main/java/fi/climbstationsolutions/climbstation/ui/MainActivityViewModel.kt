@@ -1,4 +1,4 @@
-package fi.climbstationsolutions.climbstation.ui.viewmodels
+package fi.climbstationsolutions.climbstation.ui
 
 import android.content.Context
 import android.os.Build

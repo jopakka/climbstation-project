@@ -143,12 +143,6 @@ fun bindSessionAverageSpeed(view: TextView, sessionWithData: SessionWithData?) {
     view.text = view.context.getString(R.string.float_single_decimal, avrgSpeed)
 }
 
-// Settings fragment
-@BindingAdapter("settingsUserWeightDisplay")
-fun bindSettingsUserWeightDisplay(view: TextView, userWeight: Float?) {
-    view.text = view.context.getString(R.string.fragment_settings_weight, userWeight)
-}
-
 @BindingAdapter("stepsAverageAngle")
 fun bindStepsAverageAngle(view: TextView, steps: List<ClimbStep>?) {
     var avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)

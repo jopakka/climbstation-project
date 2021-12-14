@@ -16,7 +16,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import fi.climbstationsolutions.climbstation.R
-import fi.climbstationsolutions.climbstation.adapters.DifficultyRecyclerviewAdapter
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbProfilesBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
