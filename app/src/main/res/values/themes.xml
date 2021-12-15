@@ -15,6 +15,10 @@
 
         <item name="android:fontFamily">@font/aldrich</item>
 
+        <item name="floatingActionButtonStyle">@style/Theme.ClimbStation.FloatingActionButton</item>
+        <item name="extendedFloatingActionButtonStyle">
+            @style/Theme.ClimbStation.FloatingActionButton.Extended
+        </item>
     </style>
 
     <style name="Theme.ClimbStation.Splash" parent="Theme.ClimbStation">
@@ -197,6 +201,12 @@
         <item name="contentDescription">@string/filter_list</item>
         <item name="useCompatPadding">true</item>
         <item name="tint">@color/white</item>
+    </style>
+
+    <style name="Theme.ClimbStation.EditText" parent="Widget.AppCompat.EditText">
+        <item name="backgroundTint">@color/climbstation_red</item>
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+        <item name="minHeight">48dp</item>
     </style>
 
 </resources>

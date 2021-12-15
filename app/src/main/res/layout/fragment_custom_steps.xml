@@ -18,12 +18,9 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Theme.ClimbStation.Text.White.AutoTitle1"
             android:layout_marginTop="16dp"
             android:text="@{viewModel.customProfileWithSteps.profile.name}"
-            android:textColor="@color/white"
-            android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -199,6 +196,8 @@
                     android:text="@string/add_steps_to_your_profile"
                     android:textColor="@color/white"
                     android:textSize="22sp"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -20,4 +20,7 @@
     <color name="graph_button_semitransparent">#25FFFFFF</color>
 
     <color name="list_group_title">#808080</color>
+
+    <color name="disabled_button">#66B22222</color>
+    <color name="disabled_button_text">#66FFFFFF</color>
 </resources>
