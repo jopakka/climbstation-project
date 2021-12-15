@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.annotation.IntRange
 import fi.climbstationsolutions.climbstation.BuildConfig
 
+/**
+ * @author Joonas Niemi
+ */
 object ClimbStationRepository {
     private const val TAG = "Network"
     private val call = ClimbStationAPI.get(BuildConfig.CLIMBSTATION_URL)

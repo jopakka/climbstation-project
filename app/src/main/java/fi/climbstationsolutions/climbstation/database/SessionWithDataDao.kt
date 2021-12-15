@@ -9,6 +9,8 @@ import java.util.*
 
 /**
  * Queries for climbing sessions.
+ *
+ * @author Joonas Niemi, Patrik Pölkki
  */
 @Dao
 interface SessionWithDataDao {

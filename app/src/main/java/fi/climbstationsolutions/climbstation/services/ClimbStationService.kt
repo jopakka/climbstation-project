@@ -26,6 +26,8 @@ import kotlin.math.floor
 /**
  * Service for fetching information from ClimbStation and controlling it
  * while user is climbing.
+ *
+ * @author Joonas Niemi
  */
 class ClimbStationService : Service() {
     companion object {

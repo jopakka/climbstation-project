@@ -6,6 +6,8 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 
 /**
  * Custom interceptor for retrofit which checks missing '}'
+ *
+ * @author Joonas Niemi
  */
 class LoggerInterceptor : Interceptor {
     /**

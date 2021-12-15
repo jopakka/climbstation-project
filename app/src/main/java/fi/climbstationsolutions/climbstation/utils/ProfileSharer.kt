@@ -11,6 +11,11 @@ import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import java.io.*
 import java.util.*
 
+/**
+ * Class which handles profile sharing
+ *
+ * @author Joonas Niemi
+ */
 class ProfileSharer(private val activity: Activity) {
     private val moshi = Moshi.Builder()
         .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
@@ -18,6 +23,9 @@ class ProfileSharer(private val activity: Activity) {
         .build()
     private val jsonAdapter = moshi.adapter(ClimbProfileWithSteps::class.java)
 
+    /**
+     * Shares [profile] on JSON format and send it to where user want to share it
+     */
     fun shareProfile(profile: ClimbProfileWithSteps) {
         val json = jsonAdapter.toJson(profile)
         val file = createFile(profile.profile.name)
@@ -37,6 +45,9 @@ class ProfileSharer(private val activity: Activity) {
         activity.startActivity(sendIntent)
     }
 
+    /**
+     * Reads [ClimbProfileWithSteps] from [uri]
+     */
     fun getSharedProfile(uri: Uri): ClimbProfileWithSteps? {
         val data = readFromFile(uri)
         return try {
@@ -46,11 +57,17 @@ class ProfileSharer(private val activity: Activity) {
         }
     }
 
+    /**
+     * Creates new json file with name [name]
+     */
     private fun createFile(name: String): File {
         val outputDir = activity.cacheDir
         return File.createTempFile(name, ".json", outputDir)
     }
 
+    /**
+     * Writes [data] to [file]
+     */
     private fun writeToFile(file: File, data: String) {
         val stream = FileOutputStream(file)
         stream.use {
@@ -58,6 +75,9 @@ class ProfileSharer(private val activity: Activity) {
         }
     }
 
+    /**
+     * Reads data from [uri] and returns it as [String]
+     */
     private fun readFromFile(uri: Uri): String {
         val stream = activity.contentResolver.openInputStream(uri)
         val writer = StringWriter()
