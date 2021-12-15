@@ -1,6 +1,16 @@
 package fi.climbstationsolutions.climbstation.utils
 
+/**
+ * @author Oskar Wiiala
+ */
 class CalorieCounter {
+
+    /**
+     * counts calories for climbing session
+     * @param [totalDistance] distance in metres
+     * @param [userWeight] weight of user in kilograms
+     * Not very accurate but it's something
+     */
     fun countCalories(
         totalDistance: Float,
         userWeight: Float

@@ -59,6 +59,7 @@ class GraphDataThisWeek(context: Context) {
         val distanceList: MutableList<Float> = mutableListOf()
         val caloriesList: MutableList<Float> = mutableListOf()
 
+        // assign items to dayList
         for (item in sessionsThisWeek) {
             val itemDate = item.session.endedAt
             if (itemDate != null) {
