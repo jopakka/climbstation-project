@@ -18,9 +18,10 @@
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/speed_prompt_spinner"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_margin="25dp"
         android:background="@drawable/spinner_background"
+        android:minHeight="48dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

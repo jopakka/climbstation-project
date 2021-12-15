@@ -48,6 +48,8 @@
             android:layout_marginBottom="16dp"
             android:text="@string/climb_again"
             app:isManual="@{viewModel.profileWithSteps.profile.manual}"
+            android:backgroundTint="@{viewModel.profileWithSteps.profile.manual ? @color/disabled_button : @color/climbstation_red}"
+            android:textColor="@{viewModel.profileWithSteps.profile.manual ? @color/disabled_button_text : @color/white}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

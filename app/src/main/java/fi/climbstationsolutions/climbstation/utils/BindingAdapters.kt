@@ -37,14 +37,6 @@ fun bindStepsToDistanceShort(view: TextView, steps: List<ClimbStep>?) {
     view.text = view.resources.getString(R.string.distanceShort, distance.toFloat())
 }
 
-@BindingAdapter("stepsToAngle")
-fun bindStepsToAngle(view: TextView, steps: List<ClimbStep>?) {
-    val avgAngle = if (steps?.isNotEmpty() == true) Calculators.averageAngleFromSteps(steps)
-    else 0f
-
-    view.text = view.context.getString(R.string.angleShort, avgAngle)
-}
-
 @BindingAdapter("speed")
 fun bindSpeed(view: TextView, speed: Int?) {
     view.text = view.context.getString(R.string.speedShort, speed ?: 0)
