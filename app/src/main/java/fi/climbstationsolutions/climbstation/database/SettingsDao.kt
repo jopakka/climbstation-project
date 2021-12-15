@@ -6,6 +6,8 @@ import androidx.room.Query
 
 /**
  * Queries for users body weight.
+ *
+ * @author Oskar Wiiala
  */
 @Dao
 interface SettingsDao {

@@ -4,6 +4,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Handles HTTP requests to ClimbStation machine
+ *
+ * @author Joonas Niemi
+ */
 abstract class ClimbStationAPI {
     companion object {
         @Volatile

@@ -6,6 +6,8 @@ import java.util.*
 
 /**
  * Class which can be used to handle all [TextToSpeech] actions
+ *
+ * @author Joonas Niemi
  */
 class Tts(context: Context) {
     private lateinit var textToSpeech: TextToSpeech
