@@ -7,6 +7,8 @@ import androidx.room.Query
 
 /**
  * Queries for climbing profiles
+ *
+ * @author Joonas Niemi
  */
 @Dao
 interface ProfileDao {

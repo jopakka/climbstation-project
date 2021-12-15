@@ -85,7 +85,7 @@ class GraphDataThisMonth(context: Context) {
         val distanceList: MutableList<Float> = mutableListOf()
         val caloriesList: MutableList<Float> = mutableListOf()
 
-        // assign items to hourList
+        // assign items to dayList
         for (item in sessionsThisMonth) {
             val itemDate = item.session.endedAt
             if (itemDate != null) {

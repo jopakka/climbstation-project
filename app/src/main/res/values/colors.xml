@@ -15,6 +15,7 @@
     <color name="super_grey">#333333</color>
     <color name="fragment_background_color">#A31E1D1D</color>
     <color name="button_green">#21BE17</color>
+    <color name="light_subtitle">#D5D5D5</color>
 
     <color name="graph_button_semitransparent">#25FFFFFF</color>
 

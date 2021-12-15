@@ -14,6 +14,10 @@ import fi.climbstationsolutions.climbstation.ui.InfoPopupViewModel
  * Handles most actions in the top app bar side menu
  */
 class MenuActions {
+    /**
+     *  Updates user weight
+     *  @return [Unit] uses a callback to wait for user to update weight level before notifying a data set change
+     */
     fun updateUserWeight(context: Context, positiveAction: (userInput: String) -> Unit = {}) {
         return MenuPopupHandlers().editWeightPopup(context, positiveAction)
     }
@@ -29,6 +33,10 @@ class MenuActions {
         }
     }
 
+    /**
+     *  Updates ClimbStation machine engine speed to sharedPrefs via MenuPopupHandlers
+     *  @return [Unit] uses a callback to wait for user to select a speed level before notifying a data set change
+     */
     fun updateSpeed(context: Context, positiveAction: (userInput: Int) -> Unit = {}) {
         return MenuPopupHandlers().editSpeedPopup(context, positiveAction)
     }

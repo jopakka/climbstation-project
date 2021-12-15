@@ -5,6 +5,8 @@ import retrofit2.http.POST
 
 /**
  * Http queries for controlling ClimbStation
+ *
+ * @author Joonas Niemi
  */
 interface ClimbStationHttpService {
     @POST("login")

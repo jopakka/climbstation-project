@@ -206,4 +206,7 @@
 
     <string name="connect_to_the_climbstation">Connect to the ClimbStation</string>
     <string name="select_speed">Select speed</string>
+
+    <!--General accessibility-->
+    <string name="cd_menu_header_layout">ClimbStation logo</string>
 </resources>

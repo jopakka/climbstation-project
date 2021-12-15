@@ -10,6 +10,12 @@ import fi.climbstationsolutions.climbstation.database.ClimbStep
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * @author Oskar Wiiala
+ * @author Patrik Pölkki
+ * View model for ManualStartFragment
+ * Handles setting all necessary variables such as timer, distance etc to be used in preparing climbing session
+ */
 class ManualStartViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDatabase.get(getApplication())
     private val profileDao = db.profileDao()
@@ -51,23 +57,18 @@ class ManualStartViewModel(application: Application) : AndroidViewModel(applicat
 
     fun setMinute(minute: Int) {
         mAdjustMutableLiveData.value?.minute = minute
-//        Log.d("setMinute", "value: ${mAdjustMutableLiveData.value}")
-
     }
 
     fun setSecond(second: Int) {
         mAdjustMutableLiveData.value?.second = second
-//        Log.d("setSecond", "value: ${mAdjustMutableLiveData.value}")
     }
 
     fun setAngle(angle: Int) {
         climbAngle = angle
-        Log.d("setAngle", "angle: $climbAngle ")
     }
 
     fun setLength(distance: Int) {
         climbLength = distance
-        Log.d("setLength", "length: $climbLength ")
     }
 
     fun getClimbProfileWithSteps(): ClimbProfileWithSteps? {
@@ -87,7 +88,6 @@ class ManualStartViewModel(application: Application) : AndroidViewModel(applicat
         val minute = mAdjustMutableLiveData.value?.minute
         val second = mAdjustMutableLiveData.value?.second
         val timeMillis = second?.let { (minute?.times(60))?.plus(it)?.times(1000) }
-        Log.d("getTime", "timeMillis: $timeMillis")
         return timeMillis
     }
 }

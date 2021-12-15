@@ -5,12 +5,13 @@
     android:background="@color/climbstation_red"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="12dp">
+    android:paddingBottom="12dp"
+    android:contentDescription="@string/cd_menu_header_layout">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:src="@drawable/climb_menu_logo" />
+        android:src="@drawable/climb_menu_logo"/>
 
     <ImageView
         android:layout_width="match_parent"

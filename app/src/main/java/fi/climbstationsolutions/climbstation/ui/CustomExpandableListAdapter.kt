@@ -1,6 +1,7 @@
 package fi.climbstationsolutions.climbstation.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -75,6 +76,7 @@ class CustomExpandableListAdapter(
         val txtArrow: ImageView = convertView.findViewById(R.id.ivGroupIndicator)
         val txtSelectedColor: ImageView = convertView.findViewById(R.id.ivGroupColorIndicator)
         txtTitle.text = title
+        txtTitle.setTextColor(Color.BLACK)
 
         // icons
         when (title) {
@@ -122,6 +124,7 @@ class CustomExpandableListAdapter(
         txtChild.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
 
         txtChild.text = title
+        txtChild.setTextColor(Color.BLACK)
 
         // Setting icons and text for children of group
         when (title) {
