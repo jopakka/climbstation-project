@@ -236,6 +236,7 @@ class ClimbStationService : Service() {
 
         serviceScope.launch {
             try {
+                if(profileWithSteps.steps.isNullOrEmpty()) throw Exception("No steps")
                 val serialNo = climbStationSerialNo
                 if (serialNo == null || serialNo == "") {
                     throw NoSuchFieldException(getString(R.string.error_no_serial))
