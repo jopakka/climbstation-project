@@ -17,6 +17,8 @@ import kotlinx.coroutines.launch
 /**
  * Database class which contains [Session], [Data], [BodyWeight], [ClimbProfile] and
  * [ClimbStep] entities.
+ *
+ * @author Joonas Niemi
  */
 @Database(
     entities = [

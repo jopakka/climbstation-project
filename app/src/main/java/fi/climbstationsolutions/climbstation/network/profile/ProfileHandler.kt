@@ -11,6 +11,9 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.StringWriter
 
+/**
+ * @author Joonas Niemi
+ */
 object ProfileHandler {
     /**
      * Opens a raw file and reads it content to string.

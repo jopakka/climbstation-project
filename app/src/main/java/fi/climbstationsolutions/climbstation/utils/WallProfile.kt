@@ -267,6 +267,9 @@ class WallProfile(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
     }
 
+    /**
+     * Calculates climb progression from [sessionWithData] and return it as a [Float]
+     */
     private fun calculateProgression(): Float {
         val max = profile?.steps?.sumOf { it.distance }?.toFloat() ?: return climbingProgression
         val total = sessionWithData?.data?.lastOrNull()?.totalDistance?.div(1000f)

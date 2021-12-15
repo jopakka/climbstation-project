@@ -8,6 +8,9 @@ const val SERIAL_NO_PREF_NAME = "serialNo"
 const val TTS_PREF_NAME = "tts"
 const val SPEED_PREF_NAME = "speed"
 
+/**
+ * [https://gist.github.com/JCarlosR/7f457aeebd9c3670933221e97116c4c6]
+ */
 object PreferenceHelper {
     fun customPrefs(context: Context, name: String): SharedPreferences =
         context.getSharedPreferences(name, Context.MODE_PRIVATE)

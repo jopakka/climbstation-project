@@ -3,7 +3,13 @@ package fi.climbstationsolutions.climbstation.utils
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import kotlin.math.cos
 
+/**
+ * @author Joonas Niemi
+ */
 object Calculators {
+    /**
+     * Calculates average angle between [steps]
+     */
     fun averageAngleFromSteps(steps: List<ClimbStep>): Float {
         if (steps.isEmpty()) return 0f
 
@@ -16,10 +22,16 @@ object Calculators {
         return angles.toFloat() / amountOfDistances.toFloat()
     }
 
+    /**
+     * Calculates [steps] total distance
+     */
     fun calculateDistance(steps: List<ClimbStep>): Int {
         return steps.sumOf { it.distance }
     }
 
+    /**
+     * Calculates vertical height of [steps]
+     */
     fun calculateHeight(steps: List<ClimbStep>): Float {
         var height = 0f
         steps.forEach { s ->
@@ -27,6 +39,5 @@ object Calculators {
             height += h
         }
         return height
-
     }
 }
