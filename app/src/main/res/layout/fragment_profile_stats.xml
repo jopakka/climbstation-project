@@ -258,20 +258,32 @@
                         app:layout_constraintEnd_toStartOf="@+id/constraintLayout14"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView10">
+                        app:layout_constraintTop_toBottomOf="@+id/textView10"
+                        app:layout_constraintVertical_bias="0.0">
 
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/climbing_icon"
+                            app:tint="@color/climbstation_red" />
 
                         <TextView
                             android:id="@+id/textView14"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:textColor="#FFFFFF"
                             android:textSize="26sp"
                             app:allTimeDistance="@{viewModel.sevenDayDistance}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView2"
                             tools:text="84m" />
 
                         <TextView
@@ -283,6 +295,7 @@
                             android:textAllCaps="true"
                             android:textColor="#BDBDBD"
                             android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
@@ -300,17 +313,27 @@
                         app:layout_constraintStart_toEndOf="@+id/constraintLayout15"
                         app:layout_constraintTop_toBottomOf="@+id/textView10">
 
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_baseline_schedule_24"
+                            app:tint="@color/climbstation_red" />
 
                         <TextView
                             android:id="@+id/textView16"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:textColor="#FFFFFF"
                             android:textSize="26sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/imageView3"
                             app:sessionTime="@{viewModel.sevenDateDuration}"
                             tools:text="00:24:15" />
 
@@ -372,18 +395,28 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/allTime_textview">
 
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/climbing_icon"
+                            app:tint="@color/climbstation_red" />
 
                         <TextView
                             android:id="@+id/allTime_meters"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:textColor="#FFFFFF"
                             android:textSize="26sp"
                             app:allTimeDistance="@{viewModel.allTimeDistance}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/imageView4"
                             tools:text="248m" />
 
                         <TextView
@@ -412,17 +445,27 @@
                         app:layout_constraintStart_toEndOf="@+id/allTime_distance"
                         app:layout_constraintTop_toBottomOf="@+id/allTime_textview">
 
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_baseline_schedule_24"
+                            app:tint="@color/climbstation_red" />
 
                         <TextView
                             android:id="@+id/allTime_duration"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
                             android:textColor="#FFFFFF"
                             android:textSize="26sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/imageView5"
                             app:sessionTime="@{viewModel.allTimeDuration}"
                             tools:text="03:49:51" />
 
