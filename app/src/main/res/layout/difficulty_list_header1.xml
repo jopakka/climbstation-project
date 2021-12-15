@@ -2,11 +2,11 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rv_title"
+    style="@style/Theme.ClimbStation.Text.White.Text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/recycler_view_header_padding"
     android:paddingStart="@dimen/recycler_view_header_padding"
     android:paddingEnd="@dimen/recycler_view_header_padding"
+    android:paddingBottom="@dimen/recycler_view_header_padding"
     android:text="@string/difficulty_profiles"
-    style="@style/Theme.ClimbStation.Text.White.Text1"
     tools:textColor="@color/black" />

@@ -40,9 +40,9 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabFilter"
+            style="@style/Theme.ClimbStation.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Theme.ClimbStation.FloatingActionButton"
             android:contentDescription="@string/filter_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

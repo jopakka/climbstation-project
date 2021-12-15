@@ -45,9 +45,9 @@
                 android:id="@+id/customProfile_rv"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:visibility="gone"
-                android:paddingBottom="100dp"
                 android:clipToPadding="false"
+                android:paddingBottom="100dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -82,10 +82,10 @@
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/floating_action_button"
+            style="@style/Theme.ClimbStation.FloatingActionButton.Extended"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            style="@style/Theme.ClimbStation.FloatingActionButton.Extended"
             android:text="@string/add_profile"
             app:icon="@drawable/ic_baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"

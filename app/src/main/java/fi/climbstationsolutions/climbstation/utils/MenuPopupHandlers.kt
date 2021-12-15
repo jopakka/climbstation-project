@@ -19,8 +19,9 @@ import fi.climbstationsolutions.climbstation.ui.InfoPopupViewModel
 
 /**
  * @author Oskar Wiiala
+ * Handles popup creation for top app bar drawer menu items
  */
-class PopupHandlers {
+class MenuPopupHandlers {
     private lateinit var binding: InfoPopupBinding
 
     /**

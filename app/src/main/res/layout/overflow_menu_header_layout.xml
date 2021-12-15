@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:paddingBottom="12dp"
     android:background="@color/climbstation_red"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="12dp">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:src="@drawable/climb_menu_logo"/>
+        android:src="@drawable/climb_menu_logo" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/cropped_logo_whitened_3"/>
+        android:src="@drawable/cropped_logo_whitened_3" />
 
 </LinearLayout>

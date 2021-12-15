@@ -79,10 +79,10 @@
 
                     <TextView
                         android:id="@+id/timeSubTitle"
+                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/elapsed_time"
-                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/view2"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -106,9 +106,9 @@
 
                 <TextView
                     android:id="@+id/stopWatch"
+                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -130,11 +130,11 @@
 
                 <TextView
                     android:id="@+id/textView9"
+                    style="@style/Theme.ClimbStation.Text.White.Text3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@string/kcal"
-                    style="@style/Theme.ClimbStation.Text.White.Text3"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView12"
                     app:layout_constraintStart_toEndOf="@+id/textView12" />
 
@@ -163,10 +163,10 @@
 
                     <TextView
                         android:id="@+id/caloriesSubTitle"
+                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/burned_calories"
-                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/view6"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -190,9 +190,9 @@
 
                 <TextView
                     android:id="@+id/textView12"
+                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -237,10 +237,10 @@
 
                     <TextView
                         android:id="@+id/lengthSubTitle"
+                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/climbed_distance"
-                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/view4"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -264,9 +264,9 @@
 
                 <TextView
                     android:id="@+id/textView11"
+                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -277,11 +277,11 @@
 
                 <TextView
                     android:id="@+id/textView"
+                    style="@style/Theme.ClimbStation.Text.White.Text3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@string/meter_unit_short"
-                    style="@style/Theme.ClimbStation.Text.White.Text3"
                     app:layout_constraintBaseline_toBaselineOf="@+id/textView11"
                     app:layout_constraintStart_toEndOf="@+id/textView11" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -297,11 +297,11 @@
 
                 <TextView
                     android:id="@+id/textView18"
+                    style="@style/Theme.ClimbStation.Text.White.Text3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="@string/meters_per_minutes"
-                    style="@style/Theme.ClimbStation.Text.White.Text3"
                     app:layout_constraintBaseline_toBaselineOf="@id/textView13"
                     app:layout_constraintStart_toEndOf="@id/textView13" />
 
@@ -330,10 +330,10 @@
 
                     <TextView
                         android:id="@+id/speedSubTitle"
+                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/current_speed"
-                        style="@style/Theme.ClimbStation.Text.White.Title3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/view8"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -357,9 +357,9 @@
 
                 <TextView
                     android:id="@+id/textView13"
+                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Theme.ClimbStation.Text.White.Title1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -373,13 +373,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnStop"
+            style="@style/Theme.ClimbStation.Button.Big"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/stop"
-            style="@style/Theme.ClimbStation.Button.Big"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

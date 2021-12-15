@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="profileItem"
             type="fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps" />
@@ -20,11 +21,11 @@
         <TextView
             android:id="@+id/dif_rv_title"
             android:layout_width="0dp"
-            android:fontFamily="@font/aldrich"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/aldrich"
             android:singleLine="true"
             android:text="@{profileItem.profile.name}"
             android:textAlignment="center"
@@ -36,8 +37,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="superhuman" />
-
-        <!--        android:text="@{profileItem.name}"-->
 
         <View
             android:id="@+id/dif_rv_title_separator"
@@ -89,8 +88,8 @@
                     android:id="@+id/Length_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/fragment_climb_dif_rv_length_title"
                     android:fontFamily="@font/aldrich"
+                    android:text="@string/fragment_climb_dif_rv_length_title"
                     android:textColor="@color/super_grey"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,47 +99,15 @@
                     android:id="@+id/rv_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/aldrich"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:fontFamily="@font/aldrich"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/Length_subtitle"
                     app:stepsToDistanceShort="@{profileItem.steps}"
                     tools:text="12m" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                android:id="@+id/constraintLayout10"-->
-            <!--                android:layout_width="0dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                app:layout_constraintEnd_toStartOf="@+id/constraintLayout9"-->
-            <!--                app:layout_constraintHorizontal_bias="0.5"-->
-            <!--                app:layout_constraintStart_toEndOf="@+id/constraintLayout5"-->
-            <!--                app:layout_constraintTop_toTopOf="parent">-->
-
-            <!--                <TextView-->
-            <!--                    android:id="@+id/speed_subtitle"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:textColor="@color/super_grey"-->
-            <!--                    android:text="Speed"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--                <TextView-->
-            <!--                    android:id="@+id/rv_speed"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:textColor="@color/black"-->
-            <!--                    android:textSize="18sp"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toBottomOf="@+id/speed_subtitle" />-->
-            <!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout9"
@@ -164,8 +131,8 @@
                     android:id="@+id/angle_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/fragment_climb_dif_rv_average_angle_title"
                     android:fontFamily="@font/aldrich"
+                    android:text="@string/fragment_climb_dif_rv_average_angle_title"
                     android:textColor="@color/super_grey"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -175,9 +142,9 @@
                     android:id="@+id/rv_angle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/aldrich"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:fontFamily="@font/aldrich"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/angle_subtitle"

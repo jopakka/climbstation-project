@@ -58,7 +58,6 @@ class MainActivity : AppCompatActivity() {
         setupCustomExpandableList()
 
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
-            Log.d("topAppBar", "menu clicked")
             when (menuItem.itemId) {
                 R.id.more -> {
                     binding.overflowDrawerLayout.openDrawer(GravityCompat.END)
@@ -136,10 +135,12 @@ class MainActivity : AppCompatActivity() {
         prefs[SERIAL_NO_PREF_NAME] = serial
     }
 
+    /**
+     * Sets up expandable list for ExpandableListView in the side drawer menu
+     * Includes onGroupClick and onChildClick listeners
+     */
     private fun setupCustomExpandableList() {
         val listData = data
-        Log.d("listData1", "listData1: $listData")
-        Log.d("HashMap_data", "data: $listData")
         titleList = ArrayList(listData.keys)
         adapter = CustomExpandableListAdapter(
             this,
@@ -149,9 +150,9 @@ class MainActivity : AppCompatActivity() {
         )
         binding.expendableList.setAdapter(adapter)
 
-        binding.expendableList.setOnGroupClickListener { _, _, i: Int, _: Long ->
+        binding.expendableList.setOnGroupClickListener { _, _, position: Int, _ ->
             val groupKey =
-                (listData.filterValues { it == listData[(titleList as ArrayList<String>)[i]]!! }.keys).elementAt(
+                (listData.filterValues { it == listData[(titleList as ArrayList<String>)[position]]!! }.keys).elementAt(
                     0
                 )
             if (groupKey == "Connect") {
@@ -168,9 +169,6 @@ class MainActivity : AppCompatActivity() {
                 (listData.filterValues { it == listData[(titleList as ArrayList<String>)[groupPosition]]!! }.keys).elementAt(
                     0
                 )
-
-            Log.d("MainActivity_menuChildClick", "childItem: $childItem")
-            Log.d("MainActivity_menuChildClick", "groupKey: $groupKey")
 
             when (childItem) {
                 "Bodyweight" -> {
@@ -190,7 +188,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 "Text to speech" -> {
-                    Log.d("MainActivity_menuChildClick", "tts clicked")
                     MenuActions().toggleTts(this)
                     (adapter as CustomExpandableListAdapter).notifyDataSetChanged()
                 }

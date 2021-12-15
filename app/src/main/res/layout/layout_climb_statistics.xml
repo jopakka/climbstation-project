@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="profile"
             type="fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps" />
+
         <variable
             name="session"
             type="fi.climbstationsolutions.climbstation.database.SessionWithData" />

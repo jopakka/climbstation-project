@@ -29,11 +29,11 @@
             android:paddingTop="10dp"
             android:paddingEnd="20dp"
             android:paddingBottom="10dp"
-            tools:text="Title"
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:infoPopupTitle="@{viewModel.title}" />
+            app:infoPopupTitle="@{viewModel.title}"
+            tools:text="Title" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -48,10 +48,9 @@
                 android:paddingBottom="10dp"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                tools:text="Instructions"
-                app:infoPopupInstructions="@{viewModel.title}" />
+                app:infoPopupInstructions="@{viewModel.title}"
+                tools:text="Instructions" />
         </ScrollView>
-
 
     </LinearLayout>
 </layout>

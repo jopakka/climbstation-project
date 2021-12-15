@@ -15,11 +15,11 @@ import fi.climbstationsolutions.climbstation.ui.InfoPopupViewModel
  */
 class MenuActions {
     fun updateUserWeight(context: Context, positiveAction: (userInput: String) -> Unit = {}) {
-        return PopupHandlers().editWeightPopup(context, positiveAction)
+        return MenuPopupHandlers().editWeightPopup(context, positiveAction)
     }
 
     fun showInfoPopup(infoRequest: String, context: Context, viewModel: InfoPopupViewModel) {
-        val handler = PopupHandlers()
+        val handler = MenuPopupHandlers()
         when (infoRequest) {
             "How to climb",
             "How to connect to ClimbStation machine",
@@ -30,9 +30,10 @@ class MenuActions {
     }
 
     fun updateSpeed(context: Context, positiveAction: (userInput: Int) -> Unit = {}) {
-        return PopupHandlers().editSpeedPopup(context, positiveAction)
+        return MenuPopupHandlers().editSpeedPopup(context, positiveAction)
     }
 
+    // Tts = text to speech
     fun toggleTts(context: Context) {
         val prefs = PreferenceHelper.customPrefs(context, PREF_NAME)
         val isTtsOn: Boolean = prefs[TTS_PREF_NAME]

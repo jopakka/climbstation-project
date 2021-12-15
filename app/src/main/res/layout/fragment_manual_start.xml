@@ -24,281 +24,281 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/adjust_frame"
-                app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/adjust_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/fragment_adjust_title"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.478"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/numberValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/fragment_adjust_duration"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/adjust_title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/adjust_fragment_timepicker_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/numberValue">
 
-                <TextView
-                    android:id="@+id/adjust_title"
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/fragment_adjust_title"
-                    android:textColor="@color/black"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.478"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".2" />
 
-                <TextView
-                    android:id="@+id/numberValue"
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/fragment_adjust_duration"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/adjust_title" />
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".6" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/adjust_fragment_timepicker_container"
-                    android:layout_width="0dp"
+                    android:id="@+id/constraintLayout22"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/numberValue">
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline11"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline11"
+
+                    <NumberPicker
+                        android:id="@+id/adjust_fragment_timepicker_minute"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent=".2" />
+                        android:tag="minute"
+                        android:theme="@style/TimePickerTheme"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textView32"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline6"
+                    <TextView
+                        android:id="@+id/textView32"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent=".6" />
+                        android:text="@string/minute_short"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/adjust_fragment_timepicker_minute"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline6"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView33"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/second_short"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/adjust_fragment_timepicker_second"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <NumberPicker
+                        android:id="@+id/adjust_fragment_timepicker_second"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="second"
+                        android:theme="@style/TimePickerTheme"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textView33"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/adjustmentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/adjustments"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_timepicker_container" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/pickerContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/adjust_fragment_start_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/adjustmentTitle">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".2" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".6" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline13"
+                    app:layout_constraintTop_toTopOf="parent">
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout22"
+                        android:id="@+id/constraintLayout17"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline11"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
 
                         <NumberPicker
-                            android:id="@+id/adjust_fragment_timepicker_minute"
+                            android:id="@+id/pickerLength"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:tag="minute"
                             android:theme="@style/TimePickerTheme"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/textView32"
-                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/textView32"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/minute_short"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/adjust_fragment_timepicker_minute"
-                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout21"
+                    <TextView
+                        android:id="@+id/textView31"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/meter_unit_short"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline6"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintStart_toEndOf="@+id/constraintLayout17"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/textView33"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/second_short"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/adjust_fragment_timepicker_second"
-                            app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline12"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/textView30"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
+
 
                         <NumberPicker
-                            android:id="@+id/adjust_fragment_timepicker_second"
+                            android:id="@+id/pickerAngle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:tag="second"
                             android:theme="@style/TimePickerTheme"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/textView33"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/adjustmentTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    android:text="@string/adjustments"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/adjust_fragment_timepicker_container" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/pickerContainer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingBottom="10dp"
-                    app:layout_constraintBottom_toTopOf="@+id/adjust_fragment_start_btn"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/adjustmentTitle">
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline13"
+                    <TextView
+                        android:id="@+id/textView30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent=".2" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent=".6" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout19"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
+                        android:text="@string/angle_unit_short"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline13"
-                        app:layout_constraintTop_toTopOf="parent">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout17"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-
-                            <NumberPicker
-                                android:id="@+id/pickerLength"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:tag="minute"
-                                android:theme="@style/TimePickerTheme"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <TextView
-                            android:id="@+id/textView31"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/meter_unit_short"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/constraintLayout17"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout20"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline12"
-                        app:layout_constraintTop_toTopOf="parent">
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout18"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/textView30"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0">
-
-
-                            <NumberPicker
-                                android:id="@+id/pickerAngle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:tag="second"
-                                android:theme="@style/TimePickerTheme"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <TextView
-                            android:id="@+id/textView30"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/angle_unit_short"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.503" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.503" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/adjust_fragment_start_btn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="24dp"
-                    android:backgroundTint="@color/button_green"
-                    android:contentDescription="@string/content_description_fragment_adjust_start_btn"
-                    android:padding="8dp"
-                    android:text="@string/fragment_adjust_start"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pickerContainer" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/adjust_fragment_start_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="@color/button_green"
+                android:contentDescription="@string/content_description_fragment_adjust_start_btn"
+                android:padding="8dp"
+                android:text="@string/fragment_adjust_start"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pickerContainer" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

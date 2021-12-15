@@ -10,9 +10,9 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/Theme.ClimbStation.ListItem.CustomProfile"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Theme.ClimbStation.ListItem.CustomProfile">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/customProfileContainer1"
