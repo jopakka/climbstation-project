@@ -4,11 +4,11 @@ Android application to control ClimbStation device.
 ## Requirements
 - Android 8.0 (sdk 26)
 
-![Connect fragment](https://i.ibb.co/YZW3Gqk/Connect.png)
-![CLimb fragment](https://i.ibb.co/YZdNnkM/Climb.png)
-![CLimbOn fragment](https://i.ibb.co/LC9xDt9/ClimbOn.png)
-![CreateProfile fragment](https://i.ibb.co/d6147pt/Create-Profile.png)
-![Stats fragment](https://i.ibb.co/pdmVxQ3/Stats.png)
+![Connect fragment](https://i.ibb.co/YZW3Gqk/Connect.png =270x)
+![CLimb fragment](https://i.ibb.co/YZdNnkM/Climb.png =270x)
+![CLimbOn fragment](https://i.ibb.co/LC9xDt9/ClimbOn.png =270x)
+![CreateProfile fragment](https://i.ibb.co/d6147pt/Create-Profile.png =270x)
+![Stats fragment](https://i.ibb.co/pdmVxQ3/Stats.png =270x)
 
 ## Usage
 ### How to connect the App to the ClimbStation 
