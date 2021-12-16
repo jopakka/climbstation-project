@@ -87,8 +87,11 @@ Xml:
 
 <fi.climbstationsolutions.climbstation.utils.WallProfile android:id="@+id/wall"
     app:profile="<ADD YOUR ClimbProfileWithSteps HERE>"
-    app:sessionWithData="<ADD YOUR SessionWithData HERE>" app:wallColor="#FFFFFF"
-    app:wallFillColor="#FF00FF" app:wallOutlineColor="#00FFFF" app:wallOutlineThickness="@{2}" />
+    app:sessionWithData="<ADD YOUR SessionWithData HERE>" 
+    app:wallColor="#FFFFFF"
+    app:wallFillColor="#FF00FF"
+    app:wallOutlineColor="#00FFFF"
+    app:wallOutlineThickness="@{2}" />
 ```
 
 Programmatically:
