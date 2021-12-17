@@ -10,7 +10,11 @@ import com.google.android.material.tabs.TabLayoutMediator
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbBinding
 import fi.climbstationsolutions.climbstation.ui.climb.ClimbTabPagerAdapter
-
+/**
+ * @author Patrik Pölkki
+ * @author Joonas Niemi
+ * Fragment for displaying bar graph and other statistics of user's completed climbing sessions
+ */
 class ClimbFragment : Fragment() {
     private lateinit var binding: FragmentClimbBinding
     private val viewModel: ClimbViewModel by viewModels()

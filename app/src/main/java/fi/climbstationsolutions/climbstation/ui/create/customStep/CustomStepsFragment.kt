@@ -16,7 +16,10 @@ import fi.climbstationsolutions.climbstation.databinding.FragmentCustomStepsBind
 import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
+/**
+ * @author Patrik Pölkki
+ * Fragment for creating steps to users custom profiles
+ */
 class CustomStepsFragment : Fragment(R.layout.fragment_custom_steps), CustomStepFocusListener {
     private lateinit var binding: FragmentCustomStepsBinding
     private val viewModel: CustomStepsViewModel by viewModels()
@@ -46,6 +49,9 @@ class CustomStepsFragment : Fragment(R.layout.fragment_custom_steps), CustomStep
         return binding.root
     }
 
+    /**
+     * attach swipeHandler to recyclerview
+     */
     private fun setSwipeHandler() {
         val swipeHandler = object : SwipeToDelete(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -54,15 +60,6 @@ class CustomStepsFragment : Fragment(R.layout.fragment_custom_steps), CustomStep
                     ItemTouchHelper.LEFT -> {
                         val id = adapter.deleteStep(viewHolder.bindingAdapterPosition)
                         viewModel.deleteStep(id)
-                    }
-                    ItemTouchHelper.RIGHT -> {
-                        val duplicateValues =
-                            adapter.duplicateStep(viewHolder.bindingAdapterPosition)
-                        viewModel.duplicateStep(
-                            args.id,
-                            duplicateValues.distance,
-                            duplicateValues.angle
-                        )
                     }
                 }
             }

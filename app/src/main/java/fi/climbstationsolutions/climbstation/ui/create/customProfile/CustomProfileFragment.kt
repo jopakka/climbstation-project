@@ -16,7 +16,10 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentCustomProfileBinding
 import fi.climbstationsolutions.climbstation.utils.ProfileSharer
 import fi.climbstationsolutions.climbstation.utils.SwipeToDelete
-
+/**
+ * @author Patrik Pölkki
+ * Fragment for creating own custom climb profiles
+ */
 class CustomProfileFragment : Fragment(), CustomProfileClickListener {
     private lateinit var binding: FragmentCustomProfileBinding
     private val viewModel: CustomProfileViewModel by viewModels()
@@ -44,6 +47,9 @@ class CustomProfileFragment : Fragment(), CustomProfileClickListener {
         return binding.root
     }
 
+    /**
+     * attach swipeHandler to recyclerview
+     */
     private fun setSwipeHandler() {
         val swipeHandler = object : SwipeToDelete(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

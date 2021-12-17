@@ -28,7 +28,11 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
 import fi.climbstationsolutions.climbstation.ui.MainActivityViewModel
-
+/**
+ * @author Patrik Pölkki
+ * @author Joonas Niemi
+ * Fragment for climbing using climb profiles
+ */
 class ClimbProfilesFragment : Fragment(), CellClickListener {
     private lateinit var binding: FragmentClimbProfilesBinding
     private var broadcastManager: LocalBroadcastManager? = null

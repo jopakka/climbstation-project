@@ -34,7 +34,7 @@
         Once created, go to the \"CLIMB\" view and choose your created profile in the list of difficulty terrain profiles.\n\n
         Start and enjoy your created climbing profile!
     </string>
-    <string name="info_popup_instructions_developers">Oskar Wiiala\nJoonas Niemi\nPatrik Pölkki</string>
+    <string name="info_popup_instructions_developers">Patrik Pölkki\nJoonas Niemi\nOskar Wiiala</string>
 
     <!--Bottom navigation strings-->
     <string name="bottom_nav_climb">Climb</string>
