@@ -19,7 +19,10 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-
+/**
+ * @author Joonas Niemi
+ * Fragment shows how users climb session went
+ */
 class ClimbFinishedFragment : Fragment() {
     private lateinit var binding: FragmentClimbFinishedBinding
     private val viewModel: ClimbFinishedViewModel by viewModels()

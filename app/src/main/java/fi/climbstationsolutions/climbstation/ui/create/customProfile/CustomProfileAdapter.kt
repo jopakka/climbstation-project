@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbProfileWithSteps
 import fi.climbstationsolutions.climbstation.databinding.CustomProfileItemBinding
-
+/**
+ * @author Patrik Pölkki
+ * Adapter for custom profiles
+ */
 class CustomProfileAdapter(private val customProfileClickListener: CustomProfileClickListener) :
     RecyclerView.Adapter<CustomProfileAdapter.ViewHolder>() {
 
@@ -13,6 +16,9 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
     var selectedProfileId: Long = -1
         private set
 
+    /**
+     * updates [customProfileList]
+     */
     fun addProfiles(list: List<ClimbProfileWithSteps>) {
         customProfileList.clear()
         customProfileList.let {
@@ -21,6 +27,9 @@ class CustomProfileAdapter(private val customProfileClickListener: CustomProfile
         }
     }
 
+    /**
+     * deletes item from [customProfileList] on swipe to left
+     */
     fun deleteStep(pos: Int): Long {
         val item = customProfileList[pos]
         customProfileList.removeAt(pos)

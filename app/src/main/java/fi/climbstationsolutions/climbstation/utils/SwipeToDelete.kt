@@ -8,6 +8,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import fi.climbstationsolutions.climbstation.R
 
+/**
+ * SimpleCallBack for handling swipe left to delete feature
+ * Draws a red canvas with icon to represent the deleting
+ *
+ * @author Patrik Pölkki
+ */
+
 abstract class SwipeToDelete(context: Context) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 

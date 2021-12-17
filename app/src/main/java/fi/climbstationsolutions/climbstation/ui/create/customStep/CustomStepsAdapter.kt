@@ -15,11 +15,6 @@ import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.database.ClimbStep
 import fi.climbstationsolutions.climbstation.databinding.CustomStepItemBinding
 
-data class DuplicateValues(
-    val distance: Int,
-    val angle: Int
-)
-
 class CustomStepsAdapter(
     private val customStepFocusListener: CustomStepFocusListener,
     private val context: Context
@@ -53,6 +48,9 @@ class CustomStepsAdapter(
                 hint = itemView.context.getString(R.string.angleShortInt, item.angle)
             }
 
+            /**
+             * show error on edittext
+             */
             binding.lengthEditText.doOnTextChanged { text, _, _, _ ->
                 text.toString().toIntOrNull().let {
                     if (it == null || it >= 0) {
@@ -73,6 +71,10 @@ class CustomStepsAdapter(
                 }
             }
 
+            /**
+             * calls [customStepFocusListener] to update step by focusing
+             * off from edittext box
+             */
             binding.lengthEditText.onFocusChangeListener = View.OnFocusChangeListener { _, focus ->
                 if (!focus) {
                     binding.lengthEditText.text.toString().toIntOrNull()?.let {
@@ -103,6 +105,10 @@ class CustomStepsAdapter(
             binding.executePendingBindings()
         }
 
+        /**
+         * calls [customStepFocusListener] to update step by clearing focus
+         * from the edittext by onclick done button
+         */
         private val imeDoneListener = TextView.OnEditorActionListener { textView, i, _ ->
             when (textView) {
                 binding.angleEditText -> {
@@ -139,11 +145,6 @@ class CustomStepsAdapter(
         notifyItemRemoved(pos)
         notifyItemRangeRemoved(pos, customStepsList.size)
         return item.id
-    }
-
-    fun duplicateStep(pos: Int): DuplicateValues {
-        val item = customStepsList[pos]
-        return DuplicateValues(item.distance, item.angle)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

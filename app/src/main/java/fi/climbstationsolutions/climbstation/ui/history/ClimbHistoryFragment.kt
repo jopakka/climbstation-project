@@ -21,7 +21,13 @@ import fi.climbstationsolutions.climbstation.sharedprefs.PREF_NAME
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper
 import fi.climbstationsolutions.climbstation.sharedprefs.PreferenceHelper.get
 import fi.climbstationsolutions.climbstation.sharedprefs.SERIAL_NO_PREF_NAME
-
+/**
+ * @author Patrik Pölkki
+ * @author Joonas Niemi
+ * Fragment shows how selected climb session has went
+ * User can also start chosen climb session again if
+ * its not manual session or deleted custom session
+ */
 class ClimbHistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
     private val viewModel: ClimbHistoryViewModel by viewModels()

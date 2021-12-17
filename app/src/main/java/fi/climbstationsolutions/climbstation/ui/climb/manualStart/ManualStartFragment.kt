@@ -29,6 +29,7 @@ import fi.climbstationsolutions.climbstation.ui.climb.climbSetup.ClimbViewModel
 /**
  * @author Oskar Wiiala
  * @author Patrik Pölkki
+ * @author Joonas Niemi
  * Fragment for setting timer, distance and angle for climbing session manually
  * Also starts climbing session
  */

@@ -18,7 +18,10 @@ import androidx.navigation.fragment.navArgs
 import fi.climbstationsolutions.climbstation.R
 import fi.climbstationsolutions.climbstation.databinding.FragmentClimbOnBinding
 import fi.climbstationsolutions.climbstation.services.ClimbStationService
-
+/**
+ * @author Joonas Niemi
+ * Fragment for showing how on going climb session is going
+ */
 class ClimbOnFragment : Fragment(R.layout.fragment_climb_on) {
     private lateinit var binding: FragmentClimbOnBinding
     private val viewModel: ClimbOnViewModel by viewModels {
